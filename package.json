@@ -10,14 +10,20 @@
     "devStart": "DEBUG=mern:* nodemon server.js"
   },
   "dependencies": {
+    "axios": "^1.5.1",
+    "bcrypt": "^5.1.1",
+    "bun": "^1.0.4",
+    "concurrently": "^8.2.1",
     "debug": "^4.3.4",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.3",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
