@@ -19,7 +19,9 @@ BearlyEmployed is an intuitive and user-friendly platform designed to streamline
 ## Planning
 ### Trello Board
 ### Wireframe - Figma
-### ERD - Lucid
+### ERD - LucidChart
+<img width="862" alt="Screenshot 2023-10-20 at 5 58 07 PM" src="https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/dc62e6ca-ed60-4bac-b922-ad639f60c37d">
+
 
 ## Deployment
 Vercel,Cyclic
