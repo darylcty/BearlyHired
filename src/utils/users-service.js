@@ -3,8 +3,7 @@ import * as usersAPI from "./users-api";
 export async function signUp(formData) {
 	const { name, email, password } = formData;
 	const userData = { name, email, password };
-	const token = await usersAPI.signUp(userData);
-	console.log("received token: ", token)
+	const token = await usersAPI.signUp(formData);
 	localStorage.setItem("token", token);
 	return getUser();
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signUp } from "../../utilities/users-service";
+import { signUp } from "../../utils/users-service";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
 
