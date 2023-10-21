@@ -19,9 +19,6 @@ app.use(require("./config/checkToken"));
 app.use("/api/users", usersRouter);
 
 //? ROUTES
-app.get("/api", (req, res) => {
-	res.send("Hi");
-});
 app.use("/api/users", usersRouter);
 
 //! A single "catch all" route is required to serve the index.html when any non-AJAX "API" request is received by the Express app:

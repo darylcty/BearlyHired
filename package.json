@@ -1,5 +1,5 @@
 {
-  "name": "mern-infra",
+  "name": "bearlyhired",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -22,6 +22,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0"
   },

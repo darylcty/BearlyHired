@@ -2,12 +2,13 @@ import debug from "debug";
 
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import AuthPage from "../../components/AuthPage/AuthPage";
+import AuthPage from "../AuthPage/AuthPage";
 import NewOrderPage from "../../components/NewOrderPage/NewOrderPage";
 import OrderHistory from "../../components/OrderHistoryPage/OrderHistoryPage";
 import NavBar from "../../components/NavBar/NavBar";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import { getUser } from "../../utils/users-service";
+import SignUpPage from "../AuthPage/SignUpPage";
 
 const log = debug("mern:src:App");
 localStorage.debug = "mern:*";
@@ -30,8 +31,10 @@ export default function App() {
           </>
         ) : (
           <>
-            <AuthPage user={user} setUser={setUser}/>
-            <LoginForm setUser={setUser}/>
+            <Routes>
+              <SignUpPage path="/signup" user={user} setUser={setUser}/>
+              <LoginForm path="/login" setUser={setUser}/>
+            </Routes>
           </>
         )}
       </main>
