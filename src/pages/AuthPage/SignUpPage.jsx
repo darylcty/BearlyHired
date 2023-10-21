@@ -2,6 +2,7 @@ import { useState } from "react";
 import { signUp } from "../../utils/users-service";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { set } from "mongoose";
 
 
 export default function SignUpPage({ setUser }) {
@@ -13,6 +14,7 @@ export default function SignUpPage({ setUser }) {
 		error: "",
 	});
 
+    //? function to validate email using regex
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
     }
@@ -20,18 +22,15 @@ export default function SignUpPage({ setUser }) {
 	const navigate = useNavigate();
 
 	const handleChange = (event) => {
-        if (event.target.name === "email" && !isValidEmail(event.target.value)) {
-            error: "Email is invalid"
-            } else {
-            error: ""
+        const { name, value } = event.target;
+        let errorValue = formData.error;
+        if (name === "email" && !isValidEmail(value)) {
+            errorValue = "Email is invalid";
+            } else if (name === "email") {
+                errorValue = "";
             }
-
-        setFormData({
-			...formData,
-			[event.target.name]: event.target.value,
-			error: "",
-		});
-	};
+        setFormData({...formData, [name]:value, error: errorValue});
+    }
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -40,15 +39,15 @@ export default function SignUpPage({ setUser }) {
 			setUser(user);
 			navigate("/profile");
 		} catch (error) {
-			setFormData({ error: "Sign up Failed - Try again" });
+			setFormData((prevData) => ({...prevData, error: "Sign up Failed - Try again" }));
 		}
-	};
+    };
 
 	const disable = formData.password !== formData.confirm;
 
     return (
             <Container className="signUpPage">
-            <h1>Get started with a free account!</h1>
+            <h1>Ready to Join Our Sleuth?</h1>
             <Row>
                 <Col md={6}>
                 <div className="form-container">
@@ -105,10 +104,10 @@ export default function SignUpPage({ setUser }) {
             <Row>
             <Col md={6}>
             <div className="register-link">
-                If you have an account, click here to <Link to="/login">login!</Link>
+                Already one of us? Click here to <Link to="/login">login!</Link>
             </div>
             </Col>
         </Row>
             </Container>
         );
-        }
+}
