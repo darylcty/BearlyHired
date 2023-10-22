@@ -6,6 +6,7 @@ const path = require("path");
 const logger = require("morgan");
 const debug = require("debug");
 const usersRouter = require("./routes/api/usersRoute");
+const companiesRouter = require("./routes/api/companiesRoute");
 
 //? APP
 const app = express();
@@ -20,6 +21,8 @@ app.use("/api/users", usersRouter);
 
 //? ROUTES
 app.use("/api/users", usersRouter);
+app.use("/api/companies", companiesRouter);
+
 
 //! A single "catch all" route is required to serve the index.html when any non-AJAX "API" request is received by the Express app:
 //! just a precursor to react router
