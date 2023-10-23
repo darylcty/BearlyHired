@@ -12,9 +12,9 @@ export default function App() {
 
   return (
       <main className="App">
+        <NavBar />
         {user ? (
           <>
-            <NavBar user={user} setUser={setUser} />
             <Routes>
               <Route path="/" element={<LandingPage />} />
             </Routes>
