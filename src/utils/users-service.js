@@ -1,8 +1,8 @@
 import * as usersAPI from "./users-api";
 
-export async function signUp(formData) {
-	const { name, email, password } = formData;
-	const userData = { name, email, password };
+export async function signUp(inputData) {
+	const { name, email, password } = inputData;
+	const formData = { name, email, password };
 	const token = await usersAPI.signUp(formData);
 	localStorage.setItem("token", token);
 	return getUser();

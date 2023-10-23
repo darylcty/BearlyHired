@@ -6,7 +6,11 @@ const path = require("path");
 const logger = require("morgan");
 const debug = require("debug");
 const usersRouter = require("./routes/api/usersRoute");
-const companiesRouter = require("./routes/api/companiesRoute");
+// const companiesRouter = require("./routes/api/companiesRoute");
+// const jobsRouter = require("./routes/api/jobsRoute");
+// const interviewsRouter = require("./routes/api/interviewsRoute");
+// const offersRouter = require("./routes/api/offersRoute");
+
 
 //? APP
 const app = express();
@@ -16,13 +20,13 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "dist")));
 app.use(require("./config/checkToken"));
-// Put API routes here, before the "catch all" route
-app.use("/api/users", usersRouter);
 
-//? ROUTES
+//? ROUTES - Put API routes here, before the "catch all" route
 app.use("/api/users", usersRouter);
-app.use("/api/companies", companiesRouter);
-
+// app.use("/api/companies", companiesRouter);
+// app.use("/api/jobs", jobsRouter);
+// app.use("/api/interviews", interviewsRouter);
+// app.use("/api/offers", offersRouter);
 
 //! A single "catch all" route is required to serve the index.html when any non-AJAX "API" request is received by the Express app:
 //! just a precursor to react router

@@ -1,17 +1,10 @@
-import debug from "debug";
-
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
-import LoginForm from "../../components/LoginForm/LoginForm";
+import LoginPage from "../AuthPage/LoginPage";
 import { getUser } from "../../utils/users-service";
 import SignUpPage from "../AuthPage/SignUpPage";
 import LandingPage from "../LandingPage/LandingPage";
-
-const log = debug("mern:src:App");
-localStorage.debug = "mern:*";
-
-log("Start React App");
 
 export default function App() {
   const [ user, setUser ] = useState(getUser());
@@ -31,7 +24,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/signup" element={<SignUpPage user={user} setUser={setUser}/>} />
-              <Route path="/login" element={<LoginForm setUser={setUser}/>} />
+              <Route path="/login" element={<LoginPage setUser={setUser}/>} />
             </Routes>
           </>
         )}
