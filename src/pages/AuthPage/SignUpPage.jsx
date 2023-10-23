@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { signUp } from "../../utils/users-service";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Spinner } from "react-bootstrap";
 import { set } from "mongoose";
 
 
@@ -13,6 +13,8 @@ export default function SignUpPage({ setUser }) {
 		confirm: "",
 		error: "",
 	});
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     //? function to validate email using regex
     function isValidEmail(email) {
@@ -41,6 +43,7 @@ export default function SignUpPage({ setUser }) {
 		} catch (error) {
 			setFormData((prevData) => ({...prevData, error: "Sign up Failed - Try again" }));
 		}
+        setIsSubmitting(false);
     };
 
 	const disable = formData.password !== formData.confirm;
@@ -93,9 +96,25 @@ export default function SignUpPage({ setUser }) {
                         />
                     </Form.Group>
                     <br></br>
-                    <Button type="submit" disabled={disable}>
+                    {/* <Button type="submit" disabled={disable}>
                         SIGN UP
-                    </Button>
+                    </Button> */}
+                        <Button type="submit" disabled={disable || isSubmitting}>
+                            {isSubmitting ? (
+                                <>
+                                    <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    />
+                                    <span className="visually-hidden">Loading...</span>
+                                </>
+                            ) : (
+                                "SIGN UP"
+                            )}
+                        </Button>
                     </Form>
                 </div>
                 <p className="error-message">&nbsp;{formData.error}</p>

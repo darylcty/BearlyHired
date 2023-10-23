@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
@@ -12,7 +14,7 @@ export default function App() {
 
   return (
       <main className="App">
-        <NavBar />
+        <NavBar user={user} setUser={setUser} />
         {user ? (
           <>
             <Routes>
