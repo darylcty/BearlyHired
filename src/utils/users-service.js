@@ -1,11 +1,15 @@
 import * as usersAPI from "./users-api";
 
 export async function signUp(inputData) {
-	const { name, email, password } = inputData;
-	const formData = { name, email, password };
+	const { name, email, password, secret } = inputData;
+	const formData = { name, email, password, secret };
 	const token = await usersAPI.signUp(formData);
+	console.log("token:", token)
 	localStorage.setItem("token", token);
-	return getUser();
+	// return getUser()
+	const user = await getUser();
+	console.log("getUser:", user);
+	return user;
 }
 
 export function getToken() {
@@ -16,6 +20,7 @@ export function getToken() {
 	}
 	// obtain payload from token by splitting it  at "."
 	const payload = JSON.parse(atob(token.split(".")[1]));
+	console.log(payload);
 	// converting JWT expiry to seconds
 	if (payload.exp < Date.now() / 1000) {
 		// if token expires, remove token from local storage

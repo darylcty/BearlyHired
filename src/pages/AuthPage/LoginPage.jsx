@@ -23,7 +23,11 @@ export default function LoginPage({ setUser }) {
         try {
             const user = await usersService.login(credentials);
             setUser(user);
-            navigate("/dashboard")
+            if (user.isAdmin) {
+                navigate("/adminDashboard");
+            } else {
+                navigate("/dashboard");
+            }
         } catch (error) {
             setError("Log In Failed - Try Again!")
         }

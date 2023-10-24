@@ -40,8 +40,9 @@ export default function SignUpPage({ setUser }) {
 		event.preventDefault();
 		try {
 			const user = await signUp(formData);
+            console.log(user);
 			setUser(user);
-			navigate("/dashboard");
+			navigate("/");
 		} catch (error) {
 			setFormData((prevData) => ({...prevData, error: "Sign up Failed - Try again" }));
 		}

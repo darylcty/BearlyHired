@@ -10,6 +10,8 @@ import SignUpPage from "../AuthPage/SignUpPage";
 import LandingPage from "../LandingPage/LandingPage";
 import Dashboard from '../DashboardPage/Dashboard';
 import JobApplicationForm from '../JobApplicationForm/JobApplicationForm';
+import AdminDashboard from '../AdminDashboard/AdminDashboard';
+import CompanyCreationForm from '../CompanyCreationForm/CompanyCreationForm';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser());
@@ -18,23 +20,31 @@ export default function App() {
   return (
       <main className="App">
         <NavBar user={user} setUser={setUser} />
+        <Routes>
         {user ? (
           <>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="jobs" element={<JobApplicationForm />} />
-            </Routes>
+            {user.isAdmin ? (
+              <>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/admindashboard" element={<AdminDashboard />} />
+                <Route path="/companycreation" element={<CompanyCreationForm />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/jobs" element={<JobApplicationForm />} />
+              </>
+          )}
           </>
-        ) : (
+          ) : (
           <>
-            <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/signup" element={<SignUpPage user={user} setUser={setUser}/>} />
               <Route path="/login" element={<LoginPage setUser={setUser}/>} />
-            </Routes>
           </>
         )}
+        </Routes>
       </main>
   );
 }

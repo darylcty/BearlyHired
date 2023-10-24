@@ -7,7 +7,7 @@ async function create(req, res) {
 	try {
 		let user;
 		if (secret === process.env.ADMIN_SECRET) {
-			const user = new User({
+			user = new User({
 				name,
 				email,
 				password,
@@ -15,7 +15,7 @@ async function create(req, res) {
 			});
 			await user.save();
 			} else {
-				const user = new User({
+				user = new User({
 					name,
 					email,
 					password,
