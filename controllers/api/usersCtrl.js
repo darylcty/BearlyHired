@@ -3,10 +3,26 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 async function create(req, res) {
-	const data = req.body;
-
+	const { name, email, password, secret } = req.body;
 	try {
-		const user = await User.create(data);
+		let user;
+		if (secret === process.env.ADMIN_SECRET) {
+			const user = new User({
+				name,
+				email,
+				password,
+				isAdmin: true,
+			});
+			await user.save();
+			} else {
+				const user = new User({
+					name,
+					email,
+					password,
+					isAdmin: false,
+				});
+				await user.save();
+			}
 		const token = createJWT(user);
 		res.json(token);
 	} catch (error) {

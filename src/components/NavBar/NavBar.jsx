@@ -1,7 +1,4 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import * as usersService from "../../utils/users-service";
 
@@ -21,7 +18,7 @@ export default function NavBar({user, setUser}) {
                 <Container>
                     <Link to="/">
 						<img
-                        src="https://i.imgur.com/vggZp9K.png"
+                        src="https://i.imgur.com/oXRXyHi.png"
 						width="auto"
 						height="75"
 						style={{ marginRight: "20px" }}
@@ -68,17 +65,17 @@ export default function NavBar({user, setUser}) {
 						<Navbar.Brand className="logo"
 							onClick={() => navigate(`/`)} aria-controls="basic-navbar-nav">
 								<img
-								src="https://i.imgur.com/vggZp9K.png"
+								src="https://i.imgur.com/oXRXyHi.png"
 								width="auto"
 								height="75"
 								style={{ marginRight: "20px" }}
 								/>
 						</Navbar.Brand>
-						<Navbar.Toggle aria-controls="basic-navbar-nav" className="me-2"/>
-						<Navbar.Collapse id="basic-navbar-nav">
-							<Nav className="ml-auto" >
+						<Navbar.Toggle aria-controls="basic-navbar-nav" className="ml-auto"/>
+						<Navbar.Collapse id="basic-navbar-nav" className="ml-auto">
+							<Nav>
 								<Nav.Link onClick={() => navigate("/login")}>Log In</Nav.Link>
-								<Nav.Link onClick={() => navigate("/signup")}>Sign Up</Nav.Link>
+								<Button onClick={() => navigate("/signup")} variant="success" style={{ marginLeft: "20px"}}>Sign Up</Button>
 							</Nav>
 						</Navbar.Collapse>
 					</Container>

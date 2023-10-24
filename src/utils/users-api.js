@@ -19,9 +19,31 @@ export async function signUp(formData) {
 
 
 export async function login(credentials) {
-	return sendRequest(`${BASE_URL}/login`, "POST", credentials);
+	const response = await fetch(`${BASE_URL}/login`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(credentials),
+	});
+	if (response.ok) {
+		return await response.json();
+	} else {
+		throw new Error("Invalid Login");
+	}
 }
 
-export function checkToken() {
-	return sendRequest(`${BASE_URL}/check-token`)
+export async function checkToken() {
+		const token = localStorage.getItem("token");
+		const response = await fetch(`${BASE_URL}/check-token`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		if (response.ok) {
+			return await response.json();
+		} else {
+			throw new Error();
+		}
 }

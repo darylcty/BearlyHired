@@ -7,7 +7,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "devStart": "DEBUG=mern:* nodemon server.js"
+    "devStart": "nodemon server.js"
   },
   "dependencies": {
     "axios": "^1.5.1",
@@ -15,7 +15,6 @@
     "bootstrap": "^5.3.2",
     "bun": "^1.0.4",
     "concurrently": "^8.2.1",
-    "debug": "^4.3.4",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",

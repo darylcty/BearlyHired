@@ -2,11 +2,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
+import { getUser } from "../../utils/users-service";
+
 import NavBar from "../../components/NavBar/NavBar";
 import LoginPage from "../AuthPage/LoginPage";
-import { getUser } from "../../utils/users-service";
 import SignUpPage from "../AuthPage/SignUpPage";
 import LandingPage from "../LandingPage/LandingPage";
+import Dashboard from '../DashboardPage/Dashboard';
+import JobApplicationForm from '../JobApplicationForm/JobApplicationForm';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser());
@@ -19,6 +22,8 @@ export default function App() {
           <>
             <Routes>
               <Route path="/" element={<LandingPage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="jobs" element={<JobApplicationForm />} />
             </Routes>
           </>
         ) : (

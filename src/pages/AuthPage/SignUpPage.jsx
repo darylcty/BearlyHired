@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { signUp } from "../../utils/users-service";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button, Form, Container, Row, Col, Spinner } from "react-bootstrap";
-import { set } from "mongoose";
-
 
 export default function SignUpPage({ setUser }) {
 	const [formData, setFormData] = useState({
@@ -11,11 +9,15 @@ export default function SignUpPage({ setUser }) {
 		email: "",
 		password: "",
 		confirm: "",
+        secret: "",
 		error: "",
 	});
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const showAdminField = params.get("admin") === "true";
     //? function to validate email using regex
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
@@ -95,26 +97,21 @@ export default function SignUpPage({ setUser }) {
                         required
                         />
                     </Form.Group>
+                    {showAdminField && (
+                        <Form.Group>
+                        <Form.Label>do u know the sekret?(｡◕‿‿◕｡)</Form.Label>
+                        <Form.Control
+                        type="password"
+                        name="secret"
+                        value={formData.secret}
+                        onChange={handleChange}
+                        />
+                    </Form.Group>
+                    )}
                     <br></br>
-                    {/* <Button type="submit" disabled={disable}>
+                    <Button type="submit" disabled={disable}>
                         SIGN UP
-                    </Button> */}
-                        <Button type="submit" disabled={disable || isSubmitting}>
-                            {isSubmitting ? (
-                                <>
-                                    <Spinner
-                                        as="span"
-                                        animation="border"
-                                        size="sm"
-                                        role="status"
-                                        aria-hidden="true"
-                                    />
-                                    <span className="visually-hidden">Loading...</span>
-                                </>
-                            ) : (
-                                "SIGN UP"
-                            )}
-                        </Button>
+                    </Button>
                     </Form>
                 </div>
                 <p className="error-message">&nbsp;{formData.error}</p>

@@ -1,5 +1,5 @@
-export default function NewOrderPage() {
+export default function CompanyCreationForm() {
     return (
-        <h1>New Order Page</h1>
+        <h1>Company Creation Form</h1>
     )
 }

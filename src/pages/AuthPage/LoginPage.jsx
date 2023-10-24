@@ -1,12 +1,15 @@
 import { useState } from "react";
 import * as usersService from "../../utils/users-service"
 import { login } from "../../utils/users-api";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage({ setUser }) {
     const [ credentials, setCredentials ] = useState({
         email: "",
         password:"",
     });
+
+    const navigate = useNavigate();
 
     const [ error, setError ] = useState("");
 
@@ -20,6 +23,7 @@ export default function LoginPage({ setUser }) {
         try {
             const user = await usersService.login(credentials);
             setUser(user);
+            navigate("/dashboard")
         } catch (error) {
             setError("Log In Failed - Try Again!")
         }
