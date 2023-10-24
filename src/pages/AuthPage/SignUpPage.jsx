@@ -40,7 +40,6 @@ export default function SignUpPage({ setUser }) {
 		event.preventDefault();
 		try {
 			const user = await signUp(formData);
-            console.log(user);
 			setUser(user);
 			navigate("/");
 		} catch (error) {
