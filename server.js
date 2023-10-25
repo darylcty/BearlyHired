@@ -5,6 +5,7 @@ const express = require("express");
 const path = require("path");
 const logger = require("morgan");
 const debug = require("debug");
+const cors = require("cors");
 const usersRouter = require("./routes/api/usersRoute");
 const companiesRouter = require("./routes/api/companiesRoute");
 // const jobsRouter = require("./routes/api/jobsRoute");
@@ -20,6 +21,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "dist")));
 app.use(require("./config/checkToken"));
+app.use(cors());
 
 //? ROUTES - Put API routes here, before the "catch all" route
 app.use("/api/users", usersRouter);

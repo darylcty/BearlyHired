@@ -1,7 +1,4 @@
-import sendRequest from "./send-request";
 const BASE_URL = "/api/users";
-
-
 export async function signUp(inputData) {
 	const response = await fetch(BASE_URL, {
 		method: "POST",
@@ -16,7 +13,6 @@ export async function signUp(inputData) {
 		throw new Error("Invalid Sign up");
 	}
 }
-
 
 export async function login(credentials) {
 	const response = await fetch(`${BASE_URL}/login`, {
@@ -34,16 +30,16 @@ export async function login(credentials) {
 }
 
 export async function checkToken() {
-		const token = localStorage.getItem("token");
-		const response = await fetch(`${BASE_URL}/check-token`, {
-			method: "GET",
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		if (response.ok) {
-			return await response.json();
-		} else {
-			throw new Error();
-		}
+	const token = localStorage.getItem("token");
+	const response = await fetch(`${BASE_URL}/check-token`, {
+		method: "GET",
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	if (response.ok) {
+		return await response.json();
+	} else {
+		throw new Error();
+	}
 }

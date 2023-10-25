@@ -4,11 +4,9 @@ export async function signUp(inputData) {
 	const { name, email, password, secret } = inputData;
 	const formData = { name, email, password, secret };
 	const token = await usersAPI.signUp(formData);
-	console.log("token:", token)
 	localStorage.setItem("token", token);
 	// return getUser()
 	const user = await getUser();
-	console.log("getUser:", user);
 	return user;
 }
 

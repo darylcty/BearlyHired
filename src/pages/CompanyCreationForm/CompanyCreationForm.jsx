@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
-import { create } from "../../utils/company-service";
+import { create } from "../../utils/companies-service";
 
 
 export default function CompanyCreationForm() {
@@ -14,6 +14,13 @@ export default function CompanyCreationForm() {
 
 	const navigate = useNavigate();
 
+    const handleChange = (event) => {
+        setCompanyData((prevData) => ({
+            ...prevData,
+            [event.target.name]: event.target.value,
+        }));
+    };
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
@@ -23,6 +30,8 @@ export default function CompanyCreationForm() {
 		} catch (error) {
 			setCompanyData((prevData) => ({...prevData, error: "Creation Failed - Try again" }));
 		}
+        //? Reset from to default after submission
+        setCompanyData({ companyName: "", companyLocation: "", country: "", industry: "Select Industry"})
     };
 
     const disable = (!companyData.companyName || !companyData.companyLocation || !companyData.country || !companyData.industry);
@@ -39,8 +48,9 @@ export default function CompanyCreationForm() {
                         <Form.Label>Company Name</Form.Label>
                         <Form.Control
                         type="text"
-                        name="company-name"
+                        name="companyName"
                         value={companyData.companyName}
+                        onChange={handleChange}
                         required
                         />
                     </Form.Group>
@@ -48,8 +58,9 @@ export default function CompanyCreationForm() {
                         <Form.Label>Company Location</Form.Label>
                         <Form.Control
                         type="text"
-                        name="text"
+                        name="companyLocation"
                         value={companyData.companyLocation}
+                        onChange={handleChange}
                         required
                         />
                     </Form.Group>
@@ -59,11 +70,14 @@ export default function CompanyCreationForm() {
                         type="text"
                         name="country"
                         value={companyData.country}
+                        onChange={handleChange}
                         required
                         />
                     </Form.Group>
-                    <Form.Select aria-label="Choose an industry">
-                        <option>Open this select menu</option>
+                    <br></br>
+                    <Form.Label>Industry</Form.Label>
+                    <Form.Select aria-label="industry" name="industry" onChange={handleChange} required>
+                        <option>Select Industry</option>
                         <option value="Education">Education</option>
                         <option value="Health Services">Health Services</option>
                         <option value="Electronics">Electronics</option>

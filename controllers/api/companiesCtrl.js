@@ -47,8 +47,8 @@ async function updateOne(req, res) {
 			req.params.id,
 			req.body,
 			{
-				new: true, // ensures method returns updated doc.
-				runValidators: true // ensures model's schema validation is run on update
+				new: true,
+				runValidators: true
 			}
 		);
 		if (!updatedCompany) {
