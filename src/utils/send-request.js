@@ -1,6 +1,6 @@
 import { getToken } from "./users-service";
-export default async function defaultGetSendRequest(
-	url,
+export default async function sendRequest(
+	endpoint,
 	method = "GET",
 	payload = null
 ) {
@@ -15,10 +15,9 @@ export default async function defaultGetSendRequest(
 		options.headers.Authorization = `Bearer ${token}`;
 	}
 
-	const res = await fetch(url, options);
-	if (res.ok) return res.json();
-	else {
-		const errorResponse = await res.json().catch(() => "Unknown Error");
-		throw new Error(errorResponse);
-	}
+	const response = await fetch(endpoint, options);
+    if (!response.ok) {
+        throw new Error(`Failed ${method} request: ${await response.text()}`);
+    }
+    return await response.json();
 }
