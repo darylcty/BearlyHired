@@ -26,7 +26,7 @@ export default function CompanyCreationForm() {
 		try {
 			const company = await create(companyData);
 			setCompanyData(company);
-			navigate("/companycreation");
+			navigate("/company-creation");
 		} catch (error) {
 			setCompanyData((prevData) => ({...prevData, error: "Creation Failed - Try again" }));
 		}
@@ -38,7 +38,7 @@ export default function CompanyCreationForm() {
 
     return (
         <>
-            <Container className="companycreationpage">
+            <Container className="company-creation-page">
             <h1>Company Creation Page</h1>
             <Row>
                 <Col md={6}>
