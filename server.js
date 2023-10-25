@@ -6,7 +6,7 @@ const path = require("path");
 const logger = require("morgan");
 const debug = require("debug");
 const usersRouter = require("./routes/api/usersRoute");
-// const companiesRouter = require("./routes/api/companiesRoute");
+const companiesRouter = require("./routes/api/companiesRoute");
 // const jobsRouter = require("./routes/api/jobsRoute");
 // const interviewsRouter = require("./routes/api/interviewsRoute");
 // const offersRouter = require("./routes/api/offersRoute");
@@ -23,7 +23,7 @@ app.use(require("./config/checkToken"));
 
 //? ROUTES - Put API routes here, before the "catch all" route
 app.use("/api/users", usersRouter);
-// app.use("/api/companies", companiesRouter);
+app.use("/api/companies", companiesRouter);
 // app.use("/api/jobs", jobsRouter);
 // app.use("/api/interviews", interviewsRouter);
 // app.use("/api/offers", offersRouter);

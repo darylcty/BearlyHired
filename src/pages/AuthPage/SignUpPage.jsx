@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { signUp } from "../../utils/users-service";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Button, Form, Container, Row, Col, Spinner } from "react-bootstrap";
+import { Button, Form, Container, Row, Col } from "react-bootstrap";
 
 export default function SignUpPage({ setUser }) {
 	const [formData, setFormData] = useState({
@@ -13,8 +13,6 @@ export default function SignUpPage({ setUser }) {
 		error: "",
 	});
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const showAdminField = params.get("admin") === "true";
@@ -45,7 +43,6 @@ export default function SignUpPage({ setUser }) {
 		} catch (error) {
 			setFormData((prevData) => ({...prevData, error: "Sign up Failed - Try again" }));
 		}
-        setIsSubmitting(false);
     };
 
 	const disable = formData.password !== formData.confirm;

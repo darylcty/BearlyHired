@@ -2,13 +2,13 @@ import sendRequest from "./send-request";
 const BASE_URL = "/api/users";
 
 
-export async function signUp(formData) {
+export async function signUp(inputData) {
 	const response = await fetch(BASE_URL, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify(formData),
+		body: JSON.stringify(inputData),
 	});
 	if (response.ok) {
 		return await response.json();
