@@ -26,8 +26,8 @@ export default function App() {
             {user.isAdmin ? (
               <>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/admindashboard" element={<AdminDashboard />} />
-                <Route path="/companycreation" element={<CompanyCreationForm />} />
+                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/company-creation" element={<CompanyCreationForm />} />
               </>
             ) : (
               <>
@@ -40,7 +40,7 @@ export default function App() {
           ) : (
           <>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/signup" element={<SignUpPage user={user} setUser={setUser}/>} />
+              <Route path="/sign-up" element={<SignUpPage user={user} setUser={setUser}/>} />
               <Route path="/login" element={<LoginPage setUser={setUser}/>} />
           </>
         )}
