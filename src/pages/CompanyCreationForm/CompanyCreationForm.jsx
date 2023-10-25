@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
-import { create } from "../../utils/companies-service";
-
+import { createCompany } from "../../utils/companies-service";
+import GenericModal from "../../components/Modal/GenericModal";
 
 export default function CompanyCreationForm() {
     const [companyData, setCompanyData] = useState({
@@ -11,7 +11,6 @@ export default function CompanyCreationForm() {
 		country: "",
         industry: "",
 	});
-
 	const navigate = useNavigate();
 
     const handleChange = (event) => {
@@ -24,9 +23,10 @@ export default function CompanyCreationForm() {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
-			const company = await create(companyData);
+			const company = await createCompany(companyData);
 			setCompanyData(company);
 			navigate("/company-creation");
+            setModalShow(true);
 		} catch (error) {
 			setCompanyData((prevData) => ({...prevData, error: "Creation Failed - Try again" }));
 		}
@@ -36,8 +36,11 @@ export default function CompanyCreationForm() {
 
     const disable = (!companyData.companyName || !companyData.companyLocation || !companyData.country || !companyData.industry);
 
+    let [ modalShow, setModalShow ] = useState(false);
+
     return (
         <>
+            <GenericModal show={modalShow} onHide={() => setModalShow(false)} />
             <Container className="company-creation-page">
             <h1>Company Creation Page</h1>
             <Row>

@@ -18,7 +18,6 @@ export function getToken() {
 	}
 	// obtain payload from token by splitting it  at "."
 	const payload = JSON.parse(atob(token.split(".")[1]));
-	console.log(payload);
 	// converting JWT expiry to seconds
 	if (payload.exp < Date.now() / 1000) {
 		// if token expires, remove token from local storage

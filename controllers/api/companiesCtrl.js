@@ -1,6 +1,6 @@
 const Company = require("../../models/company");
 
-async function create(req, res) {
+async function createCompany(req, res) {
 	const data = req.body;
 	try {
 		const company = await Company.create(data);
@@ -11,7 +11,7 @@ async function create(req, res) {
 	}
 }
 
-async function getOne(req, res) {
+async function getOneCompany(req, res) {
 	try {
 		const company = await Company.findById(req.params.id);
 		res.json(company);
@@ -21,7 +21,7 @@ async function getOne(req, res) {
 	}
 }
 
-async function getAll(req, res) {
+async function getAllCompanies(req, res) {
 	try {
 		const companies = await Company.find({});
 		res.json(companies);
@@ -31,7 +31,7 @@ async function getAll(req, res) {
 	}
 }
 
-async function deleteOne(req, res) {
+async function deleteOneCompany(req, res) {
 	try {
 		const deletedCompany = await Company.findByIdAndRemove(req.params.id);
 		res.json(deletedCompany);
@@ -41,7 +41,7 @@ async function deleteOne(req, res) {
 	}
 }
 
-async function updateOne(req, res) {
+async function updateOneCompany(req, res) {
 	try {
 		const updatedCompany = await Company.findByIdAndUpdate(
 			req.params.id,
@@ -63,9 +63,9 @@ async function updateOne(req, res) {
 }
 
 module.exports = {
-	create,
-	getOne,
-	getAll,
-	deleteOne,
-	updateOne
+	createCompany,
+	getOneCompany,
+	getAllCompanies,
+	deleteOneCompany,
+	updateOneCompany
 };
