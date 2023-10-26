@@ -20,7 +20,8 @@ export default function NavBar({user, setUser}) {
 			} else {
 			greeting = `Welcome back, ${user.name}!`;
 			dropdownItems = [
-				{ text: "Job Applications", route: "/jobs" },
+				{ text: "Your Dashboard", route: "/dashboard" },
+				{ text: "New Job Application", route: "/job-application" },
 				{ text: "Sign Out", route: "/" , onClick: handleLogOut},
 			];
 			}

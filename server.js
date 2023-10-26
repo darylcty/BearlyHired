@@ -8,7 +8,7 @@ const debug = require("debug");
 const cors = require("cors");
 const usersRouter = require("./routes/api/usersRoute");
 const companiesRouter = require("./routes/api/companiesRoute");
-// const jobsRouter = require("./routes/api/jobsRoute");
+const jobsRouter = require("./routes/api/jobsRoute");
 // const interviewsRouter = require("./routes/api/interviewsRoute");
 // const offersRouter = require("./routes/api/offersRoute");
 
@@ -26,7 +26,7 @@ app.use(cors());
 //? ROUTES - Put API routes here, before the "catch all" route
 app.use("/api/users", usersRouter);
 app.use("/api/companies", companiesRouter);
-// app.use("/api/jobs", jobsRouter);
+app.use("/api/jobs", jobsRouter);
 // app.use("/api/interviews", interviewsRouter);
 // app.use("/api/offers", offersRouter);
 

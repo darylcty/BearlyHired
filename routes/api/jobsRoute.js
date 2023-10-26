@@ -3,10 +3,10 @@ const router = express.Router();
 const jobsCtrl = require("../../controllers/api/jobsCtrl");
 
 // POST /api/jobs
-router.post("/jobs", jobsCtrl.create);
-router.get("/jobs", jobsCtrl.getAll);
-router.get("/jobs/:id", jobsCtrl.getOne);
-router.delete("/jobs/:id", jobsCtrl.deleteOne);
-router.patch("/jobs/:id", jobsCtrl.updateOne);
+router.post("/", jobsCtrl.createJob);
+router.get("/", jobsCtrl.getAllJobs);
+router.get("/:id", jobsCtrl.getOneJob);
+router.delete("/:id", jobsCtrl.deleteOneJob);
+router.patch("/:id", jobsCtrl.updateOneJob);
 
 module.exports = router;
