@@ -33,7 +33,7 @@ export default function App() {
               <>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/jobs" element={<JobApplicationForm />} />
+                <Route path="/job-application" element={<JobApplicationForm />} />
               </>
           )}
           </>

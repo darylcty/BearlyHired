@@ -3,10 +3,10 @@ const router = express.Router();
 const offersCtrl = require("../../controllers/api/offersCtrl");
 
 // POST /api/offers
-router.post("/jobs", offersCtrl.create);
-router.get("/jobs", offersCtrl.getAll);
-router.get("/jobs/:id", offersCtrl.getOne);
-router.delete("/jobs/:id", offersCtrl.deleteOne);
-router.patch("/jobs/:id", offersCtrl.updateOne);
+router.post("/", offersCtrl.create);
+router.get("/", offersCtrl.getAll);
+router.get("/:id", offersCtrl.getOne);
+router.delete("/:id", offersCtrl.deleteOne);
+router.patch("/:id", offersCtrl.updateOne);
 
 module.exports = router;

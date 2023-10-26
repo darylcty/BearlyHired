@@ -4,7 +4,7 @@ import sendRequest from "./send-request";
 export async function createCompany(inputCompanyData) {
     const response = await fetch(BASE_URL, {
         method: "POST",
-        headers: {  
+        headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(inputCompanyData),
