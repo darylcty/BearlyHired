@@ -1,8 +1,8 @@
 import * as companiesAPI from "./companies-api";
 
 export async function createCompany(inputCompanyData) {
-	const { companyName, companyLocation, country, industry  } = inputCompanyData;
-	const companyFormData = { companyName, companyLocation, country, industry };
+	const { companyName, companyAddress, country, industry  } = inputCompanyData;
+	const companyFormData = { companyName, companyAddress, country, industry };
 
     try {
         const response = await companiesAPI.createCompany(companyFormData);
@@ -32,13 +32,14 @@ export async function getOneCompany(companyId) {
 }
 
 export async function updateCompany(companyId, inputCompanyData) {
-    const { companyName, companyLocation, country, industry  } = inputCompanyData;
-    const companyFormData = { companyName, companyLocation, country, industry };
+    const { companyName, companyAddress, country, industry  } = inputCompanyData;
+    const companyFormData = { companyName, companyAddress, country, industry };
 
     try {
         const response = await companiesAPI.updateCompany(companyId, companyFormData);
         return response;
     } catch (error) {
+        console.log("Original error: ",error);
         throw new Error("Could Not Update Company");
     }
 }
