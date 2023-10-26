@@ -24,7 +24,7 @@ BearlyEmployed is an intuitive and user-friendly platform designed to streamline
 
 
 ## Deployment
-Vercel,Cyclic
+Cyclic
 
 ## Usage
 
