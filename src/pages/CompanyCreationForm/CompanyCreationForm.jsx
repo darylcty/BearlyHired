@@ -38,16 +38,20 @@ export default function CompanyCreationForm() {
 
     let [ modalShow, setModalShow ] = useState(false);
 
+    function closeModal() {
+        setModalShow(false);
+    }
+
     return (
         <>
-            <GenericModal show={modalShow} onHide={() => setModalShow(false)} />
+            <GenericModal title="Success!" body="Compay has been created successfully" show={modalShow} onHide={closeModal}/>
             <Container className="company-creation-page">
             <h1>Company Creation Page</h1>
             <Row>
                 <Col md={6}>
                 <div className="form-container">
                     <Form autoComplete="off" onSubmit={handleSubmit}>
-                    <Form.Group> 
+                    <Form.Group>
                         <Form.Label>Company Name</Form.Label>
                         <Form.Control
                         type="text"
