@@ -31,7 +31,7 @@ export default function CompanyCreationForm() {
 			setCompanyData((prevData) => ({...prevData, error: "Creation Failed - Try again" }));
 		}
         //? Reset from to default after submission
-        setCompanyData({ companyName: "", companyLocation: "", country: "", industry: "Select Industry"})
+        setCompanyData({ companyName: "", companyLocation: "", country: "", industry: "default"})
     };
 
     const disable = (!companyData.companyName || !companyData.companyLocation || !companyData.country || !companyData.industry);
@@ -47,7 +47,7 @@ export default function CompanyCreationForm() {
                 <Col md={6}>
                 <div className="form-container">
                     <Form autoComplete="off" onSubmit={handleSubmit}>
-                    <Form.Group>
+                    <Form.Group> 
                         <Form.Label>Company Name</Form.Label>
                         <Form.Control
                         type="text"
@@ -79,7 +79,7 @@ export default function CompanyCreationForm() {
                     </Form.Group>
                     <br></br>
                     <Form.Label>Industry</Form.Label>
-                    <Form.Select aria-label="industry" name="industry" onChange={handleChange} required>
+                    <Form.Select aria-label="industry" name="industry" onChange={handleChange} required defaultValue={"Select Industry"}>
                         <option>Select Industry</option>
                         <option value="Education">Education</option>
                         <option value="Health Services">Health Services</option>

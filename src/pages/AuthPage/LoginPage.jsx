@@ -24,7 +24,7 @@ export default function LoginPage({ setUser }) {
             const user = await usersService.login(credentials);
             setUser(user);
             if (user.isAdmin) {
-                navigate("/adminDashboard");
+                navigate("/admin-dashboard");
             } else {
                 navigate("/dashboard");
             }

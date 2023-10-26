@@ -1,6 +1,6 @@
 import { Table } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
-import { getAllCompanies } from '../../utils/companies-service';
+import { getAllCompanies, deleteOneCompany, updateCompany } from '../../utils/companies-service';
 
 export default function AdminDashboard() {
     const [ allCompanies, setAllCompanies ] = useState([]);
@@ -13,6 +13,20 @@ export default function AdminDashboard() {
         fetchAllCompanies();
     }, []);
 
+    async function handleDeleteCompany(event) {
+        event.preventDefault();
+        console.log("Delete button clicked");
+        const companyId = event.currentTarget.getAttribute("data-id");
+        console.log(companyId);
+        deleteOneCompany(companyId).then(() => {
+            const updatedCompanies = allCompanies.filter((company) => company._id !== companyId);
+            setAllCompanies(updatedCompanies);
+        });
+    }
+
+    function handleEdit() {
+        console.log("Edit button clicked");
+    }
     return (
         <>
             <h1>Admin Dashboard</h1>
@@ -40,8 +54,8 @@ export default function AdminDashboard() {
                             <td>{industry}</td>
                             <td>{createdAt}</td>
                             <td>
-                                <button className="btn btn-primary">Edit</button>
-                                <button className="btn btn-danger">Delete</button>
+                                <button className="btn btn-primary" style={{ marginRight: "15px" }} onClick={handleEdit}>Edit</button>
+                                <button className="btn btn-danger" style={{ margin: "auto" }} onClick={handleDeleteCompany} data-id={company._id}>Delete</button>
                             </td>
                         </tr>
                     );
