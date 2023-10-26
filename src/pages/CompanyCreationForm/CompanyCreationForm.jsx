@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { createCompany } from "../../utils/companies-service";
-import GenericModal from "../../components/Modal/GenericModal";
+import CreateCompanyModal from "../../components/Modal/CreateCompanyModal";
 
 export default function CompanyCreationForm() {
     const [companyData, setCompanyData] = useState({
@@ -44,7 +44,7 @@ export default function CompanyCreationForm() {
 
     return (
         <>
-            <GenericModal title="Success!" body="Compay has been created successfully" show={modalShow} onHide={closeModal}/>
+            <CreateCompanyModal show={modalShow} onHide={closeModal}  />
             <Container className="company-creation-page">
             <h1>Company Creation Page</h1>
             <Row>
@@ -62,10 +62,10 @@ export default function CompanyCreationForm() {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Company Location</Form.Label>
+                        <Form.Label>Company Address</Form.Label>
                         <Form.Control
                         type="text"
-                        name="companyLocation"
+                        name="companyAddress"
                         value={companyData.companyAddress}
                         onChange={handleChange}
                         required

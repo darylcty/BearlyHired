@@ -1,7 +1,7 @@
 import { Table } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { getAllCompanies, deleteOneCompany } from '../../utils/companies-service';
-import GenericModal from '../../components/Modal/GenericModal';
+import DeleteCompanyModal from '../../components/Modal/DeleteCompanyModal';
 import EditCompanyModal from '../../components/Modal/EditCompanyModal';
 
 export default function AdminDashboard() {
@@ -60,9 +60,7 @@ export default function AdminDashboard() {
 
     return (
         <>
-            <GenericModal
-            title="Delete Company"
-            body="Are you sure you want to delete this company?"
+            <DeleteCompanyModal
             show={modalShow == "delete"}
             onHide={handleCloseModal}
             onDelete={handleDeleteCompanyConfirm}
