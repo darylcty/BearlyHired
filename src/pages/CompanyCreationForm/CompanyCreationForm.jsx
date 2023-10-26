@@ -7,7 +7,7 @@ import GenericModal from "../../components/Modal/GenericModal";
 export default function CompanyCreationForm() {
     const [companyData, setCompanyData] = useState({
 		companyName: "",
-		companyLocation: "",
+		companyAddress: "",
 		country: "",
         industry: "",
 	});
@@ -31,10 +31,10 @@ export default function CompanyCreationForm() {
 			setCompanyData((prevData) => ({...prevData, error: "Creation Failed - Try again" }));
 		}
         //? Reset from to default after submission
-        setCompanyData({ companyName: "", companyLocation: "", country: "", industry: "default"})
+        setCompanyData({ companyName: "", companyAddress: "", country: "", industry: "default"})
     };
 
-    const disable = (!companyData.companyName || !companyData.companyLocation || !companyData.country || !companyData.industry);
+    const disable = (!companyData.companyName || !companyData.companyAddress || !companyData.country || !companyData.industry);
 
     let [ modalShow, setModalShow ] = useState(false);
 
@@ -66,7 +66,7 @@ export default function CompanyCreationForm() {
                         <Form.Control
                         type="text"
                         name="companyLocation"
-                        value={companyData.companyLocation}
+                        value={companyData.companyAddress}
                         onChange={handleChange}
                         required
                         />
