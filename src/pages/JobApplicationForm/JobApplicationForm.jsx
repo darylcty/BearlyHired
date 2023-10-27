@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Form, InputGroup } from "react-bootstrap";
 import { createJob } from "../../utils/jobs-service";
 import { getAllCompanies } from "../../utils/companies-api";
+import SalaryAdjustmentModal from "../../components/Modal/SalaryAdjustmentModal";
+
 export default function JobApplicationForm() {
     const [ jobApplicationData, setJobApplicationData ] = useState({
         companyName: "",
@@ -12,7 +14,7 @@ export default function JobApplicationForm() {
         workArrangement: "",
         salaryMin: 1000,
         salaryMax: 10000,
-        AWS: null,
+        AWS: false,
         bonus: 0,
         annualLeaves: 14,
         benefits: "",
@@ -22,9 +24,13 @@ export default function JobApplicationForm() {
         status: "Not Applied",
         interviewDate: new Date(),
         notes: "",
-        offered: null,
+        offered: false,
         offerSalary: 0,
     });
+
+    //? setup modal
+    const [ modalShow, setModalShow ] = useState(false);
+    const [ modalMessage, setModalMessage ] = useState("");
 
     //? Fetch all companies to populate the dropdown list
     const [ allCompanies, setAllCompanies ] = useState([]);
@@ -40,12 +46,40 @@ export default function JobApplicationForm() {
 
 	// const navigate = useNavigate();
 
+    //? handle generic form changes
     const handleChange = (event) => {
         setJobApplicationData((prevData) => ({
             ...prevData,
             [event.target.name]: event.target.value,
         }));
     };
+
+    //? handle salaryMin and salaryMax changes
+    const handleSalaryChange = (event) => {
+        console.log("handleSalaryChange")
+        const { name, value } = event.target;
+        const parsedSalary= parseInt(value);
+
+        setJobApplicationData(prevData => {
+            //? if salaryMin and parsedSalary > current salaryMax, set the salaryMax = parsedSalary
+            if (name === "salaryMin" && parsedSalary > prevData.salaryMax) {
+                setModalMessage("SalaryMin cannot be greater than SalaryMax");
+                setModalShow(true);
+                return { ...prevData, salaryMin: parsedSalary, salaryMax: parsedSalary }
+
+            //? if salaryMax and parsedSalary < current salaryMin, set the salaryMin = parsedSalary
+            } else if (name === "salaryMax" && parsedSalary < prevData.salaryMin) {
+                setModalMessage("SalaryMax cannot be less than SalaryMin");
+                setModalShow(true);
+                return { ...prevData, salaryMax: parsedSalary, salaryMin: parsedSalary }
+
+            //? if salaryMax and parsedSalary > current salaryMin, set the salaryMax = parsedSalary
+            } else {
+                return { ...prevData, [name]: parsedSalary }
+            }
+        });
+    };
+
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
@@ -94,6 +128,7 @@ export default function JobApplicationForm() {
 
     return (
         <>
+            <SalaryAdjustmentModal show={modalShow} onHide={() => setModalShow(false)} modalMessage={modalMessage} />
             <h1>Job Application Form</h1>
             {/* <CreateCompanyModal show={modalShow} onHide={closeModal}  /> */}
             <Container className="job-application-form">
@@ -129,7 +164,6 @@ export default function JobApplicationForm() {
                     </Form.Group>
                     <br/>
                     <Form.Group>
-                        {/* //! TO DO: add a mouseover info button to explain the different job types */}
                         <Form.Label>Job Type *</Form.Label>
                         <Form.Select
                         type="select"
@@ -162,7 +196,6 @@ export default function JobApplicationForm() {
                     </Form.Group>
                     <br/>
                     <Form.Group>
-                        {/* //! TODO: add mouse over info button to explain the different work arrangements */}
                         <Form.Label>Work Arrangement</Form.Label>
                         <br/>
                         <Form.Check
@@ -202,8 +235,8 @@ export default function JobApplicationForm() {
                                 min={0}
                                 step={500}
                                 value={jobApplicationData.salaryMin}
-                                onChange={handleChange}
-                                inline />
+                                onChange={handleSalaryChange}
+                                />
                             </InputGroup>
                     </Form.Group>
                     <br/>
@@ -215,16 +248,15 @@ export default function JobApplicationForm() {
                                 aria-label="Amount (to the nearest dollar)"
                                 type="number"
                                 name="salaryMax"
-                                min={jobApplicationData.salaryMin}
                                 step={500}
                                 value={jobApplicationData.salaryMax}
-                                onChange={handleChange}
-                                inline />
+                                onChange={handleSalaryChange}
+                                />
                         </InputGroup>
                     </Form.Group>
                     <br/>
                     <Form.Group>
-                        <Form.Label>AWS</Form.Label>
+                        <Form.Label>Annual Wage Supplment (AWS)</Form.Label>
                         <br/>
                         <Form.Check
                         type="radio"
@@ -365,6 +397,7 @@ export default function JobApplicationForm() {
                         <Form.Control
                         type="text"
                         name="notes"
+                        rows={5}
                         value={jobApplicationData.notes}
                         onChange={handleChange}
                         />
@@ -427,4 +460,5 @@ export default function JobApplicationForm() {
             </Container>
     </>
         );
+    
 }
