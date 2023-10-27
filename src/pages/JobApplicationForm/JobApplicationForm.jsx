@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Form, InputGroup } from "react-bootstrap";
 import { createJob } from "../../utils/jobs-service";
 import { getAllCompanies } from "../../utils/companies-api";
 import SalaryAdjustmentModal from "../../components/Modal/SalaryAdjustmentModal";
+import CreateJobModal from "../../components/Modal/CreateJobModal";
+
 
 export default function JobApplicationForm() {
+    //? setup default date using date-fns
     const [ jobApplicationData, setJobApplicationData ] = useState({
         companyName: "",
         position: "",
@@ -14,43 +16,49 @@ export default function JobApplicationForm() {
         workArrangement: "",
         salaryMin: 1000,
         salaryMax: 10000,
-        AWS: false,
+        AWS: true,
         bonus: 0,
         annualLeaves: 14,
         benefits: "",
         portalURL: "",
         postID: "",
-        applicationDate: new Date(),
         status: "Not Applied",
-        interviewDate: new Date(),
+        applicationDate: "",
+        interviewDate: "",
         notes: "",
-        offered: false,
+        offered: null,
         offerSalary: 0,
     });
 
     //? setup modal
-    const [ modalShow, setModalShow ] = useState(false);
+    const [ showSalaryModal, setShowSalaryModal ] = useState(false);
     const [ modalMessage, setModalMessage ] = useState("");
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
 
     //? Fetch all companies to populate the dropdown list
     const [ allCompanies, setAllCompanies ] = useState([]);
-
     async function fetchCompanies() {
         const companies = await getAllCompanies();
         setAllCompanies(companies);
     }
-
     useEffect(() => {
         fetchCompanies();
     }, []);
-
-	// const navigate = useNavigate();
 
     //? handle generic form changes
     const handleChange = (event) => {
         setJobApplicationData((prevData) => ({
             ...prevData,
             [event.target.name]: event.target.value,
+        }));
+    };
+
+    //? handle AWS changes as radio inputs always return string
+    const handleAWSChange = (event) => {
+        const AWSValue = event.target.value === "true";
+        setJobApplicationData((prevData) => ({
+            ...prevData,
+            AWS: AWSValue,
         }));
     };
 
@@ -64,13 +72,13 @@ export default function JobApplicationForm() {
             //? if salaryMin and parsedSalary > current salaryMax, set the salaryMax = parsedSalary
             if (name === "salaryMin" && parsedSalary > prevData.salaryMax) {
                 setModalMessage("SalaryMin cannot be greater than SalaryMax");
-                setModalShow(true);
+                setShowSalaryModal(true);
                 return { ...prevData, salaryMin: parsedSalary, salaryMax: parsedSalary }
 
             //? if salaryMax and parsedSalary < current salaryMin, set the salaryMin = parsedSalary
             } else if (name === "salaryMax" && parsedSalary < prevData.salaryMin) {
                 setModalMessage("SalaryMax cannot be less than SalaryMin");
-                setModalShow(true);
+                setShowSalaryModal(true);
                 return { ...prevData, salaryMax: parsedSalary, salaryMin: parsedSalary }
 
             //? if salaryMax and parsedSalary > current salaryMin, set the salaryMax = parsedSalary
@@ -80,38 +88,39 @@ export default function JobApplicationForm() {
         });
     };
 
-
+    function clearForm() {
+        setJobApplicationData({
+        companyName: "",
+        position: "",
+        jobType: "",
+        jobDescription: "",
+        workArrangement: "",
+        salaryMin: 1000,
+        salaryMax: 10000,
+        AWS: true,
+        bonus: 0,
+        annualLeaves: 14,
+        benefits: "",
+        portalURL: "",
+        postID: "",
+        status: "Not Applied",
+        applicationDate: "",
+        interviewDate: "",
+        notes: "",
+        offered: null,
+        offerSalary: 0,})
+    }
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		try {
 			const jobApplication = await createJob(jobApplicationData);
 			setJobApplicationData(jobApplication);
-			// navigate("/job-application");
-            // setModalShow(true);
+            setShowConfirmationModal(true);
 		} catch (error) {
 			setJobApplicationData((prevData) => ({...prevData, error: "Creation Failed - Try again" }));
 		}
         //? Reset from to default after submission
-        setJobApplicationData({
-            companyName: "",
-            position: "",
-            jobType: "",
-            jobDescription: "",
-            workArrangement: "",
-            salaryMin: 0,
-            salaryMax: 100000,
-            AWS: false,
-            bonus: 0,
-            annualLeaves: 0,
-            benefits: "",
-            portalURL: "",
-            postID: "",
-            applicationDate: new Date(),
-            status: "Not Applied",
-            interviewDate: new Date(),
-            notes: "",
-            offered: false,
-            offerSalary: 0,})
+        clearForm();
     };
 
     //? disable submit button if any of the required fields are empty
@@ -120,17 +129,19 @@ export default function JobApplicationForm() {
         !jobApplicationData.jobType ||
         !jobApplicationData.jobDescription);
 
-    // let [ modalShow, setModalShow ] = useState(false);
-
-    // function closeModal() {
-    //     setModalShow(false);
-    // }
+    const clearSelection = () => {
+        setJobApplicationData(prev => ({
+            ...prev,
+            offered: null,
+        }));
+    };
 
     return (
         <>
-            <SalaryAdjustmentModal show={modalShow} onHide={() => setModalShow(false)} modalMessage={modalMessage} />
+            <SalaryAdjustmentModal show={showSalaryModal} onHide={() => setShowSalaryModal(false)} modalMessage={modalMessage} />
+            <CreateJobModal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)} />
             <h1>Job Application Form</h1>
-            {/* <CreateCompanyModal show={modalShow} onHide={closeModal}  /> */}
+            <br/>
             <Container className="job-application-form">
             <Row>
                 <Col md={6}>
@@ -148,7 +159,7 @@ export default function JobApplicationForm() {
                             <option>Select Company Name *</option>
                             {allCompanies.map((company => (
                                 <option key={company._id} value={company.companyName}>{company.companyName}</option>
-                            )))}
+                                )))}
                         </Form.Select>
                     </Form.Group>
                     <br/>
@@ -235,7 +246,8 @@ export default function JobApplicationForm() {
                                 min={0}
                                 step={500}
                                 value={jobApplicationData.salaryMin}
-                                onChange={handleSalaryChange}
+                                onChange={handleChange}
+                                onBlur={handleSalaryChange}
                                 />
                             </InputGroup>
                     </Form.Group>
@@ -250,30 +262,31 @@ export default function JobApplicationForm() {
                                 name="salaryMax"
                                 step={500}
                                 value={jobApplicationData.salaryMax}
-                                onChange={handleSalaryChange}
+                                onChange={handleChange}
+                                onBlur={handleSalaryChange}
                                 />
                         </InputGroup>
                     </Form.Group>
                     <br/>
                     <Form.Group>
-                        <Form.Label>Annual Wage Supplment (AWS)</Form.Label>
+                        <Form.Label>Annual Wage Supplement (AWS)</Form.Label>
                         <br/>
                         <Form.Check
                         type="radio"
                         name="AWS"
                         label="Yes"
-                        value={true}
+                        value="true"
                         checked={jobApplicationData.AWS === true}
-                        onChange={handleChange}
+                        onChange={handleAWSChange}
                         inline
                         />
                         <Form.Check
                         type="radio"
                         name="AWS"
                         label="No"
-                        value={false}
+                        value="false"
                         checked={jobApplicationData.AWS === false}
-                        onChange={handleChange}
+                        onChange={handleAWSChange}
                         inline
                         />
                     </Form.Group>
@@ -317,6 +330,7 @@ export default function JobApplicationForm() {
                         name="benefits"
                         value={jobApplicationData.benefits}
                         onChange={handleChange}
+                        placeholder="e.g. Medical, Dental, Vision, etc."
                         />
                     </Form.Group>
                     <br/>
@@ -327,6 +341,7 @@ export default function JobApplicationForm() {
                         name="portalURL"
                         value={jobApplicationData.portalURL}
                         onChange={handleChange}
+                        placeholder="e.g. LinkedIn, Indeed, etc."
                         />
                     </Form.Group>
                     <br/>
@@ -337,21 +352,12 @@ export default function JobApplicationForm() {
                         name="postID"
                         value={jobApplicationData.postID}
                         onChange={handleChange}
+                        placeholder="Enter ID of job listing if applicable."
                         />
                     </Form.Group>
                     <br/>
                     <Form.Group>
-                        <Form.Label>Application Date</Form.Label>
-                        <Form.Control
-                        type="date"
-                        name="applicationDate"
-                        value={jobApplicationData.applicationDate}
-                        onChange={handleChange}
-                        />
-                    </Form.Group>
-                    <br/>
-                    <Form.Group>
-                        <Form.Label>Status</Form.Label>
+                        <Form.Label>Application Status</Form.Label>
                         <br/>
                         <Form.Check
                         type="radio"
@@ -383,12 +389,24 @@ export default function JobApplicationForm() {
                     </Form.Group>
                     <br/>
                     <Form.Group>
+                        <Form.Label>Application Date</Form.Label>
+                        <Form.Control
+                        type="date"
+                        name="applicationDate"
+                        value={jobApplicationData.applicationDate}
+                        onChange={handleChange}
+                        disabled={jobApplicationData.status === "Not Applied"}
+                        />
+                    </Form.Group>
+                    <br/>
+                    <Form.Group>
                         <Form.Label>Interview Date</Form.Label>
                         <Form.Control
                         type="date"
                         name="interviewDate"
                         value={jobApplicationData.interviewDate}
                         onChange={handleChange}
+                        disabled={jobApplicationData.status !== "Interviewed"}
                         />
                     </Form.Group>
                     <br/>
@@ -397,42 +415,43 @@ export default function JobApplicationForm() {
                         <Form.Control
                         type="text"
                         name="notes"
-                        rows={5}
                         value={jobApplicationData.notes}
                         onChange={handleChange}
+                        placeholder="Enter any notes here."
                         />
                     </Form.Group>
                     <br/>
                     <Form.Group>
-                        <Form.Label>Offered</Form.Label>
+                        <Form.Label>Offer Status</Form.Label>
                         <br/>
                             <Form.Check
                             type="radio"
                             label="Offered"
-                            name="status"
+                            name="offered"
                             value="Offered"
-                            checked={jobApplicationData.status === "Offered"}
+                            checked={jobApplicationData.offered === "Offered"}
                             onChange={handleChange}
                             inline
                             />
                             <Form.Check
                             type="radio"
                             label="Rejected"
-                            name="status"
+                            name="offered"
                             value="Rejected"
-                            checked={jobApplicationData.status === "Rejected"}
+                            checked={jobApplicationData.offered === "Rejected"}
                             onChange={handleChange}
                             inline
                             />
                             <Form.Check
                             type="radio"
                             label="Accepted"
-                            name="status"
+                            name="offered"
                             value="Accepted"
-                            checked={jobApplicationData.status === "Accepted"}
+                            checked={jobApplicationData.offered === "Accepted"}
                             onChange={handleChange}
                             inline
                             />
+                            <Button variant="outline-secondary" style={{ marginLeft: "25px" }} onClick={clearSelection}>Clear Selection</Button>
                     </Form.Group>
                     <br/>
                     <Form.Group>
@@ -446,12 +465,16 @@ export default function JobApplicationForm() {
                                 min={0}
                                 step={500}
                                 value={jobApplicationData.offerSalary}
-                                onChange={handleChange} />
+                                onChange={handleChange}
+                                disabled={!jobApplicationData.offered} />
                             </InputGroup>
                     </Form.Group>
                     <br></br>
                     <Button type="submit" disabled={disable}>
                         Create Job Application
+                    </Button>
+                    <Button variant="warning" style={{ marginLeft: "25px" }} onClick={clearForm} >
+                        Clear Form
                     </Button>
                     </Form>
                 </div>
@@ -460,5 +483,5 @@ export default function JobApplicationForm() {
             </Container>
     </>
         );
-    
+
 }
