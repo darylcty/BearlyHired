@@ -2,6 +2,7 @@ import * as jobsAPI from './jobs-api';
 
 export async function createJob(inputJobData) {
     const {
+        userId,
         companyName,
         position,
         jobType,
@@ -23,6 +24,7 @@ export async function createJob(inputJobData) {
         offeredSalary,
     } = inputJobData;
     const jobFormData = {
+        userId,
         companyName,
         position,
         jobType,

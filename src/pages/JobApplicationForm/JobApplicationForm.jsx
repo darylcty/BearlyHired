@@ -4,10 +4,14 @@ import { createJob } from "../../utils/jobs-service";
 import { getAllCompanies } from "../../utils/companies-api";
 import SalaryAdjustmentModal from "../../components/Modal/SalaryAdjustmentModal";
 import CreateJobModal from "../../components/Modal/CreateJobModal";
+import { get } from "mongoose";
+import { getUser } from "../../utils/users-service";
 
 
 export default function JobApplicationForm() {
-    //? setup default date using date-fns
+    const user = getUser();
+    const userId = user ? user._id : null;
+
     const [ jobApplicationData, setJobApplicationData ] = useState({
         companyName: "",
         position: "",
@@ -112,9 +116,14 @@ export default function JobApplicationForm() {
     }
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+        const jobApplicationWithUserId = { ...jobApplicationData}
+        if (user && userId) {
+                jobApplicationWithUserId.userId = userId;
+        }
+        console.log(jobApplicationWithUserId);
 		try {
-			const jobApplication = await createJob(jobApplicationData);
-			setJobApplicationData(jobApplication);
+			await createJob(jobApplicationWithUserId);
+			setJobApplicationData(jobApplicationWithUserId);
             setShowConfirmationModal(true);
 		} catch (error) {
 			setJobApplicationData((prevData) => ({...prevData, error: "Creation Failed - Try again" }));
