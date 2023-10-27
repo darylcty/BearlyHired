@@ -32,8 +32,8 @@ export default function App() {
             ) : (
               <>
                 <Route path="/" element={<LandingPage />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/job-application" element={<JobApplicationForm />} />
+                <Route path="/dashboard" element={<Dashboard setUser={setUser} user={user} />} />
+                <Route path="/job-application" element={<JobApplicationForm setUser={setUser} user={user} />} />
               </>
           )}
           </>
