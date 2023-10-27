@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Form, InputGroup } from "react-bootstrap";
 import { createJob } from "../../utils/jobs-service";
+import { getAllCompanies } from "../../utils/companies-api";
 export default function JobApplicationForm() {
     const [ jobApplicationData, setJobApplicationData ] = useState({
         companyName: "",
@@ -9,11 +10,11 @@ export default function JobApplicationForm() {
         jobType: "",
         jobDescription: "",
         workArrangement: "",
-        salaryMin: 0,
+        salaryMin: 1000,
         salaryMax: 10000,
-        AWS: false,
+        AWS: null,
         bonus: 0,
-        annualLeaves: 0,
+        annualLeaves: 14,
         benefits: "",
         portalURL: "",
         postID: "",
@@ -21,9 +22,21 @@ export default function JobApplicationForm() {
         status: "Not Applied",
         interviewDate: new Date(),
         notes: "",
-        offered: false,
+        offered: null,
         offerSalary: 0,
     });
+
+    //? Fetch all companies to populate the dropdown list
+    const [ allCompanies, setAllCompanies ] = useState([]);
+
+    async function fetchCompanies() {
+        const companies = await getAllCompanies();
+        setAllCompanies(companies);
+    }
+
+    useEffect(() => {
+        fetchCompanies();
+    }, []);
 
 	// const navigate = useNavigate();
 
@@ -67,6 +80,7 @@ export default function JobApplicationForm() {
             offerSalary: 0,})
     };
 
+    //? disable submit button if any of the required fields are empty
     const disable = (!jobApplicationData.companyName ||
         !jobApplicationData.position ||
         !jobApplicationData.jobType ||
@@ -86,17 +100,21 @@ export default function JobApplicationForm() {
             <Row>
                 <Col md={6}>
                 <div className="form-container">
-                    <Form autoComplete="off" onSubmit={handleSubmit}>
+                    <Form autoComplete="on" onSubmit={handleSubmit}>
                     <Form.Group>
-                        {/* //! TODO: add company selection from created companies list */}
                         <Form.Label>Company Name *</Form.Label>
-                        <Form.Control
+                        <Form.Select
                         type="text"
                         name="companyName"
                         value={jobApplicationData.companyName}
                         onChange={handleChange}
                         required
-                        />
+                        >
+                            <option>Select Company Name *</option>
+                            {allCompanies.map((company => (
+                                <option key={company._id} value={company.companyName}>{company.companyName}</option>
+                            )))}
+                        </Form.Select>
                     </Form.Group>
                     <br/>
                     <Form.Group>
@@ -120,7 +138,7 @@ export default function JobApplicationForm() {
                         onChange={handleChange}
                         required
                         >
-                            <option>Select Job Type *</option>
+                            <option>Select Job Type</option>
                             <option value="Full Time">Full Time</option>
                             <option value="Part Time">Part Time</option>
                             <option value="Contract">Contract</option>
@@ -184,8 +202,8 @@ export default function JobApplicationForm() {
                                 min={0}
                                 step={500}
                                 value={jobApplicationData.salaryMin}
-                                onChange={handleChange} />
-                                <InputGroup.Text>.00</InputGroup.Text>
+                                onChange={handleChange}
+                                inline />
                             </InputGroup>
                     </Form.Group>
                     <br/>
@@ -197,11 +215,11 @@ export default function JobApplicationForm() {
                                 aria-label="Amount (to the nearest dollar)"
                                 type="number"
                                 name="salaryMax"
-                                min={0}
+                                min={jobApplicationData.salaryMin}
                                 step={500}
                                 value={jobApplicationData.salaryMax}
-                                onChange={handleChange} />
-                            <InputGroup.Text>.00</InputGroup.Text>
+                                onChange={handleChange}
+                                inline />
                         </InputGroup>
                     </Form.Group>
                     <br/>
@@ -396,7 +414,6 @@ export default function JobApplicationForm() {
                                 step={500}
                                 value={jobApplicationData.offerSalary}
                                 onChange={handleChange} />
-                                <InputGroup.Text>.00</InputGroup.Text>
                             </InputGroup>
                     </Form.Group>
                     <br></br>
