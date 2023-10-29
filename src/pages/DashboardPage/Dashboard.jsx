@@ -115,7 +115,7 @@ export default function Dashboard() {
                     return (
                         <tr key={idx}>
                             <td>{idx + 1}</td>
-                            <td>{companyName}</td>
+                            <td><Link to={`/job-application-details/${jobApplication._id}`} key={idx}>{companyName}</Link></td>
                             <td>{position}</td>
                             <td>{salaryMin}</td>
                             <td>{salaryMax}</td>
