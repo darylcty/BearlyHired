@@ -34,6 +34,8 @@ async function create(req, res) {
 }
 
 function createJWT(user) {
+	console.log("User being signed into token:", user);
+
 	return jwt.sign({ user }, process.env.SECRET, { expiresIn: "8h" });
 }
 

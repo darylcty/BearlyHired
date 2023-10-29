@@ -1,6 +1,6 @@
 import * as jobsAPI from './jobs-api';
 
-export async function createJob(inputJobData) {
+export async function createJobApplication(inputJobData) {
     const {
         userId,
         companyName,
@@ -16,8 +16,8 @@ export async function createJob(inputJobData) {
         benefits,
         portalURL,
         postID,
-        applicationDate,
         status,
+        applicationDate,
         interviewDate,
         notes,
         offered,
@@ -53,16 +53,17 @@ export async function createJob(inputJobData) {
     }
 }
 
-export async function getAllJobs() {
+export async function getAllJobApplications(userId) {
     try {
-        const response = await jobsAPI.getAllJobApplications();
+        const response = await jobsAPI.getAllJobApplications(userId);
         return response;
     } catch (error) {
+        console.log('Original error: ', error)
         throw new Error('Could Not Get Jobs');
     }
 }
 
-export async function getOneJob(jobId) {
+export async function getOneJobApplication(jobId) {
     try {
         const response = await jobsAPI.getOneJobApplication(jobId);
         return response;
@@ -71,7 +72,7 @@ export async function getOneJob(jobId) {
     }
 }
 
-export async function updateJob(jobId, inputJobData) {
+export async function updateJobApplication(jobId, inputJobData) {
     const {
         companyName,
         position,
@@ -86,8 +87,8 @@ export async function updateJob(jobId, inputJobData) {
         benefits,
         portalURL,
         postID,
-        applicationDate,
         status,
+        applicationDate,
         interviewDate,
         notes,
         offered,
@@ -123,7 +124,7 @@ export async function updateJob(jobId, inputJobData) {
     }
 }
 
-export async function deleteOneJob(jobId) {
+export async function deleteOneJobApplication(jobId) {
     try {
         const response = await jobsAPI.deleteOneJobApplication(jobId);
         return response;
