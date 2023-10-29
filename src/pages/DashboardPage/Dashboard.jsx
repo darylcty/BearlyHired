@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { getAllJobApplications, deleteOneJobApplication } from '../../utils/jobs-service';
 import DeleteJobApplicationModal from "../../components/Modal/DeleteJobApplicationModal";
 import { getUser } from '../../utils/users-service';
+import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
     const [ allJobApplications, setAllJobApplications ] = useState([]);
@@ -89,6 +90,9 @@ export default function Dashboard() {
             )} */}
 
             <h1>Dashboard</h1>
+            {allJobApplications.length === 0 ? (
+            <p>Oops, looks like you have yet to track an application! Click <Link to="/job-application">here</Link> to start!</p>
+            ) : (
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -129,6 +133,7 @@ export default function Dashboard() {
                 })}
                 </tbody>
             </Table>
+            )}
         </>
     );
 }
