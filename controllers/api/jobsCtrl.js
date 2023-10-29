@@ -1,6 +1,6 @@
 const Job = require("../../models/job");
 
-async function createJob(req, res) {
+async function createJobApplication(req, res) {
     const data = req.body;
     try {
         const job = await Job.create(data);
@@ -11,7 +11,17 @@ async function createJob(req, res) {
     }
 }
 
-async function getOneJob(req, res) {
+async function getAllJobApplications(req, res) {
+    try {
+        const userId = req.params.userId;
+        const jobs = await Job.find({ userId: userId });
+        res.json(jobs);
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ error: "An error occurred." });
+    }
+}
+async function getOneJobApplication(req, res) {
     try {
         const job = await Job.findById(req.params.id);
         res.json(job);
@@ -21,17 +31,8 @@ async function getOneJob(req, res) {
     }
 }
 
-async function getAllJobs(req, res) {
-    try {
-        const jobs = await Job.find({});
-        res.json(jobs);
-    } catch (error) {
-        console.error(error);
-        res.status(400).json({ error: "An error occurred." });
-    }
-}
 
-async function deleteOneJob(req, res) {
+async function deleteOneJobApplication(req, res) {
     try {
         const deletedJob = await Job.findByIdAndRemove(req.params.id);
         res.json(deletedJob);
@@ -41,7 +42,7 @@ async function deleteOneJob(req, res) {
     }
 }
 
-async function updateOneJob(req, res) {
+async function updateOneJobApplication(req, res) {
     try {
         const updatedJob = await Job.findByIdAndUpdate(
             req.params.id,
@@ -63,9 +64,9 @@ async function updateOneJob(req, res) {
 }
 
 module.exports = {
-    createJob,
-    getOneJob,
-    getAllJobs,
-    deleteOneJob,
-    updateOneJob
+    createJobApplication,
+    getOneJobApplication,
+    getAllJobApplications,
+    deleteOneJobApplication,
+    updateOneJobApplication
 };

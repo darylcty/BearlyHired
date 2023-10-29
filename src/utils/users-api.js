@@ -1,4 +1,5 @@
 const BASE_URL = "/api/users";
+import sendRequest from "./send-request";
 export async function signUp(inputData) {
 	const response = await fetch(BASE_URL, {
 		method: "POST",

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Form, InputGroup } from "react-bootstrap";
-import { createJob } from "../../utils/jobs-service";
+import { createJobApplication } from "../../utils/jobs-service";
 import { getAllCompanies } from "../../utils/companies-api";
 import SalaryAdjustmentModal from "../../components/Modal/SalaryAdjustmentModal";
 import CreateJobModal from "../../components/Modal/CreateJobModal";
-import { get } from "mongoose";
 import { getUser } from "../../utils/users-service";
 
 
@@ -122,7 +121,7 @@ export default function JobApplicationForm() {
         }
         console.log(jobApplicationWithUserId);
 		try {
-			await createJob(jobApplicationWithUserId);
+			await createJobApplication(jobApplicationWithUserId);
 			setJobApplicationData(jobApplicationWithUserId);
             setShowConfirmationModal(true);
 		} catch (error) {
