@@ -99,8 +99,7 @@ export default function JobApplicationDetails() {
                             <h4>Notes</h4>
                             <p>{jobApplicationDetails.notes}</p>
                             <br/>
-                            <Button variant="secondary" onClick={handleBackToDashboard}>Back to Dashboard</Button>
-                            <Button variant="primary" onClick={handleEditButtonClick} style={{ marginLeft: "20px"}}>Edit</Button>
+                            <Button variant="primary" onClick={handleEditButtonClick}>Edit</Button>
                 </Tab>
                 <Tab eventKey="interview" title="Interviews">
                     Interview Details
@@ -109,6 +108,8 @@ export default function JobApplicationDetails() {
                     Offer Details
                 </Tab>
                 </Tabs>
+                <hr/>
+                <Button variant="secondary" onClick={handleBackToDashboard} style={{ marginTop: "20px"}}>Back to Dashboard</Button>
         </div>
     )
 }
