@@ -311,6 +311,7 @@ export default function EditedJobApplicationModal({
                         value="Not Applied"
                         checked={originalJobApplication.status === "Not Applied"}
                         onChange={handleChange}
+                        disabled={originalJobApplication.status === "interviewed" || "applied"}
                         inline
                         />
                         <Form.Check
@@ -320,6 +321,7 @@ export default function EditedJobApplicationModal({
                         value="Applied"
                         checked={originalJobApplication.status === "Applied"}
                         onChange={handleChange}
+                        disabled={originalJobApplication.status === "interviewed"}
                         inline
                         />
                         <Form.Check
@@ -376,6 +378,7 @@ export default function EditedJobApplicationModal({
                             value="Offered"
                             checked={originalJobApplication.offered === "Offered"}
                             onChange={handleChange}
+                            disabled={originalJobApplication.status !== "Interviewed"}
                             inline
                             />
                             <Form.Check
@@ -385,6 +388,7 @@ export default function EditedJobApplicationModal({
                             value="Rejected"
                             checked={originalJobApplication.offered === "Rejected"}
                             onChange={handleChange}
+                            disabled={originalJobApplication.status !== "Interviewed"}
                             inline
                             />
                             <Form.Check
@@ -394,6 +398,7 @@ export default function EditedJobApplicationModal({
                             value="Accepted"
                             checked={originalJobApplication.offered === "Accepted"}
                             onChange={handleChange}
+                            disabled={originalJobApplication.status !== "Interviewed"}
                             inline
                             />
                     </Form.Group>

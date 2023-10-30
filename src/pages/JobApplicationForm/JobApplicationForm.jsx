@@ -436,6 +436,7 @@ export default function JobApplicationForm() {
                             value="Offered"
                             checked={jobApplicationData.offered === "Offered"}
                             onChange={handleChange}
+                            disabled={jobApplicationData.status !== "Interviewed"}
                             inline
                             />
                             <Form.Check
@@ -445,6 +446,7 @@ export default function JobApplicationForm() {
                             value="Rejected"
                             checked={jobApplicationData.offered === "Rejected"}
                             onChange={handleChange}
+                            disabled={jobApplicationData.status !== "Interviewed"}
                             inline
                             />
                             <Form.Check
@@ -454,9 +456,10 @@ export default function JobApplicationForm() {
                             value="Accepted"
                             checked={jobApplicationData.offered === "Accepted"}
                             onChange={handleChange}
+                            disabled={jobApplicationData.status !== "Interviewed"}
                             inline
                             />
-                            <Button variant="outline-secondary" style={{ marginLeft: "25px" }} onClick={clearSelection}>Clear Selection</Button>
+                            <Button variant="outline-secondary" style={{ marginLeft: "25px" }} onClick={clearSelection} disabled={jobApplicationData.offered === null} >Clear Selection</Button>
                     </Form.Group>
                     <br/>
                     <Form.Group>
