@@ -1,45 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Form, InputGroup } from "react-bootstrap";
-import { createJobApplication } from "../../utils/jobs-service";
-import { getAllCompanies } from "../../utils/companies-api";
-import SalaryAdjustmentModal from "../../components/Modal/SalaryAdjustmentModal";
-import CreateJobModal from "../../components/Modal/CreateJobModal";
-import { getUser } from "../../utils/users-service";
-import JobApplicationEditForm from "../JobApplicationEditForm/JobApplicationEditForm";
+import { updateJobApplication } from "../../utils/jobs-service";
+import { useParams, useNavigate } from "react-router-dom";
+import { getAllCompanies } from "../../utils/companies-service";
 
+export default function JobApplicationEditForm({ jobApplicationDetails }) {
+    //? originalJobApplication is the job application data before editing
+    const [ originalJobApplication, setOriginalJobApplication ] = useState(jobApplicationDetails);
+    console.log(originalJobApplication);
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const handleBackButtonClick = (event) => {
+        event.preventDefault();
+        navigate(`/job-application-details/${id}`);
+    }
 
-export default function JobApplicationForm() {
-    const user = getUser();
-    const userId = user ? user._id : null;
-
-    const [ jobApplicationData, setJobApplicationData ] = useState({
-        companyName: "",
-        position: "",
-        jobType: "",
-        jobDescription: "",
-        workArrangement: "",
-        salaryMin: 1000,
-        salaryMax: 10000,
-        AWS: true,
-        bonus: 0,
-        annualLeaves: 14,
-        benefits: "",
-        portalURL: "",
-        postID: "",
-        status: "Not Applied",
-        applicationDate: "",
-        interviewDate: "",
-        notes: "",
-        offered: null,
-        offerSalary: 0,
-    });
-
-    //? setup modal
-    const [ showSalaryModal, setShowSalaryModal ] = useState(false);
-    const [ modalMessage, setModalMessage ] = useState("");
-    const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
-
-    //? Fetch all companies to populate the dropdown list
     const [ allCompanies, setAllCompanies ] = useState([]);
     async function fetchCompanies() {
         const companies = await getAllCompanies();
@@ -47,111 +22,31 @@ export default function JobApplicationForm() {
     }
     useEffect(() => {
         fetchCompanies();
-    }, []);
+        setOriginalJobApplication(jobApplicationDetails);
+    }, [jobApplicationDetails]);
 
-    //? handle generic form changes
     const handleChange = (event) => {
-        setJobApplicationData((prevData) => ({
+        setOriginalJobApplication((prevData) => ({
             ...prevData,
             [event.target.name]: event.target.value,
         }));
     };
 
-    //? handle AWS changes as radio inputs always return string
-    const handleAWSChange = (event) => {
-        const AWSValue = event.target.value === "true";
-        setJobApplicationData((prevData) => ({
-            ...prevData,
-            AWS: AWSValue,
-        }));
-    };
 
-    //? handle salaryMin and salaryMax changes
-    const handleSalaryChange = (event) => {
-        console.log("handleSalaryChange")
-        const { name, value } = event.target;
-        const parsedSalary= parseInt(value);
-
-        setJobApplicationData(prevData => {
-            //? if salaryMin and parsedSalary > current salaryMax, set the salaryMax = parsedSalary
-            if (name === "salaryMin" && parsedSalary > prevData.salaryMax) {
-                setModalMessage("SalaryMin cannot be greater than SalaryMax");
-                setShowSalaryModal(true);
-                return { ...prevData, salaryMin: parsedSalary, salaryMax: parsedSalary }
-
-            //? if salaryMax and parsedSalary < current salaryMin, set the salaryMin = parsedSalary
-            } else if (name === "salaryMax" && parsedSalary < prevData.salaryMin) {
-                setModalMessage("SalaryMax cannot be less than SalaryMin");
-                setShowSalaryModal(true);
-                return { ...prevData, salaryMax: parsedSalary, salaryMin: parsedSalary }
-
-            //? if salaryMax and parsedSalary > current salaryMin, set the salaryMax = parsedSalary
-            } else {
-                return { ...prevData, [name]: parsedSalary }
-            }
-        });
-    };
-
-    function clearForm() {
-        setJobApplicationData({
-        companyName: "",
-        position: "",
-        jobType: "",
-        jobDescription: "",
-        workArrangement: "",
-        salaryMin: 1000,
-        salaryMax: 10000,
-        AWS: true,
-        bonus: 0,
-        annualLeaves: 14,
-        benefits: "",
-        portalURL: "",
-        postID: "",
-        status: "Not Applied",
-        applicationDate: "",
-        interviewDate: "",
-        notes: "",
-        offered: null,
-        offerSalary: 0,})
-    }
-	const handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
 		event.preventDefault();
-        const jobApplicationWithUserId = { ...jobApplicationData}
-        if (user && userId) {
-                jobApplicationWithUserId.userId = userId;
-        }
-        console.log(jobApplicationWithUserId);
 		try {
-			await createJobApplication(jobApplicationWithUserId);
-			setJobApplicationData(jobApplicationWithUserId);
-            setShowConfirmationModal(true);
+			const editedJobApplication = await updateJobApplication(originalJobApplication);
+			setOriginalJobApplication(editedJobApplication);
+			handleBackButtonClick();
 		} catch (error) {
-			setJobApplicationData((prevData) => ({...prevData, error: "Creation Failed - Try again" }));
+			setOriginalJobApplication((prevData) => ({...prevData, error: "Edit Failed - Try again" }));
 		}
-        //? Reset from to default after submission
-        clearForm();
-    };
-
-    //? disable submit button if any of the required fields are empty
-    const disable = (!jobApplicationData.companyName ||
-        !jobApplicationData.position ||
-        !jobApplicationData.jobType ||
-        !jobApplicationData.jobDescription);
-
-    const clearSelection = () => {
-        setJobApplicationData(prev => ({
-            ...prev,
-            offered: null,
-        }));
     };
 
     return (
-        <>
-            <JobApplicationEditForm allCompanies={allCompanies} setAllCompanies={setAllCompanies} />
-            <SalaryAdjustmentModal show={showSalaryModal} onHide={() => setShowSalaryModal(false)} modalMessage={modalMessage} />
-            <CreateJobModal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)} />
-            <h1>Job Application Form</h1>
-            <br/>
+        <div>
+            <h1>Edit Job Application</h1>
             <Container className="job-application-form">
             <Row>
                 <Col md={6}>
@@ -162,13 +57,13 @@ export default function JobApplicationForm() {
                         <Form.Select
                         type="text"
                         name="companyName"
-                        value={jobApplicationData.companyName}
+                        value={originalJobApplication.companyName}
                         onChange={handleChange}
                         required
                         >
                             <option>Select Company Name *</option>
-                            {allCompanies.map((company => (
-                                <option key={company._id} value={company.companyName}>{company.companyName}</option>
+                            {allCompanies.map((companyData => (
+                                <option key={companyData._id} value={companyData.companyName}>{companyData.companyName}</option>
                                 )))}
                         </Form.Select>
                     </Form.Group>
@@ -178,7 +73,7 @@ export default function JobApplicationForm() {
                         <Form.Control
                         type="text"
                         name="position"
-                        value={jobApplicationData.position}
+                        value={originalJobApplication.position || ""}
                         onChange={handleChange}
                         required
                         />
@@ -189,7 +84,7 @@ export default function JobApplicationForm() {
                         <Form.Select
                         type="select"
                         name="jobType"
-                        value={jobApplicationData.jobType}
+                        value={originalJobApplication.jobType || ""}
                         onChange={handleChange}
                         required
                         >
@@ -209,7 +104,7 @@ export default function JobApplicationForm() {
                         type="text"
                         name="jobDescription"
                         rows={5}
-                        value={jobApplicationData.jobDescription}
+                        value={originalJobApplication.jobDescription || ""}
                         onChange={handleChange}
                         required
                         placeholder="Copy and paste job description here."
@@ -255,9 +150,9 @@ export default function JobApplicationForm() {
                                 name="salaryMin"
                                 min={0}
                                 step={500}
-                                value={jobApplicationData.salaryMin}
+                                value={originalJobApplication.salaryMin || ""}
                                 onChange={handleChange}
-                                onBlur={handleSalaryChange}
+                                // onBlur={handleSalaryChange}
                                 />
                             </InputGroup>
                     </Form.Group>
@@ -271,9 +166,9 @@ export default function JobApplicationForm() {
                                 type="number"
                                 name="salaryMax"
                                 step={500}
-                                value={jobApplicationData.salaryMax}
+                                value={originalJobApplication.salaryMax || ""}
                                 onChange={handleChange}
-                                onBlur={handleSalaryChange}
+                                // onBlur={handleSalaryChange}
                                 />
                         </InputGroup>
                     </Form.Group>
@@ -286,8 +181,8 @@ export default function JobApplicationForm() {
                         name="AWS"
                         label="Yes"
                         value="true"
-                        checked={jobApplicationData.AWS === true}
-                        onChange={handleAWSChange}
+                        checked={originalJobApplication.AWS === true}
+                        onChange={handleChange}
                         inline
                         />
                         <Form.Check
@@ -295,8 +190,8 @@ export default function JobApplicationForm() {
                         name="AWS"
                         label="No"
                         value="false"
-                        checked={jobApplicationData.AWS === false}
-                        onChange={handleAWSChange}
+                        checked={originalJobApplication.AWS === false}
+                        onChange={handleChange}
                         inline
                         />
                     </Form.Group>
@@ -311,7 +206,7 @@ export default function JobApplicationForm() {
                                 name="bonus"
                                 min={0}
                                 step={1}
-                                value={jobApplicationData.bonus}
+                                value={originalJobApplication.bonus || ""}
                                 onChange={handleChange} />
                                 <InputGroup.Text>Months</InputGroup.Text>
                         </InputGroup>
@@ -327,7 +222,7 @@ export default function JobApplicationForm() {
                                 name="annualLeaves"
                                 min={0}
                                 step={1}
-                                value={jobApplicationData.annualLeaves}
+                                value={originalJobApplication.annualLeaves || ""}
                                 onChange={handleChange} />
                                 <InputGroup.Text>Days</InputGroup.Text>
                         </InputGroup>
@@ -338,7 +233,7 @@ export default function JobApplicationForm() {
                         <Form.Control
                         type="text"
                         name="benefits"
-                        value={jobApplicationData.benefits}
+                        value={originalJobApplication.benefits || ""}
                         onChange={handleChange}
                         placeholder="e.g. Medical, Dental, Vision, etc."
                         />
@@ -349,7 +244,7 @@ export default function JobApplicationForm() {
                         <Form.Control
                         type="text"
                         name="portalURL"
-                        value={jobApplicationData.portalURL}
+                        value={originalJobApplication.portalURL || ""}
                         onChange={handleChange}
                         placeholder="e.g. LinkedIn, Indeed, etc."
                         />
@@ -360,7 +255,7 @@ export default function JobApplicationForm() {
                         <Form.Control
                         type="text"
                         name="postID"
-                        value={jobApplicationData.postID}
+                        value={originalJobApplication.postID || ""}
                         onChange={handleChange}
                         placeholder="Enter ID of job listing if applicable."
                         />
@@ -374,7 +269,7 @@ export default function JobApplicationForm() {
                         label="Not Applied"
                         name="status"
                         value="Not Applied"
-                        checked={jobApplicationData.status === "Not Applied"}
+                        checked={originalJobApplication.status === "Not Applied"}
                         onChange={handleChange}
                         inline
                         />
@@ -383,7 +278,7 @@ export default function JobApplicationForm() {
                         label="Applied"
                         name="status"
                         value="Applied"
-                        checked={jobApplicationData.status === "Applied"}
+                        checked={originalJobApplication.status === "Applied"}
                         onChange={handleChange}
                         inline
                         />
@@ -392,7 +287,7 @@ export default function JobApplicationForm() {
                         label="Interviewed"
                         name="status"
                         value="Interviewed"
-                        checked={jobApplicationData.status === "Interviewed"}
+                        checked={originalJobApplication.status === "Interviewed"}
                         onChange={handleChange}
                         inline
                         />
@@ -403,9 +298,9 @@ export default function JobApplicationForm() {
                         <Form.Control
                         type="date"
                         name="applicationDate"
-                        value={jobApplicationData.applicationDate}
+                        value={originalJobApplication.applicationDate || ""}
                         onChange={handleChange}
-                        disabled={jobApplicationData.status === "Not Applied"}
+                        disabled={originalJobApplication.status === "Not Applied"}
                         />
                     </Form.Group>
                     <br/>
@@ -414,9 +309,9 @@ export default function JobApplicationForm() {
                         <Form.Control
                         type="date"
                         name="interviewDate"
-                        value={jobApplicationData.interviewDate}
+                        value={originalJobApplication.interviewDate || ""}
                         onChange={handleChange}
-                        disabled={jobApplicationData.status !== "Interviewed"}
+                        disabled={originalJobApplication.status !== "Interviewed"}
                         />
                     </Form.Group>
                     <br/>
@@ -425,7 +320,7 @@ export default function JobApplicationForm() {
                         <Form.Control
                         type="text"
                         name="notes"
-                        value={jobApplicationData.notes}
+                        value={originalJobApplication.notes || ""}
                         onChange={handleChange}
                         placeholder="Enter any notes here."
                         />
@@ -439,7 +334,7 @@ export default function JobApplicationForm() {
                             label="Offered"
                             name="offered"
                             value="Offered"
-                            checked={jobApplicationData.offered === "Offered"}
+                            checked={originalJobApplication.offered === "Offered"}
                             onChange={handleChange}
                             inline
                             />
@@ -448,7 +343,7 @@ export default function JobApplicationForm() {
                             label="Rejected"
                             name="offered"
                             value="Rejected"
-                            checked={jobApplicationData.offered === "Rejected"}
+                            checked={originalJobApplication.offered === "Rejected"}
                             onChange={handleChange}
                             inline
                             />
@@ -457,11 +352,10 @@ export default function JobApplicationForm() {
                             label="Accepted"
                             name="offered"
                             value="Accepted"
-                            checked={jobApplicationData.offered === "Accepted"}
+                            checked={originalJobApplication.offered === "Accepted"}
                             onChange={handleChange}
                             inline
                             />
-                            <Button variant="outline-secondary" style={{ marginLeft: "25px" }} onClick={clearSelection}>Clear Selection</Button>
                     </Form.Group>
                     <br/>
                     <Form.Group>
@@ -474,24 +368,24 @@ export default function JobApplicationForm() {
                                 name="offerSalary"
                                 min={0}
                                 step={500}
-                                value={jobApplicationData.offerSalary}
+                                value={originalJobApplication.offerSalary || ""}
                                 onChange={handleChange}
-                                disabled={!jobApplicationData.offered} />
+                                disabled={!originalJobApplication.offered} />
                             </InputGroup>
                     </Form.Group>
                     <br></br>
-                    <Button type="submit" disabled={disable}>
-                        Create Job Application
+                    <Button type="submit" variant="warning" >
+                        Save Changes
                     </Button>
-                    <Button variant="warning" style={{ marginLeft: "25px" }} onClick={clearForm} >
-                        Clear Form
+                    <Button type="submit" variant="secondary" onClick={handleBackButtonClick} style={{ marginLeft: "20px"}}>
+                        Go Back Without Making Changes
                     </Button>
                     </Form>
                 </div>
                 </Col>
             </Row>
             </Container>
-    </>
         );
-
+        </div>
+    )
 }

@@ -13,6 +13,7 @@ import JobApplicationForm from '../JobApplicationForm/JobApplicationForm';
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 import CompanyCreationForm from '../CompanyCreationForm/CompanyCreationForm';
 import JobApplicationDetails from '../JobApplicationDetails/JobApplicationDetails';
+import JobApplicationEditForm from '../JobApplicationEditForm/JobApplicationEditForm';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser());
@@ -20,6 +21,7 @@ export default function App() {
 
   return (
       <main className="App">
+        <div className='container-fluid justify-content-center' style={{width: "70%"}}>
         <NavBar user={user} setUser={setUser} />
         <Routes>
         {user ? (
@@ -35,7 +37,8 @@ export default function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/dashboard" element={<Dashboard setUser={setUser} user={user} />} />
                 <Route path="/job-application" element={<JobApplicationForm setUser={setUser} user={user} />} />
-                <Route path="job-application-details/:id" element={<JobApplicationDetails setUser={setUser} user={user} />} />
+                <Route path="/job-application-details/:id" element={<JobApplicationDetails setUser={setUser} user={user} />} />
+                <Route path="/job-application-details/:id/app-edit" element={<JobApplicationEditForm setUser={setUser} user={user} />} />
               </>
           )}
           </>
@@ -47,6 +50,18 @@ export default function App() {
           </>
         )}
         </Routes>
+        <footer className="text-center text-dark text-opacity-50" style={{ marginTop: "150px"}}>
+          <small>
+            BearlyHired&trade; (est 2023)
+            <br />A project by{" "}
+            <a
+						className="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+						href="https://github.com/darylcty">
+						darylcty
+            </a>
+          </small>
+        </footer>
+        </div>
       </main>
   );
 }
