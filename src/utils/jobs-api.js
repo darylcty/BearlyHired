@@ -20,7 +20,3 @@ export async function updateJobApplication(jobId, inputJobData) {
 export async function deleteOneJobApplication(jobId) {
     return sendRequest(`${BASE_URL}/${jobId}`, "DELETE");
 }
-
-export async function findByUserId(userId) {
-    return sendRequest(`${BASE_URL}/user/${userId}/jobs`);
-}
