@@ -2,7 +2,6 @@ import { Form, Modal, Button, InputGroup, Container, Row, Col } from 'react-boot
 import { useState, useEffect } from 'react';
 import { updateJobApplication } from '../../utils/jobs-service';
 import { getAllCompanies } from '../../utils/companies-service';
-
 export default function EditedJobApplicationModal({
 	show,
 	onHide,
@@ -19,13 +18,15 @@ export default function EditedJobApplicationModal({
         useEffect(() => {
             fetchCompanies();
             setOriginalJobApplication(jobApplicationDetails);
+            console.log("jobApplicationDetails: ", jobApplicationDetails);
         }, [jobApplicationDetails]);
 
         async function fetchCompanies() {
                 const companies = await getAllCompanies();
                 setAllCompanies(companies);
             }
-            const handleChange = (event) => {
+
+        const handleChange = (event) => {
             setOriginalJobApplication((prevData) => ({
                 ...prevData,
                 [event.target.name]: event.target.value,
@@ -64,11 +65,14 @@ export default function EditedJobApplicationModal({
                 }
             })};
 
-        const handleSaveChanges = async () => {
+        const handleSaveChanges = async (event) => {
+            event.preventDefault();
             try {
-                const editedJobApplication = await updateJobApplication(originalJobApplication);
+                const editedJobApplication = await updateJobApplication(originalJobApplication, jobApplicationDetails._id);
+                console.log("editedJobApplication: ", editedJobApplication);
                 setOriginalJobApplication(editedJobApplication);
                 onHide();
+                window.location.reload();
             } catch (error) {
                 setOriginalJobApplication((prevData) => ({...prevData, error: "Edit Failed - Try again" }));
             }

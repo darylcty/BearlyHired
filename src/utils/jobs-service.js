@@ -72,7 +72,7 @@ export async function getOneJobApplication(jobId) {
     }
 }
 
-export async function updateJobApplication(jobId, inputJobData) {
+export async function updateJobApplication(inputJobData, jobId) {
     const {
         companyName,
         position,

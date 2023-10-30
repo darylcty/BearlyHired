@@ -79,7 +79,7 @@ export default function JobApplicationDetails() {
                             <p>{jobApplicationDetails.benefits}</p>
                             <br/>
                             <h4>Portal URL</h4>
-                            <p><Link to={jobApplicationDetails.portalURL}>{jobApplicationDetails.portalURL}</Link></p>
+                            <p>{jobApplicationDetails.portalURL}</p>
                             <br/>
                             <h4>Post ID</h4>
                             <p>{jobApplicationDetails.postId}</p>
@@ -94,7 +94,7 @@ export default function JobApplicationDetails() {
                             <p>{jobApplicationDetails.notes}</p>
                             <br/>
                             <Button variant="primary" onClick={handleEditButtonClick}>Edit</Button>
-                            <Button variant="danger" onClick={handleEditButtonClick}>Delete</Button>
+                            <Button variant="danger" onClick={handleEditButtonClick} style={{ marginLeft: "20px"}}>Delete</Button>
 
                 </Tab>
                 <Tab eventKey="interview" title="Interviews">

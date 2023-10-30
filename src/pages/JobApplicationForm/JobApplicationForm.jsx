@@ -5,9 +5,6 @@ import { getAllCompanies } from "../../utils/companies-api";
 import SalaryAdjustmentModal from "../../components/Modal/SalaryAdjustmentModal";
 import CreateJobModal from "../../components/Modal/CreateJobModal";
 import { getUser } from "../../utils/users-service";
-import JobApplicationEditForm from "../JobApplicationEditForm/JobApplicationEditForm";
-
-
 export default function JobApplicationForm() {
     const user = getUser();
     const userId = user ? user._id : null;
@@ -146,7 +143,6 @@ export default function JobApplicationForm() {
 
     return (
         <>
-            <JobApplicationEditForm allCompanies={allCompanies} setAllCompanies={setAllCompanies} />
             <SalaryAdjustmentModal show={showSalaryModal} onHide={() => setShowSalaryModal(false)} modalMessage={modalMessage} />
             <CreateJobModal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)} />
             <h1>Job Application Form</h1>
