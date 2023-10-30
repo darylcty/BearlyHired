@@ -1,13 +1,14 @@
-import { useParams, Link } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { getOneJobApplication } from "../../utils/jobs-service";
 import { Button, Tab, Tabs } from 'react-bootstrap';
 import EditedJobApplicationModal from "../../components/Modal/EditJobApplicationModal";
 export default function JobApplicationDetails() {
     const [ jobApplicationDetails, setJobApplicationDetails ] = useState({});
-    const [ show, setShow ] = useState(false);
+    const [ modalShow, setModalShow ] = useState(false);
 
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect (() => {
         async function fetchJobApplicationDetails() {
@@ -24,16 +25,21 @@ export default function JobApplicationDetails() {
 
     const handleEditButtonClick = (event) => {
         event.preventDefault();
-        setShow(true);
+        setModalShow(true);
     }
 
     const handleCloseModal = () => {
-        setShow(false);
+        setModalShow(false);
+    }
+
+    const handleBackToDashboard = (event) => {
+        event.preventDefault();
+        navigate("/dashboard");
     }
 
     return (
         <div className="container-fluid justify-content-center">
-            <EditedJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={show} onHide={handleCloseModal}/>
+            <EditedJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={modalShow} onHide={handleCloseModal}/>
                         <h1>Job Application Details</h1>
                         <br/>
                         <h4>Click on a Tab below to see details.</h4>
@@ -93,9 +99,8 @@ export default function JobApplicationDetails() {
                             <h4>Notes</h4>
                             <p>{jobApplicationDetails.notes}</p>
                             <br/>
-                            <Button variant="primary" onClick={handleEditButtonClick}>Edit</Button>
-                            <Button variant="danger" onClick={handleEditButtonClick} style={{ marginLeft: "20px"}}>Delete</Button>
-
+                            <Button variant="secondary" onClick={handleBackToDashboard}>Back to Dashboard</Button>
+                            <Button variant="primary" onClick={handleEditButtonClick} style={{ marginLeft: "20px"}}>Edit</Button>
                 </Tab>
                 <Tab eventKey="interview" title="Interviews">
                     Interview Details

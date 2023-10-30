@@ -90,8 +90,8 @@ export default function Dashboard() {
                             <td>{idx + 1}</td>
                             <td><Link to={`/job-application-details/${jobApplication._id}`} key={idx}>{companyName}</Link></td>
                             <td>{position}</td>
-                            <td>{salaryMin}</td>
-                            <td>{salaryMax}</td>
+                            <td>${salaryMin}</td>
+                            <td>${salaryMax}</td>
                             <td>{jobType}</td>
                             <td>{applicationDate}</td>
                             <td>{status}</td>

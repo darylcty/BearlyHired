@@ -3,10 +3,10 @@ const router = express.Router();
 const interviewsCtrl = require("../../controllers/api/interviewsCtrl");
 
 // POST /api/interviews
-router.post("/", interviewsCtrl.create);
-router.get("/", interviewsCtrl.getAll);
-router.get("/:id", interviewsCtrl.getOne);
-router.delete("/:id", interviewsCtrl.deleteOne);
-router.patch("/:id", interviewsCtrl.updateOne);
+router.post("/", interviewsCtrl.createInterview);
+router.get("/", interviewsCtrl.getAllInterviews);
+router.get("/:id", interviewsCtrl.getOneInterview);
+router.delete("/:id", interviewsCtrl.deleteOneInterview);
+router.patch("/:id", interviewsCtrl.updateOneInterview);
 
 module.exports = router;
