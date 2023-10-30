@@ -9,7 +9,7 @@ const cors = require("cors");
 const usersRouter = require("./routes/api/usersRoute");
 const companiesRouter = require("./routes/api/companiesRoute");
 const jobsRouter = require("./routes/api/jobsRoute");
-// const interviewsRouter = require("./routes/api/interviewsRoute");
+const interviewsRouter = require("./routes/api/interviewsRoute");
 // const offersRouter = require("./routes/api/offersRoute");
 
 
@@ -27,7 +27,7 @@ app.use(cors());
 app.use("/api/users", usersRouter);
 app.use("/api/companies", companiesRouter);
 app.use("/api/jobs", jobsRouter);
-// app.use("/api/interviews", interviewsRouter);
+app.use("/api/interviews", interviewsRouter);
 // app.use("/api/offers", offersRouter);
 
 //! A single "catch all" route is required to serve the index.html when any non-AJAX "API" request is received by the Express app:

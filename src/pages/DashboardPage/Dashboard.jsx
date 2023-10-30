@@ -77,14 +77,14 @@ export default function Dashboard() {
                         <th>Job Type</th>
                         <th>Application Date</th>
                         <th>Status</th>
-                        <th>Interview</th>
+                        <th>Interview Date</th>
                         <th>Offer</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                 {allJobApplications.map((jobApplication, idx) => {
-                    const { companyName, position, salaryMin, salaryMax, jobType, applicationDate, status, interviews, offer } = jobApplication;
+                    const { companyName, position, salaryMin, salaryMax, jobType, applicationDate, status, interviewDate, offer } = jobApplication;
                     return (
                         <tr key={idx}>
                             <td>{idx + 1}</td>
@@ -95,7 +95,12 @@ export default function Dashboard() {
                             <td>{jobType}</td>
                             <td>{applicationDate}</td>
                             <td>{status}</td>
-                            <td>{interviews}</td>
+                            {!interviewDate ? (
+                                <td><Link to={`/job-application-details/${jobApplication._id}/create-interview`}>No Interview Date - Create New Interview</Link></td>
+                            ) : (
+                                <td>{interviewDate}</td>
+                            )}
+                            <td>{interviewDate}</td>
                             <td>{offer}</td>
                             <td>
                                 {/* <button className="btn btn-primary" style={{ marginRight: "15px" }} onClick={handleEditButtonClick} data-id={company._id}>Edit</button> */}
