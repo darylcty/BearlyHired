@@ -5,9 +5,6 @@ import { getAllCompanies } from "../../utils/companies-api";
 import SalaryAdjustmentModal from "../../components/Modal/SalaryAdjustmentModal";
 import CreateJobModal from "../../components/Modal/CreateJobModal";
 import { getUser } from "../../utils/users-service";
-import JobApplicationEditForm from "../JobApplicationEditForm/JobApplicationEditForm";
-
-
 export default function JobApplicationForm() {
     const user = getUser();
     const userId = user ? user._id : null;
@@ -146,7 +143,6 @@ export default function JobApplicationForm() {
 
     return (
         <>
-            <JobApplicationEditForm allCompanies={allCompanies} setAllCompanies={setAllCompanies} />
             <SalaryAdjustmentModal show={showSalaryModal} onHide={() => setShowSalaryModal(false)} modalMessage={modalMessage} />
             <CreateJobModal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)} />
             <h1>Job Application Form</h1>
@@ -440,6 +436,7 @@ export default function JobApplicationForm() {
                             value="Offered"
                             checked={jobApplicationData.offered === "Offered"}
                             onChange={handleChange}
+                            disabled={jobApplicationData.status !== "Interviewed"}
                             inline
                             />
                             <Form.Check
@@ -449,6 +446,7 @@ export default function JobApplicationForm() {
                             value="Rejected"
                             checked={jobApplicationData.offered === "Rejected"}
                             onChange={handleChange}
+                            disabled={jobApplicationData.status !== "Interviewed"}
                             inline
                             />
                             <Form.Check
@@ -458,9 +456,10 @@ export default function JobApplicationForm() {
                             value="Accepted"
                             checked={jobApplicationData.offered === "Accepted"}
                             onChange={handleChange}
+                            disabled={jobApplicationData.status !== "Interviewed"}
                             inline
                             />
-                            <Button variant="outline-secondary" style={{ marginLeft: "25px" }} onClick={clearSelection}>Clear Selection</Button>
+                            <Button variant="outline-secondary" style={{ marginLeft: "25px" }} onClick={clearSelection} disabled={jobApplicationData.offered === null} >Clear Selection</Button>
                     </Form.Group>
                     <br/>
                     <Form.Group>
