@@ -68,7 +68,6 @@ export default function JobApplicationForm() {
 
     //? handle salaryMin and salaryMax changes
     const handleSalaryChange = (event) => {
-        console.log("handleSalaryChange")
         const { name, value } = event.target;
         const parsedSalary= parseInt(value);
 

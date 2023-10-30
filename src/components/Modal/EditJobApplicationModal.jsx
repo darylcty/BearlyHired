@@ -1,84 +1,91 @@
-import { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Form, InputGroup } from "react-bootstrap";
-import { updateJobApplication } from "../../utils/jobs-service";
-import { useParams, useNavigate } from "react-router-dom";
-import { getAllCompanies } from "../../utils/companies-service";
-import SalaryAdjustmentModal from "../../components/Modal/SalaryAdjustmentModal";
+import { Form, Modal, Button, InputGroup, Container, Row, Col } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { updateJobApplication } from '../../utils/jobs-service';
+import { getAllCompanies } from '../../utils/companies-service';
 
-export default function JobApplicationEditForm({ jobApplicationDetails }) {
-    //? originalJobApplication is the job application data before editing
-    const [ originalJobApplication, setOriginalJobApplication ] = useState(jobApplicationDetails);
-    const [ showSalaryModal, setShowSalaryModal ] = useState(false);
-    const [ modalMessage, setModalMessage ] = useState("");
-
-    const { id } = useParams();
-
-    const navigate = useNavigate();
-    const handleBackButtonClick = () => {
-        navigate(`/job-application-details/${id}`);
-    }
-
-    const [ allCompanies, setAllCompanies ] = useState([]);
-    async function fetchCompanies() {
-        const companies = await getAllCompanies();
-        setAllCompanies(companies);
-    }
-    useEffect(() => {
-        fetchCompanies();
-        setOriginalJobApplication(jobApplicationDetails);
-    }, [jobApplicationDetails]);
-
-    const handleChange = (event) => {
-        setOriginalJobApplication((prevData) => ({
-            ...prevData,
-            [event.target.name]: event.target.value,
-        }));
-    };
-
-    //? handle salaryMin and salaryMax changes
-    const handleSalaryChange = (event) => {
-        const { name, value } = event.target;
-        const parsedSalary= parseInt(value);
-        setOriginalJobApplication(prevData => {
-            //? if salaryMin and parsedSalary > current salaryMax, set the salaryMax = parsedSalary
-            if (name === "salaryMin" && parsedSalary > prevData.salaryMax) {
-                setModalMessage("SalaryMin cannot be greater than SalaryMax");
-                setShowSalaryModal(true);
-                return { ...prevData, salaryMin: parsedSalary, salaryMax: parsedSalary }
-
-            //? if salaryMax and parsedSalary < current salaryMin, set the salaryMin = parsedSalary
-            } else if (name === "salaryMax" && parsedSalary < prevData.salaryMin) {
-                setModalMessage("SalaryMax cannot be less than SalaryMin");
-                setShowSalaryModal(true);
-                return { ...prevData, salaryMax: parsedSalary, salaryMin: parsedSalary }
-
-            //? if salaryMax and parsedSalary > current salaryMin, set the salaryMax = parsedSalary
-            } else {
-                return { ...prevData, [name]: parsedSalary }
-            }
+export default function EditedJobApplicationModal({
+	show,
+	onHide,
+    jobApplicationDetails
+	}) {
+        const [ originalJobApplication, setOriginalJobApplication ] = useState(jobApplicationDetails);
+        const [ salaryErrors, setSalaryErrors ] = useState({
+            salaryMin: "",
+            salaryMax: ""
         });
-    };
 
+        const [ allCompanies, setAllCompanies ] = useState([]);
 
-    const handleSubmit = async (event) => {
-		event.preventDefault();
-		try {
-			const editedJobApplication = await updateJobApplication(originalJobApplication);
-			setOriginalJobApplication(editedJobApplication);
-			handleBackButtonClick();
-		} catch (error) {
-			setOriginalJobApplication((prevData) => ({...prevData, error: "Edit Failed - Try again" }));
-		}
-    };
+        useEffect(() => {
+            fetchCompanies();
+            setOriginalJobApplication(jobApplicationDetails);
+        }, [jobApplicationDetails]);
+
+        async function fetchCompanies() {
+                const companies = await getAllCompanies();
+                setAllCompanies(companies);
+            }
+            const handleChange = (event) => {
+            setOriginalJobApplication((prevData) => ({
+                ...prevData,
+                [event.target.name]: event.target.value,
+            }));
+        };
+
+           //? handle AWS changes as radio inputs always return string
+        const handleAWSChange = (event) => {
+            const AWSValue = event.target.value === "true";
+            setOriginalJobApplication((prevData) => ({
+                ...prevData,
+                AWS: AWSValue,
+            }));
+        };
+
+        const handleSalaryChange = (event) => {
+            const { name, value } = event.target;
+            const parsedSalary= parseInt(value);
+            let newErrors = {...salaryErrors}
+            setOriginalJobApplication(prevData => {
+                //? if salaryMin and parsedSalary > current salaryMax, set the salaryMax = parsedSalary
+                setSalaryErrors(newErrors);
+                if (name === "salaryMin" && parsedSalary > prevData.salaryMax) {
+                    newErrors.salaryMin = "Salary Min cannot be greater than Salary Max, matching Salary Max";
+                    return { ...prevData, salaryMin: parsedSalary, salaryMax: parsedSalary }
+
+                //? if salaryMax and parsedSalary < current salaryMin, set the salaryMin = parsedSalary
+                } else if (name === "salaryMax" && parsedSalary < prevData.salaryMin) {
+                    newErrors.salaryMax = "SalaryMax cannot be less than SalaryMin, matching SalaryMin";
+                    return { ...prevData, salaryMax: parsedSalary, salaryMin: parsedSalary }
+
+                //? if salaryMax and parsedSalary > current salaryMin, set the salaryMax = parsedSalary
+                } else {
+                    newErrors[name] = "";
+                    return { ...prevData, [name]: parsedSalary }
+                }
+            })};
+
+        const handleSaveChanges = async () => {
+            try {
+                const editedJobApplication = await updateJobApplication(originalJobApplication);
+                setOriginalJobApplication(editedJobApplication);
+                onHide();
+            } catch (error) {
+                setOriginalJobApplication((prevData) => ({...prevData, error: "Edit Failed - Try again" }));
+            }
+        };
 
     return (
-        <div>
-            <SalaryAdjustmentModal showSalaryModal={showSalaryModal} setShowSalaryModal={setShowSalaryModal} modalMessage={modalMessage} />
-            <Container className="job-application-form">
+        <>
+            <Modal show={show} onHide={onHide}>
+			<Modal.Header closeButton>
+				<Modal.Title>Edit Job Application</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+            <Container className="edit-job-application-form">
             <Row>
                 <Col md={6}>
                 <div className="form-container">
-                    <Form autoComplete="on" onSubmit={handleSubmit}>
+                    <Form autoComplete="on" onSubmit={handleSaveChanges}>
                     <Form.Group>
                         <Form.Label>Company Name *</Form.Label>
                         <Form.Select
@@ -181,6 +188,7 @@ export default function JobApplicationEditForm({ jobApplicationDetails }) {
                                 onChange={handleChange}
                                 onBlur={handleSalaryChange}
                                 />
+                                {salaryErrors.salaryMin && <Form.Text className="text-danger">{salaryErrors.salaryMin}</Form.Text>}
                             </InputGroup>
                     </Form.Group>
                     <br/>
@@ -197,6 +205,7 @@ export default function JobApplicationEditForm({ jobApplicationDetails }) {
                                 onChange={handleChange}
                                 onBlur={handleSalaryChange}
                                 />
+                                {salaryErrors.salaryMax && <Form.Text className="text-danger">{salaryErrors.salaryMax}</Form.Text>}
                         </InputGroup>
                     </Form.Group>
                     <br/>
@@ -209,7 +218,7 @@ export default function JobApplicationEditForm({ jobApplicationDetails }) {
                         label="Yes"
                         value="true"
                         checked={originalJobApplication.AWS === true}
-                        onChange={handleChange}
+                        onChange={handleAWSChange}
                         inline
                         />
                         <Form.Check
@@ -218,7 +227,7 @@ export default function JobApplicationEditForm({ jobApplicationDetails }) {
                         label="No"
                         value="false"
                         checked={originalJobApplication.AWS === false}
-                        onChange={handleChange}
+                        onChange={handleAWSChange}
                         inline
                         />
                     </Form.Group>
@@ -311,7 +320,7 @@ export default function JobApplicationEditForm({ jobApplicationDetails }) {
                         />
                         <Form.Check
                         type="radio"
-                        label="Interviewed"
+                        label="Interviewed"t
                         name="status"
                         value="Interviewed"
                         checked={originalJobApplication.status === "Interviewed"}
@@ -400,18 +409,21 @@ export default function JobApplicationEditForm({ jobApplicationDetails }) {
                                 disabled={!originalJobApplication.offered} />
                             </InputGroup>
                     </Form.Group>
-                    <br></br>
-                    <Button type="submit" variant="warning" >
-                        Save Changes
-                    </Button>
-                    <Button type="submit" variant="secondary" onClick={handleBackButtonClick} style={{ marginLeft: "20px"}}>
-                        Go Back Without Making Changes
-                    </Button>
                     </Form>
                 </div>
                 </Col>
             </Row>
             </Container>
-        </div>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button variant="secondary" onClick={onHide}>
+					Cancel
+				</Button>
+				<Button variant="primary" onClick={handleSaveChanges}>
+					Save Changes
+				</Button>
+			</Modal.Footer>
+		</Modal>
+        </>
     )
-}
+	}

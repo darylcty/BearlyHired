@@ -15,7 +15,6 @@ export async function createCompany(inputCompanyData) {
 export async function getAllCompanies() {
     try {
         const response = await companiesAPI.getAllCompanies();
-        console.log("Response from companiesAPI:", response);
         return response;
     } catch (error) {
         throw new Error("Could Not Get Companies");

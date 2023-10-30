@@ -9,8 +9,6 @@ export default function Dashboard() {
     const [ allJobApplications, setAllJobApplications ] = useState([]);
     const [ modalShow, setModalShow ] = useState(false);
     const [ selectedJobApplication, setSelectedJobApplication ] = useState(null);
-    // const [ jobApplicationData, setJobApplicationData ] = useState(null);
-
 
     //? display all jobs
     useEffect(() => {
@@ -47,15 +45,6 @@ export default function Dashboard() {
         setModalShow("delete");
     }
 
-    //? Render Edit Company Modal
-    // async function handleEditButtonClick(event) {
-    //     event.preventDefault();
-    //     const jobApplicationId = event.currentTarget.getAttribute("data-id");
-    //     const fetchJobApplicationData = allJobApplications.find(jobApplication => jobApplication._id === jobApplicationId);
-    //     setCompanyData(fetchJobApplicationData);
-    //     setModalShow("edit");
-    //     }
-
     async function handleDeleteJobApplication() {
         if (selectedJobApplication) {
             await deleteOneJobApplication(selectedJobApplication);
@@ -73,22 +62,6 @@ export default function Dashboard() {
             onHide={handleCloseModal}
             onDelete={handleDeleteJobApplicationConfirmation}
             />
-            {/* {jobApplicationData && (
-            <EditCompanyModal
-            show={modalShow == "edit"}
-            onHide={handleCloseModal}
-            companyId={companyData._id}
-            originalData = {{
-                companyName: companyData.companyName,
-                companyAddress: companyData.companyAddress,
-                country: companyData.country,
-                industry: companyData.industry
-            }}
-            allCompanies={allCompanies}
-            setAllCompanies={setAllCompanies}
-            />
-            )} */}
-
             <h1>Dashboard</h1>
             {allJobApplications.length === 0 ? (
             <p>Oops, looks like you have yet to track an application! Click <Link to="/job-application">here</Link> to start!</p>
