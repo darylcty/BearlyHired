@@ -13,7 +13,6 @@ import JobApplicationForm from '../JobApplicationForm/JobApplicationForm';
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 import CompanyCreationForm from '../CompanyCreationForm/CompanyCreationForm';
 import JobApplicationDetails from '../JobApplicationDetails/JobApplicationDetails';
-import JobApplicationEditForm from '../JobApplicationEditForm/JobApplicationEditForm';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser());
@@ -38,7 +37,6 @@ export default function App() {
                 <Route path="/dashboard" element={<Dashboard setUser={setUser} user={user} />} />
                 <Route path="/job-application" element={<JobApplicationForm setUser={setUser} user={user} />} />
                 <Route path="/job-application-details/:id" element={<JobApplicationDetails setUser={setUser} user={user} />} />
-                <Route path="/job-application-details/:id/app-edit" element={<JobApplicationEditForm setUser={setUser} user={user} />} />
               </>
           )}
           </>
