@@ -20,8 +20,8 @@ export async function getAllCompanies() {
     return sendRequest(`${BASE_URL}`);
 }
 
-export async function getOneCompany(companyId) {
-    return sendRequest(`${BASE_URL}/${companyId}`);
+export async function getOneCompanyByName(companyName) {
+    return sendRequest(`${BASE_URL}/${companyName}`);
 }
 export async function updateCompany(companyId, inputCompanyData) {
     return sendRequest(`${BASE_URL}/${companyId}`, "PATCH", inputCompanyData);

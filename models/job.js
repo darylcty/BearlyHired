@@ -23,7 +23,7 @@ const jobSchema = new Schema(
         postID: { type: String },
         status: { type: String },
         applicationDate: { type: Date },
-        interviewDate: { type: Date },
+        interviewDate: [{ type: Date }],
         notes: { type: String },
         offered: { type: Boolean },
         offeredSalary: { type: Number },

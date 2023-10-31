@@ -1,20 +1,25 @@
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { getAllJobApplications, deleteOneJobApplication } from '../../utils/jobs-service';
 import DeleteJobApplicationModal from "../../components/Modal/DeleteJobApplicationModal";
 import { getUser } from '../../utils/users-service';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
     const [ allJobApplications, setAllJobApplications ] = useState([]);
     const [ modalShow, setModalShow ] = useState(false);
     const [ selectedJobApplication, setSelectedJobApplication ] = useState(null);
 
+    const navigate = useNavigate();
+    const handleCreateJobApplication = (event) => {
+        event.preventDefault();
+        navigate("/job-application");
+    }
+
     //? display all jobs
     useEffect(() => {
         async function fetchAllJobsApplications() {
             const currentUser = getUser();
-            console.log(currentUser);
             try {
                 const jobApplication = await getAllJobApplications(currentUser._id);
                 setAllJobApplications(jobApplication);
@@ -79,7 +84,7 @@ export default function Dashboard() {
                         <th>Status</th>
                         <th>Interview Date</th>
                         <th>Offer</th>
-                        <th>Action</th>
+                        <th>Quick Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -100,18 +105,15 @@ export default function Dashboard() {
                             ) : (
                                 <td>{interviewDate}</td>
                             )}
-                            <td>{interviewDate}</td>
                             <td>{offer}</td>
-                            <td>
-                                {/* <button className="btn btn-primary" style={{ marginRight: "15px" }} onClick={handleEditButtonClick} data-id={company._id}>Edit</button> */}
-                                <button className="btn btn-danger" style={{ margin: "auto" }} onClick={handleDeleteButtonClick} data-id={jobApplication._id}>Delete</button>
-                            </td>
+                            <td><button className="btn btn-danger" onClick={handleDeleteButtonClick} data-id={jobApplication._id}>Delete</button></td>
                         </tr>
                     );
                 })}
                 </tbody>
             </Table>
             )}
-        </>
+            <Button variant="success" onClick={handleCreateJobApplication} style={{ display: 'block', margin: '0 auto', marginTop: "50px", marginBottom: "50px"}}>Create A New Job Application</Button>
+            </>
     );
 }

@@ -1,20 +1,25 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { getOneJobApplication } from "../../utils/jobs-service";
+import { getOneCompanyByName } from "../../utils/companies-service";
 import { Button, Tab, Tabs } from 'react-bootstrap';
+import { deleteOneJobApplication } from "../../utils/jobs-service";
 import EditedJobApplicationModal from "../../components/Modal/EditJobApplicationModal";
+import InterviewDetails from "./InterviewDetails";
+import DeleteJobApplicationModal from "../../components/Modal/DeleteJobApplicationModal";
 export default function JobApplicationDetails() {
     const [ jobApplicationDetails, setJobApplicationDetails ] = useState({});
     const [ modalShow, setModalShow ] = useState(false);
+    const [ companyDetails, setCompanyDetails ] = useState({});
 
     const { id } = useParams();
+
     const navigate = useNavigate();
 
     useEffect (() => {
         async function fetchJobApplicationDetails() {
             try {
                 const jobApplicationDetails = await getOneJobApplication(id);
-                console.log("passed details: ",jobApplicationDetails);
                 setJobApplicationDetails(jobApplicationDetails);
             } catch (error) {
                 console.log(error);
@@ -23,24 +28,58 @@ export default function JobApplicationDetails() {
         fetchJobApplicationDetails();
     }, [id]);
 
-    const handleEditButtonClick = (event) => {
+    useEffect(() => {
+        async function fetchCompanyDetails() {
+            try {
+                const companyDetails = await getOneCompanyByName(jobApplicationDetails.companyName);
+                setCompanyDetails(companyDetails);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchCompanyDetails();
+    }, [jobApplicationDetails]);
+
+    const handleEditApplicationButtonClick = (event) => {
         event.preventDefault();
-        setModalShow(true);
+        setModalShow("edit");
+    }
+
+    const handleDeleteApplicationButtonClick = (event) => {
+        event.preventDefault();
+        setModalShow("delete");
+    }
+     //? Delete job application after confirmation and closing modal
+    async function handleDeleteJobApplicationConfirmation() {
+            await handleDeleteJobApplication();
+            handleCloseModal();
+            navigate("/dashboard");
+        }
+
+    async function handleDeleteJobApplication() {
+        try {
+            await deleteOneJobApplication(id);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const handleCloseModal = () => {
         setModalShow(false);
     }
 
-    const handleBackToDashboard = (event) => {
-        event.preventDefault();
-        navigate("/dashboard");
-    }
-
     return (
         <div className="container-fluid justify-content-center">
-            <EditedJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={modalShow} onHide={handleCloseModal}/>
+            <EditedJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={modalShow === "edit"} onHide={handleCloseModal}/>
+            <DeleteJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={modalShow === "delete"} onHide={handleCloseModal} onDelete={handleDeleteJobApplicationConfirmation}/>
                         <h1>Job Application Details</h1>
+                        <br/>
+                        <h4>Company Name</h4>
+                        <p>{companyDetails ? companyDetails.companyName : "Loading..."}</p>
+                        <h4>Company Address</h4>
+                        <p>{companyDetails ? companyDetails.companyAddress : "Loading..."}</p>
+                        <h4>Position</h4>
+                        <p>{jobApplicationDetails.position}</p>
                         <br/>
                         <h4>Click on a Tab below to see details.</h4>
                         <Tabs
@@ -52,11 +91,6 @@ export default function JobApplicationDetails() {
                         <Tab eventKey="job-application" title="Job Application">
                         <h1>Post Details</h1>
                             <br/>
-                            <h4>Company Name </h4>
-                            <p>{jobApplicationDetails.companyName}</p>
-                            <br/>
-                            <h4>Position</h4>
-                            <p>{jobApplicationDetails.position}</p>
                             <h4>Job Type</h4>
                             <p>{jobApplicationDetails.jobType}</p>
                             <br/>
@@ -99,17 +133,19 @@ export default function JobApplicationDetails() {
                             <h4>Notes</h4>
                             <p>{jobApplicationDetails.notes}</p>
                             <br/>
-                            <Button variant="primary" onClick={handleEditButtonClick}>Edit</Button>
+                            <Button variant="primary" onClick={handleEditApplicationButtonClick}>Edit</Button>
+                            <Button variant="danger" style={{ marginLeft: "20px"}} onClick={handleDeleteApplicationButtonClick}>Delete</Button>
                 </Tab>
                 <Tab eventKey="interview" title="Interviews">
-                    Interview Details
+                    <InterviewDetails
+                    jobId={id}
+                    handleCloseModal={handleCloseModal}/>
                 </Tab>
                 <Tab eventKey="offers" title="Offer">
                     Offer Details
                 </Tab>
                 </Tabs>
-                <hr/>
-                <Button variant="secondary" onClick={handleBackToDashboard} style={{ marginTop: "20px"}}>Back to Dashboard</Button>
+                <Button variant="secondary" onClick={() => window.scrollTo(0,0)} style={{ marginTop: "20px"}}>Return to Top</Button>
         </div>
     )
 }

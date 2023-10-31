@@ -1,13 +1,11 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from 'react-router-dom';
 
-export default function CreateJobModal({
+export default function DeleteInterviewModal({
     show,
     onHide,
+    onDelete
 }) {
-
-    const navigate = useNavigate();
 
     return (
         <Modal
@@ -19,15 +17,15 @@ export default function CreateJobModal({
         >
         <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-            Success!
+            Are you sure you want to delete this interview?
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <h4>Job was created successfully.</h4>
+            <h4>Once deleted, this action cannot be undone!</h4>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={() => {onHide(), navigate("/dashboard")}}>Return to Dashboard</Button>
-            <Button variant="primary" onClick={onHide}>Create Another Job Application</Button>
+            <Button variant="secondary" onClick={onHide}>Close</Button>
+            <Button variant="danger" onClick={onDelete}>Delete</Button>
         </Modal.Footer>
         </Modal>
     );

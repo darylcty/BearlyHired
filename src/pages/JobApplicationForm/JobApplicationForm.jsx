@@ -116,7 +116,6 @@ export default function JobApplicationForm() {
         if (user && userId) {
                 jobApplicationWithUserId.userId = userId;
         }
-        console.log(jobApplicationWithUserId);
 		try {
 			await createJobApplication(jobApplicationWithUserId);
 			setJobApplicationData(jobApplicationWithUserId);

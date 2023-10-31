@@ -1,13 +1,14 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from 'react-router-dom';
-
-export default function CreateJobModal({
+import { useNavigate, useParams } from 'react-router-dom';
+export default function CreateInterviewModal({
     show,
     onHide,
+    clearForm,
 }) {
 
     const navigate = useNavigate();
+    const { id } = useParams();
 
     return (
         <Modal
@@ -23,11 +24,11 @@ export default function CreateJobModal({
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <h4>Job was created successfully.</h4>
+            <h4>Interview was created successfully.</h4>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={() => {onHide(), navigate("/dashboard")}}>Return to Dashboard</Button>
-            <Button variant="primary" onClick={onHide}>Create Another Job Application</Button>
+            <Button variant="secondary" onClick={() => {onHide(), navigate(`/job-application-details/${id}`)}}>Return to Job Application Details</Button>
+            <Button variant="primary" onClick={() => {onHide(); clearForm();}} >Create Another Interview</Button>
         </Modal.Footer>
         </Modal>
     );

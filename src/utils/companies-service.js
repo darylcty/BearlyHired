@@ -21,9 +21,9 @@ export async function getAllCompanies() {
     }
 }
 
-export async function getOneCompany(companyId) {
+export async function getOneCompanyByName(companyName) {
     try {
-        const response = await companiesAPI.getOneCompanies(companyId);
+        const response = await companiesAPI.getOneCompanyByName(companyName);
         return response;
     } catch (error) {
         throw new Error("Could Not Get Company");

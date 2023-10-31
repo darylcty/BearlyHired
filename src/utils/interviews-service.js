@@ -1,4 +1,4 @@
-import * as interviewAPI from '../api/interviews-api';
+import * as interviewsAPI from "../utils/interviews-api"
 
 export async function createInterview(inputInterviewData) {
     const {
@@ -26,7 +26,7 @@ export async function createInterview(inputInterviewData) {
         interviewNotes,
     };
     try {
-        const response = await interviewAPI.createInterview(interviewFormData);
+        const response = await interviewsAPI.createInterview(interviewFormData);
         return response;
     } catch (error) {
         throw new Error('Could Not Create Interview');
@@ -35,7 +35,7 @@ export async function createInterview(inputInterviewData) {
 
 export async function getAllInterviews(jobId) {
     try {
-        const response = await interviewAPI.getAllInterviews(jobId);
+        const response = await interviewsAPI.getAllInterviews(jobId);
         return response;
     } catch (error) {
         console.log('Original error: ', error)
@@ -43,16 +43,16 @@ export async function getAllInterviews(jobId) {
     }
 }
 
-export async function getOneInterview(interviewId) {
-    try {
-        const response = await interviewAPI.getOneInterview(interviewId);
-        return response;
-    } catch (error) {
-        throw new Error('Could Not Get Interview');
-    }
-}
+// export async function getOneInterview(interviewId) {
+//     try {
+//         const response = await interviewsAPI.getOneInterview(interviewId);
+//         return response;
+//     } catch (error) {
+//         throw new Error('Could Not Get Interview');
+//     }
+// }
 
-export async function updatedInterview(inputInterviewData, interviewId) {
+export async function updateOneInterview(inputInterviewData, interviewId) {
     const {
         jobId,
         companyName,
@@ -78,7 +78,7 @@ export async function updatedInterview(inputInterviewData, interviewId) {
         interviewNotes,
     };
     try {
-        const response = await interviewAPI.updatedInterview(interviewId, interviewFormData);
+        const response = await interviewsAPI.updateOneInterview(interviewId, interviewFormData);
         return response;
     } catch (error) {
         console.log('Original error: ', error);
@@ -88,7 +88,7 @@ export async function updatedInterview(inputInterviewData, interviewId) {
 
 export async function deleteOneInterview(interviewId) {
     try {
-        const response = await interviewAPI.deleteOneInterview(interviewId);
+        const response = await interviewsAPI.deleteOneInterview(interviewId);
         return response;
     } catch (error) {
         throw new Error('Could Not Delete Interview');
