@@ -14,7 +14,6 @@ export default function Dashboard() {
     useEffect(() => {
         async function fetchAllJobsApplications() {
             const currentUser = getUser();
-            console.log(currentUser);
             try {
                 const jobApplication = await getAllJobApplications(currentUser._id);
                 setAllJobApplications(jobApplication);

@@ -5,13 +5,13 @@ export async function createInterview(inputInterviewData) {
     return sendRequest(`${BASE_URL}`, "POST", inputInterviewData);
 }
 
-export async function getAllInterview(jobId) {
-    return sendRequest(`${BASE_URL}/user/${jobId}`);
+export async function getAllInterviews(jobId) {
+    return sendRequest(`${BASE_URL}/${jobId}`);
 }
 
-export async function getOneInterview(interviewId) {
-    return sendRequest(`${BASE_URL}/${interviewId}`);
-}
+// export async function getOneInterview(interviewId) {
+//     return sendRequest(`${BASE_URL}/${interviewId}`);
+// }
 
 export async function updateOneInterview(interviewId, inputInterviewData) {
     return sendRequest(`${BASE_URL}/${interviewId}`, "PATCH", inputInterviewData);

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getOneJobApplication } from "../../utils/jobs-service";
 import { Button, Tab, Tabs } from 'react-bootstrap';
 import EditedJobApplicationModal from "../../components/Modal/EditJobApplicationModal";
+import InterviewDetails from "./InterviewDetails";
 export default function JobApplicationDetails() {
     const [ jobApplicationDetails, setJobApplicationDetails ] = useState({});
     const [ modalShow, setModalShow ] = useState(false);
@@ -102,7 +103,7 @@ export default function JobApplicationDetails() {
                             <Button variant="primary" onClick={handleEditButtonClick}>Edit</Button>
                 </Tab>
                 <Tab eventKey="interview" title="Interviews">
-                    Interview Details
+                    <InterviewDetails jobId={id} />
                 </Tab>
                 <Tab eventKey="offers" title="Offer">
                     Offer Details

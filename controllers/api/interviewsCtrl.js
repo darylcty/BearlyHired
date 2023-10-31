@@ -3,8 +3,8 @@ const Interview = require("../../models/interview");
 async function createInterview(req, res) {
     const data = req.body;
     try {
-        const job = await Interview.create(data);
-        res.json(job);
+        const interview = await Interview.create(data);
+        res.json(interview);
     } catch (error) {
         console.error(error);
         res.status(400).json({ error: "An error occurred." });
@@ -21,15 +21,15 @@ async function getAllInterviews(req, res) {
         res.status(400).json({ error: "An error occurred." });
     }
 }
-async function getOneInterview(req, res) {
-    try {
-        const interview = await Interview.findById(req.params.id);
-        res.json(interview);
-    } catch (error) {
-        console.error(error);
-        res.status(400).json({ error: "An error occurred." });
-    }
-}
+// async function getOneInterview(req, res) {
+//     try {
+//         const interview = await Interview.findById(req.params.id);
+//         res.json(interview);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(400).json({ error: "An error occurred." });
+//     }
+// }
 
 
 async function deleteOneInterview(req, res) {
@@ -53,7 +53,7 @@ async function updateOneInterview(req, res) {
             }
         );
         if (!updatedInterview) {
-            res.status(404).json({ error: "Job not found." });
+            res.status(404).json({ error: "Interview not found." });
             return;
         }
         res.json(updatedInterview);
@@ -66,7 +66,7 @@ async function updateOneInterview(req, res) {
 module.exports = {
     createInterview,
     getAllInterviews,
-    getOneInterview,
+    // getOneInterview,
     deleteOneInterview,
     updateOneInterview,
 };
