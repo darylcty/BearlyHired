@@ -50,7 +50,8 @@ export default function App() {
           </>
         )}
         </Routes>
-        <footer className="text-center text-dark text-opacity-50" style={{ marginTop: "150px"}}>
+        <hr/>
+        <footer className="text-center text-dark text-opacity-50" style={{ marginTop: "10px"}}>
           <small>
             BearlyHired&trade; (est 2023)
             <br />A project by{" "}

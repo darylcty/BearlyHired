@@ -21,7 +21,6 @@ export default function NavBar({user, setUser}) {
 			greeting = `Welcome back, ${user.name}!`;
 			dropdownItems = [
 				{ text: "Your Dashboard", route: "/dashboard" },
-				// { text: "New Job Application", route: "/job-application" },
 				{ text: "Sign Out", route: "/" , onClick: handleLogOut},
 			];
 			}

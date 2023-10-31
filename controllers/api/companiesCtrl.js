@@ -11,9 +11,9 @@ async function createCompany(req, res) {
 	}
 }
 
-async function getOneCompany(req, res) {
+async function getOneCompanyByName(req, res) {
 	try {
-		const company = await Company.findById(req.params.id);
+		const company = await Company.findOne({ companyName: req.params.name });
 		res.json(company);
 	} catch (error) {
 		console.error(error);
@@ -64,7 +64,7 @@ async function updateOneCompany(req, res) {
 
 module.exports = {
 	createCompany,
-	getOneCompany,
+	getOneCompanyByName,
 	getAllCompanies,
 	deleteOneCompany,
 	updateOneCompany

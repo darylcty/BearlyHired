@@ -18,7 +18,6 @@ export default function EditedJobApplicationModal({
         useEffect(() => {
             fetchCompanies();
             setOriginalJobApplication(jobApplicationDetails);
-            console.log("jobApplicationDetails: ", jobApplicationDetails);
         }, [jobApplicationDetails]);
 
         async function fetchCompanies() {

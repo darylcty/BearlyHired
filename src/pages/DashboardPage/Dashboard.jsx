@@ -84,7 +84,7 @@ export default function Dashboard() {
                         <th>Status</th>
                         <th>Interview Date</th>
                         <th>Offer</th>
-                        <th>Action</th>
+                        <th>Quick Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,7 +113,7 @@ export default function Dashboard() {
                 </tbody>
             </Table>
             )}
-            <Button variant="success" onClick={handleCreateJobApplication} style={{ display: 'block', margin: '0 auto', marginTop: "50px" }}>Create A New Job Application</Button>
+            <Button variant="success" onClick={handleCreateJobApplication} style={{ display: 'block', margin: '0 auto', marginTop: "50px", marginBottom: "50px"}}>Create A New Job Application</Button>
             </>
     );
 }
