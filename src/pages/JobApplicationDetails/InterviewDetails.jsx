@@ -56,14 +56,15 @@ export default function InterviewDetails({ jobId })
     }
 
     const handleEditInterviewButtonClick = (interviewId) => {
-        setSelectedInterview(interviewId);
+        const selectedInterviewData = allInterviews.find(interview => interview._id === interviewId);
+        setSelectedInterview(selectedInterviewData);
         setShowModal("edit-interview");
     }
 
     return (
         <div style={{ marginTop: "20px", marginBottom: "20px"}}>
             <DeleteInterviewModal show={showModal === "delete-interview"} onHide={handleCloseModal} onDelete={handleDeleteInterviewConfirmation}/>
-            <EditInterviewModal show={showModal === "edit-interview"} onHide={handleCloseModal} interviewId={selectedInterview} allInterviews={allInterviews} setAllInterviews={setAllInterviews}/>
+            <EditInterviewModal show={showModal === "edit-interview"} onHide={handleCloseModal} interviewId={selectedInterview} allInterviews={allInterviews} setAllInterviews={setAllInterviews} originalData={selectedInterview}/>
             <h1>Interview Details</h1>
             <Button variant="success" onClick={handleCreateInterview} style={{ marginBottom: "30px"}}>Create an Interview</Button>
             <br/>

@@ -24,7 +24,6 @@ export default function EditInterviewModal({
     const [ interviewerEmail, setInterviewerEmail ] = useState(originalInterviewerEmail || "");
     const [ interviewerContactNumber, setInterviewerContactNumber ] = useState(originalInterviewerContactNumber || "");
     const [ interviewNotes, setInterviewNotes ] = useState(originalInterviewNotes || "");
-
 	useEffect(() => {
 		setInterviewDate(originalInterviewDate || "");
 		setInterviewType(originalInterviewType || "");
@@ -63,7 +62,7 @@ export default function EditInterviewModal({
 					<Form.Group controlId="interviewType">
 						<Form.Label>Interview Type</Form.Label>
 						<Form.Control
-							as="textarea"
+							type="text"
 							rows={1}
 							value={interviewType}
 							onChange={(event) => setInterviewType(event.target.value)}
@@ -73,13 +72,13 @@ export default function EditInterviewModal({
 						<Form.Label>Interview Date</Form.Label>
 						<DatePicker
 							selected={interviewDate ? new Date(interviewDate) : null}
-							onChange={(event) => setInterviewDate(event.target.value)}
+							onChange={date => setInterviewDate(date)}
 						/>
 					</Form.Group>
 					<Form.Group controlId="interviewerName">
 						<Form.Label>Interview Name</Form.Label>
 						<Form.Control
-							as="textarea"
+							type="text"
 							rows={1}
 							value={interviewerName}
 							onChange={date => setInterviewerName(date)}
@@ -88,7 +87,7 @@ export default function EditInterviewModal({
 					<Form.Group controlId="interviewerEmail">
                         <Form.Label>Interview Email</Form.Label>
                         <Form.Control
-                            as="email"
+							type="text"
                             rows={1}
                             value={interviewerEmail}
                             onChange={(event) => setInterviewerEmail(event.target.value)}
@@ -97,7 +96,7 @@ export default function EditInterviewModal({
                     <Form.Group controlId="interviewerContactNumber">
                         <Form.Label>Interview Contact Number</Form.Label>
                         <Form.Control
-                            as="number"
+							type="text"
                             rows={1}
                             value={interviewerContactNumber}
                             onChange={(event) => setInterviewerContactNumber(event.target.value)}
@@ -106,7 +105,7 @@ export default function EditInterviewModal({
                     <Form.Group controlId="interviewNotes">
                         <Form.Label>Interview Notes</Form.Label>
                         <Form.Control
-                            as="textarea"
+							type="text"
                             rows={1}
                             value={interviewNotes}
                             onChange={(event) => setInterviewNotes(event.target.value)}
