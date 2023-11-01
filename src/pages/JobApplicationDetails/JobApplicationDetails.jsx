@@ -68,6 +68,9 @@ export default function JobApplicationDetails() {
         setModalShow(false);
     }
 
+    const disableInterviewTab = jobApplicationDetails.status === null ? true : false;
+    const disableOfferTab = jobApplicationDetails.status !== "Offered" ? true : false;
+
     return (
         <div className="container-fluid justify-content-center">
             <EditedJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={modalShow === "edit"} onHide={handleCloseModal}/>
@@ -89,7 +92,7 @@ export default function JobApplicationDetails() {
                         fill
                         >
                         <Tab eventKey="job-application" title="Job Application">
-                        <h1>Post Details</h1>
+                        <h1>Details For Application ID: {jobApplicationDetails._id}</h1>
                             <br/>
                             <h4>Job Type</h4>
                             <p>{jobApplicationDetails.jobType}</p>
@@ -136,12 +139,12 @@ export default function JobApplicationDetails() {
                             <Button variant="primary" onClick={handleEditApplicationButtonClick}>Edit</Button>
                             <Button variant="danger" style={{ marginLeft: "20px"}} onClick={handleDeleteApplicationButtonClick}>Delete</Button>
                 </Tab>
-                <Tab eventKey="interview" title="Interviews">
+                <Tab eventKey="interview" title="Interviews" disabled={disableInterviewTab}>
                     <InterviewDetails
                     jobId={id}
                     handleCloseModal={handleCloseModal}/>
                 </Tab>
-                <Tab eventKey="offers" title="Offer">
+                <Tab eventKey="offers" title="Offer" disabled={disableOfferTab}>
                     Offer Details
                 </Tab>
                 </Tabs>

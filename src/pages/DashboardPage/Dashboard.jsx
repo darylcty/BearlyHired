@@ -68,6 +68,22 @@ export default function Dashboard() {
         }
     }
 
+    function renderInterviewsCell(applicationDate, interviewsForThisJob, jobId) {
+        if (!applicationDate) {
+            return <td><Link to={`/job-application-details/${jobId}`}>No Application Date - Apply First!</Link></td>
+        }
+        if (!interviewsForThisJob.length) {
+            return <td><Link to={`/job-application-details/${jobId}/create-interview`}>No Interview Date - Create New Interview</Link></td>
+        }
+        return (
+            <td>
+                {interviewsForThisJob.map(interview => (
+                    <div key={interview._id}>{interview.interviewTimeDate}</div>
+                ))}
+            </td>
+        );
+    }
+
     return (
         <>
             <DeleteJobApplicationModal
@@ -109,7 +125,8 @@ export default function Dashboard() {
                             <td>{jobType}</td>
                             <td>{status}</td>
                             <td>{applicationDate}</td>
-                            {!interviewsForThisJob.length ? (
+                            { renderInterviewsCell(applicationDate, interviewsForThisJob, jobApplication._id) }
+                            {/* {!interviewsForThisJob.length ? (
                                 <td><Link to={`/job-application-details/${jobApplication._id}/create-interview`}>No Interview Date - Create New Interview</Link></td>
                             ) : (
                                 <td>
@@ -117,7 +134,7 @@ export default function Dashboard() {
                                         <div key={interview._id}>{interview.interviewTimeDate}</div>
                                     ))}
                                 </td>
-                            )}
+                            )} */}
                             <td>{offer}</td>
                             <td><button className="btn btn-danger" onClick={handleDeleteButtonClick} data-id={jobApplication._id}>Delete</button></td>
                         </tr>
