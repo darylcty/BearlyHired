@@ -5,6 +5,7 @@ import { getOneCompanyByName } from "../../utils/companies-service";
 import { Button, Tab, Tabs } from 'react-bootstrap';
 import EditedJobApplicationModal from "../../components/Modal/EditJobApplicationModal";
 import InterviewDetails from "./InterviewDetails";
+import OfferDetails from "./OfferDetails";
 import DeleteJobApplicationModal from "../../components/Modal/DeleteJobApplicationModal";
 
 export default function JobApplicationDetails() {
@@ -79,8 +80,8 @@ export default function JobApplicationDetails() {
         setModalShow(false);
     }
 
-    const disableInterviewTab = jobApplicationDetails.status === null ? true : false;
-    const disableOfferTab = jobApplicationDetails.status !== "Offered" ? true : false;
+    // const disableInterviewTab = jobApplicationDetails.status === null ? true : false;
+    // const disableOfferTab = jobApplicationDetails.interviewDate ? true : false;
 
     return (
         <div className="container-fluid justify-content-center">
@@ -151,13 +152,14 @@ export default function JobApplicationDetails() {
                             <Button variant="primary" style={{ width: "48%"}} onClick={handleEditApplicationButtonClick}>Edit</Button>
                             <Button variant="danger" style={{ marginLeft: "20px", width: "48%"}} onClick={handleDeleteApplicationButtonClick}>Delete</Button>
                 </Tab>
-                <Tab eventKey="interview" title="Interviews" disabled={disableInterviewTab}>
+                <Tab eventKey="interview" title="Interviews" >
                     <InterviewDetails
                     jobId={id}
                     handleCloseModal={handleCloseModal}/>
                 </Tab>
-                <Tab eventKey="offers" title="Offer" disabled={disableOfferTab}>
-                    Offer Details
+                <Tab eventKey="offers" title="Offer">
+                    <OfferDetails jobId={id}
+                    handleCloseModal={handleCloseModal}/>
                 </Tab>
                 </Tabs>
                 <Button variant="secondary" onClick={() => window.scrollTo(0,0)} style={{ marginTop: "20px"}}>Return to Top</Button>

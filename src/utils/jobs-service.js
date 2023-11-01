@@ -20,8 +20,8 @@ export async function createJobApplication(inputJobData) {
         applicationDate,
         interviewDate,
         notes,
-        offered,
-        offeredSalary,
+        // offered,
+        // offeredSalary,
     } = inputJobData;
     const jobFormData = {
         userId,
@@ -42,8 +42,8 @@ export async function createJobApplication(inputJobData) {
         status,
         interviewDate,
         notes,
-        offered,
-        offeredSalary,
+        // offered,
+        // offeredSalary,
     };
     try {
         const response = await jobsAPI.createJobApplication(jobFormData);
@@ -91,8 +91,8 @@ export async function updateJobApplication(inputJobData, jobId) {
         applicationDate,
         interviewDate,
         notes,
-        offered,
-        offeredSalary,
+        // offered,
+        // offeredSalary,
     } = inputJobData;
     const jobFormData = {
         companyName,
@@ -112,8 +112,8 @@ export async function updateJobApplication(inputJobData, jobId) {
         status,
         interviewDate,
         notes,
-        offered,
-        offeredSalary,
+        // offered,
+        // offeredSalary,
     };
     try {
         const response = await jobsAPI.updateJobApplication(jobId, jobFormData);
