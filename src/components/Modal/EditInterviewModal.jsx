@@ -56,7 +56,7 @@ export default function EditInterviewModal({
 
 		const updatedInterviews = allInterviews.map(interview => {
 			if (interview._id === interviewId) {
-				return { ...interview, interviewType, interviewDate, interviewerName, interviewerEmail, interviewerContactNumber, interviewNotes };
+				return { ...interview, ...formData };
 			}
 			return interview;
 		});
