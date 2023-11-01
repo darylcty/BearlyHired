@@ -367,7 +367,7 @@ export default function EditedJobApplicationModal({
                         />
                     </Form.Group>
                     <br/>
-                    <Form.Group>
+                    {/* <Form.Group>
                         <Form.Label>Offer Status</Form.Label>
                         <br/>
                             <Form.Check
@@ -416,7 +416,7 @@ export default function EditedJobApplicationModal({
                                 onChange={handleChange}
                                 disabled={!originalJobApplication.offered} />
                             </InputGroup>
-                    </Form.Group>
+                    </Form.Group> */}
                     </Form>
                 </div>
                 </Col>

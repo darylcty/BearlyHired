@@ -27,8 +27,8 @@ export default function JobApplicationForm() {
         applicationDate: "",
         interviewDate: "",
         notes: "",
-        offered: null,
-        offerSalary: 0,
+        // offered: null,
+        // offerSalary: 0,
     });
 
     //? setup modal
@@ -133,12 +133,12 @@ export default function JobApplicationForm() {
         !jobApplicationData.jobType ||
         !jobApplicationData.jobDescription);
 
-    const clearSelection = () => {
-        setJobApplicationData(prev => ({
-            ...prev,
-            offered: null,
-        }));
-    };
+    // const clearSelection = () => {
+    //     setJobApplicationData(prev => ({
+    //         ...prev,
+    //         offered: null,
+    //     }));
+    // };
 
     return (
         <>
@@ -148,7 +148,7 @@ export default function JobApplicationForm() {
             <br/>
             <Container className="job-application-form">
             <Row>
-                <Col md={6}>
+                <Col md={13}>
                 <div className="form-container">
                     <Form autoComplete="on" onSubmit={handleSubmit}>
                     <Form.Group>
@@ -425,7 +425,7 @@ export default function JobApplicationForm() {
                         />
                     </Form.Group>
                     <br/>
-                    <Form.Group>
+                    {/* <Form.Group>
                         <Form.Label>Offer Status</Form.Label>
                         <br/>
                             <Form.Check
@@ -475,7 +475,7 @@ export default function JobApplicationForm() {
                                 onChange={handleChange}
                                 disabled={!jobApplicationData.offered} />
                             </InputGroup>
-                    </Form.Group>
+                    </Form.Group> */}
                     <br></br>
                     <Button type="submit" disabled={disable}>
                         Create Job Application

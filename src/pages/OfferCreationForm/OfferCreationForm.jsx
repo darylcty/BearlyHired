@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { getAllCompanies } from "../../utils/companies-service";
 import { getOneJobApplication } from "../../utils/jobs-service";
-import { createInterview } from "../../utils/interviews-service";
-import CreateInterviewModal from "../../components/Modal/CreateInterviewModal";
+import { getOneCompanyByName } from "../../utils/companies-service";
+import * as offerService from "../../utils/offers-service";
 
 export default function OfferCreationForm() {
-    const [ offerdata, setOfferData ] = useState({
+    const [ offerData, setOfferData ] = useState({
         jobId: "",
         companyName: "",
         companyAddress: "",
@@ -17,114 +16,95 @@ export default function OfferCreationForm() {
         acceptance: "",
     });
 
-    const [ modalShow, setModalShow ] = useState(false);
-    const [ error, setError ] = useState("");
+    // const [ modalShow, setModalShow ] = useState(false);
 
     const { id } = useParams();
     const navigate = useNavigate();
+    const [ selectedJobApplication, setSelectedJobApplication ] = useState({});
+    const [ oneCompany, setOneCompany ] = useState([]);
+
+    async function fetchCompanyByName(companyName) {
+        const company = await getOneCompanyByName(companyName);
+        setOneCompany(company);
+        setOfferData((prevState) => ({
+            ...prevState,
+            companyAddress: company.companyAddress
+        }));
+    }
+
+    async function fetchJobApplication() {
+        const jobApplication = await getOneJobApplication(id);
+        setSelectedJobApplication(jobApplication);
+        setOfferData((prevState) => ({
+            ...prevState,
+            companyName: jobApplication.companyName,
+            companyAddress: jobApplication.companyAddress,
+            position: jobApplication.position,
+        }));
+    }
+
+    useEffect(() => {
+        fetchJobApplication();
+        fetchCompanyByName(offerData.companyName);
+    }, [id, offerData.companyName]);
+
 
     const handleNavigateToJobApplicationDetails = (event) => {
         event.preventDefault();
         navigate(`/job-application-details/${id}`);
     }
-    //? Fetch all companies to populate the dropdown list
-    const [ allCompanies, setAllCompanies ] = useState([]);
-    const fetchData = useCallback(async () => {
-        const companies = await getAllCompanies();
-        setAllCompanies(companies);
-        //? fetch job position and company name from jobId
-        const jobPosition = await getOneJobApplication(id);
-        if (jobPosition) {
-            const selectedCompany = companies.find((company) => company.companyName === jobPosition.companyName);
-            if (selectedCompany) {
-                setInterviewData((prevState) => ({
-                    ...prevState,
-                    companyName: selectedCompany.companyName,
-                    companyAddress: selectedCompany.companyAddress,
-                    position: jobPosition.position,
-                }));
-            }
-        }
-    }, [id]);
-
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
-
-    const isValidEmail = (email) => {
-        return /\S+@\S+\.\S+/.test(email);
-    }
 
     const handleChange = (event) => {
         let updatedValue = { [event.target.name]: event.target.value };
-        let errorValue = "";
         if (event.target.name === "companyName") {
-            const selectedCompany = allCompanies.find((company) => company.companyName === event.target.value);
-            if (selectedCompany) {
+            if (oneCompany) {
                 updatedValue = {
                     ...updatedValue,
-                    companyAddress: selectedCompany.companyAddress,
-                    interviewerEmail: selectedCompany.companyEmail,
+                    companyAddress: oneCompany.companyAddress,
                 };
             }
         }
-        if (event.target.name === "interviewerEmail") {
-            if (!isValidEmail(event.target.value)) {
-                errorValue = "Email is invalid";
-            }
-        }
-        setInterviewData((prevState) => ({
+        setOfferData((prevState) => ({
             ...prevState,
             ...updatedValue,
-            error: errorValue,
         }));
-        if (errorValue) {
-            setError(errorValue);
-        } else {
-            setError("");
-        }
-    };
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const interviewDataWithJobId = { ...interviewData}
+        const offerDataWithJobId = { ...offerData}
         if (id) {
-            console.log("id", id);
-            interviewDataWithJobId.jobId = id;
-            console.log("interviewDataWithJobId", interviewDataWithJobId);
+            offerDataWithJobId.jobId = id;
         }
         try {
-            const interview = await createInterview(interviewDataWithJobId);
-            setInterviewData(interview);
-            setModalShow(true);
+            const offer = await offerService(offerDataWithJobId);
+            setOfferData(offer);
+            // setModalShow(true);
         } catch (error) {
-            setInterviewData((prevState) => ({...prevState, error: "Creation Failed - Try again" }));
+            setOfferData((prevState) => ({...prevState, error: "Creation Failed - Try again" }));
         }
     }
 
-    const disable = (!interviewData.interviewType || !interviewData.interviewTimeDate)
+    const disable = (!offerData.offeredSalary || !offerData.offerDeadline)
 
     const clearForm = () => {
-        setInterviewData({
-            companyName: interviewData.companyName,
-            companyAddress: interviewData.companyAddress,
-            position: interviewData.position,
-            interviewType: "",
-            interviewTimeDate: "",
-            interviewerName: "",
-            interviewerEmail: "",
-            interviewerContactNumber: "",
-            interviewNotes: "",
+        setOfferData({
+            jobId: offerData.jobId,
+            companyName: offerData.companyName,
+            companyAddress: offerData.companyAddress,
+            position: offerData.position,
+            offeredSalary: "",
+            offerDeadline: "",
+            acceptance: "",
         });
     }
 
     return (
         <div>
-        <CreateInterviewModal interviewData={interviewData} show={modalShow} onHide={() => {setModalShow(false)}} clearForm={clearForm}/>
-        <h1>Interview Creation Form</h1>
-        <Container className="interview-form">
+        <h1>Offer Creation Form</h1>
+        <Container className="offer-form">
             <Row>
-                <Col md={6}>
+                <Col md={12}>
                 <div className="form-container">
                     <Form autoComplete="on" onSubmit={handleSubmit}>
                     <Form.Group>
@@ -134,8 +114,8 @@ export default function OfferCreationForm() {
                         style={{ backgroundColor: "#f5f5f5", borderColor: "#ccc" }}
                         type="text"
                         name="companyName"
-                        text={interviewData.companyName}
-                        value={interviewData.companyName}
+                        text={offerData.companyName}
+                        value={offerData.companyName}
                         >
                         </Form.Control>
                     </Form.Group>
@@ -147,7 +127,8 @@ export default function OfferCreationForm() {
                         style={{ backgroundColor: "#f5f5f5", borderColor: "#ccc" }}
                         type="text"
                         name="companyAddress"
-                        value={interviewData.companyAddress}
+                        text={offerData.companyAddress}
+                        value={offerData.companyAddress}
                         />
                     </Form.Group>
                     <br/>
@@ -158,83 +139,61 @@ export default function OfferCreationForm() {
                         style={{ backgroundColor: "#f5f5f5", borderColor: "#ccc" }}
                         type="select"
                         name="jobType"
-                        value={interviewData.position}
+                        value={offerData.position}
                         >
                         </Form.Control>
                     </Form.Group>
                     <br/>
                     <Form.Group>
-                        <Form.Label>Interview Type *</Form.Label>
+                        <Form.Label>Offered Salary *</Form.Label>
                         <Form.Control
-                        type="text"
-                        name="interviewType"
-                        value={interviewData.interviewType}
+                        type="number"
+                        name="offeredSalary"
+                        value={offerData.offeredSalary}
                         onChange={handleChange}
                         required
-                        placeholder="e.g. Phone, Video, Face-to-Face, Technical, Group, Panel etc."
                         />
                     </Form.Group>
                     <br/>
                     <Form.Group>
-                        <Form.Label>Interview Date *</Form.Label>
+                        <Form.Label>Offer Deadline *</Form.Label>
                         <Form.Control
                         type="date"
-                        name="interviewTimeDate"
-                        value={interviewData.interviewTimeDate}
+                        name="offerDeadline"
+                        value={offerData.offerDeadline}
                         onChange={handleChange}
                         required
                         />
                     </Form.Group>
                     <br/>
                     <Form.Group>
-                        <Form.Label>Interviewer Name</Form.Label>
-                        <Form.Control
-                        type="text"
-                        name="interviewerName"
-                        value={interviewData.interviewerName}
+                        <Form.Label>Offer Acceptance</Form.Label>
+                        <br/>
+                        <Form.Check
+                        type="radio"
+                        name="acceptance"
+                        label="Accepted"
+                        value="Accepted"
                         onChange={handleChange}
+                        inline
                         />
-                    </Form.Group>
-                    <br/>
-                    <Form.Group>
-                        <Form.Label>Interviewer Email</Form.Label>
-                        <Form.Control
-                        type="text"
-                        name="interviewerEmail"
-                        value={interviewData.interviewerEmail}
+                        <Form.Check
+                        type="radio"
+                        name="acceptance"
+                        label="Rejected"
+                        value="Rejected"
                         onChange={handleChange}
-                        />
-                        {error && <p className="error-message" style={{ color: "red"}}>{error}</p>}
-                    </Form.Group>
-                    <br/>
-                    <Form.Group>
-                        <Form.Label>Interviewer Contact Number</Form.Label>
-                        <Form.Control
-                        type="text"
-                        name="interviewerContactNumber"
-                        value={interviewData.interviewerContactNumber}
-                        onChange={handleChange}
-                        />
-                    </Form.Group>
-                    <br/>
-                    <Form.Group>
-                        <Form.Label>Interview Notes</Form.Label>
-                        <Form.Control
-                        type="text"
-                        name="interviewNotes"
-                        value={interviewData.interviewNotes}
-                        onChange={handleChange}
-                        placeholder="Enter any notes here."
+                        inline
                         />
                     </Form.Group>
                     <br></br>
-                    <Button type="submit" disabled={disable}>
-                        Create Interview
+                    <Button type="submit" style={{ display: "inline" }} disabled={disable}>
+                        Create Offer
                     </Button>
-                    <Button variant="warning" style={{ marginLeft: "25px" }} onClick={clearForm} >
+                    <Button variant="warning" style={{ marginLeft: "25px", display: "inline" }} onClick={clearForm} >
                         Clear Form
                     </Button>
-                    <Button variant="secondary" style={{ marginLeft: "25px" }} onClick={handleNavigateToJobApplicationDetails}>
+                    <Button variant="secondary" style={{ marginLeft: "25px", display: "inline" }} onClick={handleNavigateToJobApplicationDetails}>
                         Back to Job Application Details
                     </Button>
                     </Form>

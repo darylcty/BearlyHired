@@ -92,9 +92,7 @@ export default function InterviewCreationForm() {
         event.preventDefault();
         const interviewDataWithJobId = { ...interviewData}
         if (id) {
-            console.log("id", id);
             interviewDataWithJobId.jobId = id;
-            console.log("interviewDataWithJobId", interviewDataWithJobId);
         }
         try {
             const interview = await createInterview(interviewDataWithJobId);
@@ -127,7 +125,7 @@ export default function InterviewCreationForm() {
         <h1>Interview Creation Form</h1>
         <Container className="interview-form">
             <Row>
-                <Col md={6}>
+                <Col md={13}>
                 <div className="form-container">
                     <Form autoComplete="on" onSubmit={handleSubmit}>
                     <Form.Group>
@@ -150,6 +148,7 @@ export default function InterviewCreationForm() {
                         style={{ backgroundColor: "#f5f5f5", borderColor: "#ccc" }}
                         type="text"
                         name="companyAddress"
+                        text={interviewData.companyAddress}
                         value={interviewData.companyAddress}
                         />
                     </Form.Group>
@@ -160,7 +159,8 @@ export default function InterviewCreationForm() {
                         readOnly
                         style={{ backgroundColor: "#f5f5f5", borderColor: "#ccc" }}
                         type="select"
-                        name="jobType"
+                        name="position"
+                        text={interviewData.position}
                         value={interviewData.position}
                         >
                         </Form.Control>
@@ -227,17 +227,18 @@ export default function InterviewCreationForm() {
                         name="interviewNotes"
                         value={interviewData.interviewNotes}
                         onChange={handleChange}
+                        rows={3}
                         placeholder="Enter any notes here."
                         />
                     </Form.Group>
                     <br></br>
-                    <Button type="submit" disabled={disable}>
+                    <Button type="submit" disabled={disable} style={{ display: "inline" }}>
                         Create Interview
                     </Button>
-                    <Button variant="warning" style={{ marginLeft: "25px" }} onClick={clearForm} >
+                    <Button variant="warning" style={{ marginLeft: "25px", display: "inline", }} onClick={clearForm} >
                         Clear Form
                     </Button>
-                    <Button variant="secondary" style={{ marginLeft: "25px" }} onClick={handleNavigateToJobApplicationDetails}>
+                    <Button variant="secondary" style={{ marginLeft: "25px", display: "inline" }} onClick={handleNavigateToJobApplicationDetails}>
                         Back to Job Application Details
                     </Button>
                     </Form>
