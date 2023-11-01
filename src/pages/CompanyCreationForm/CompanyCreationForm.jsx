@@ -25,7 +25,7 @@ export default function CompanyCreationForm() {
 		try {
 			const company = await createCompany(companyData);
 			setCompanyData(company);
-			navigate("/company-creation");
+			navigate("/create-company");
             setModalShow(true);
 		} catch (error) {
 			setCompanyData((prevData) => ({...prevData, error: "Creation Failed - Try again" }));
@@ -36,7 +36,7 @@ export default function CompanyCreationForm() {
 
     const disable = (!companyData.companyName || !companyData.companyAddress || !companyData.country || !companyData.industry);
 
-    let [ modalShow, setModalShow ] = useState(false);
+    const [ modalShow, setModalShow ] = useState(false);
 
     function closeModal() {
         setModalShow(false);
@@ -109,7 +109,6 @@ export default function CompanyCreationForm() {
             <Row>
         </Row>
             </Container>
-        );
     </>
     )
 }

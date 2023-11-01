@@ -1,14 +1,17 @@
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { getAllCompanies, deleteOneCompany } from '../../utils/companies-service';
 import DeleteCompanyModal from '../../components/Modal/DeleteCompanyModal';
 import EditCompanyModal from '../../components/Modal/EditCompanyModal';
+import { useNavigate } from 'react-router-dom';
 
 export default function AdminDashboard() {
     const [ allCompanies, setAllCompanies ] = useState([]);
     const [ modalShow, setModalShow ] = useState(false);
     const [ selectedCompany, setSelectedCompany ] = useState(null);
     const [ companyData, setCompanyData ] = useState(null);
+
+    const navigate = useNavigate();
 
     //? display all companies
     useEffect(() => {
@@ -22,6 +25,11 @@ export default function AdminDashboard() {
     //? Close modal without action
     function handleCloseModal() {
         setModalShow(false);
+    }
+
+    const handleCreateCompany = (event) => {
+        event.preventDefault();
+        navigate("/create-company");
     }
 
     //? Delete company after confirmation and closing modal
@@ -106,14 +114,16 @@ export default function AdminDashboard() {
                             <td>{industry}</td>
                             <td>{createdAt}</td>
                             <td>
-                                <button className="btn btn-primary" style={{ marginRight: "15px" }} onClick={handleEditButtonClick} data-id={company._id}>Edit</button>
-                                <button className="btn btn-danger" style={{ margin: "auto" }} onClick={handleDeleteButtonClick} data-id={company._id}>Delete</button>
+                                <Button variant="primary" style={{ marginRight: "15px" }} onClick={handleEditButtonClick} data-id={company._id}>Edit</Button>
+                                <Button variant="danger" style={{ margin: "auto" }} onClick={handleDeleteButtonClick} data-id={company._id}>Delete</Button>
                             </td>
                         </tr>
                     );
                 })}
                 </tbody>
             </Table>
+            <Button variant="success" onClick={handleCreateCompany} style={{ display: 'block', margin: '0 auto', marginTop: "50px", marginBottom: "50px"}}>Create A Company</Button>
+
         </>
     );
 }

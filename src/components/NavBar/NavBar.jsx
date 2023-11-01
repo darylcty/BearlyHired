@@ -13,7 +13,6 @@ export default function NavBar({user, setUser}) {
 			if (user.isAdmin) {
 			greeting = `Hail, ${user.name}!`;
 			dropdownItems = [
-				{ text: "Create a Company", route: "/company-creation" },
 				{ text: "Admin Dashboard", route: "/admin-dashboard" },
 				{ text: "Sign Out", route: "/" , onClick: handleLogOut},
 			];
