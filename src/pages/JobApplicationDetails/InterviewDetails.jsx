@@ -73,7 +73,7 @@ export default function InterviewDetails({ jobId })
                 {allInterviews.map((interview,idx) => {
                     return (
                         <Card.Header key={idx}>
-                            <Card.Title>Interview {interview._id}</Card.Title>
+                            <Card.Title>Interview ID: {interview._id}</Card.Title>
                             <Card.Text>
                                 <p>Interview Type: {interview.interviewType}</p>
                                 <p>Interview Date: {interview.interviewDate}</p>

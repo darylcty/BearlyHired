@@ -78,8 +78,11 @@ export default function Dashboard() {
         return (
             <td>
                 {interviewsForThisJob.map(interview => (
-                    <div key={interview._id}>{interview.interviewTimeDate}</div>
+                    <div key={interview._id} onClick={() => navigate(`/job-application-details/${jobId}/`, { state: { activeTab: 'interview' } })}>
+                    <Link>{interview.interviewTimeDate}</Link>
+                    </div>
                 ))}
+
             </td>
         );
     }
@@ -126,15 +129,6 @@ export default function Dashboard() {
                             <td>{status}</td>
                             <td>{applicationDate}</td>
                             { renderInterviewsCell(applicationDate, interviewsForThisJob, jobApplication._id) }
-                            {/* {!interviewsForThisJob.length ? (
-                                <td><Link to={`/job-application-details/${jobApplication._id}/create-interview`}>No Interview Date - Create New Interview</Link></td>
-                            ) : (
-                                <td>
-                                    {interviewsForThisJob.map(interview => (
-                                        <div key={interview._id}>{interview.interviewTimeDate}</div>
-                                    ))}
-                                </td>
-                            )} */}
                             <td>{offer}</td>
                             <td><button className="btn btn-danger" onClick={handleDeleteButtonClick} data-id={jobApplication._id}>Delete</button></td>
                         </tr>

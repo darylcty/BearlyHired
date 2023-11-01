@@ -1,20 +1,31 @@
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, useLocation } from "react-router-dom"
 import { useEffect, useState } from "react";
-import { getOneJobApplication } from "../../utils/jobs-service";
+import { getOneJobApplication, deleteOneJobApplication } from "../../utils/jobs-service";
 import { getOneCompanyByName } from "../../utils/companies-service";
 import { Button, Tab, Tabs } from 'react-bootstrap';
-import { deleteOneJobApplication } from "../../utils/jobs-service";
 import EditedJobApplicationModal from "../../components/Modal/EditJobApplicationModal";
 import InterviewDetails from "./InterviewDetails";
 import DeleteJobApplicationModal from "../../components/Modal/DeleteJobApplicationModal";
+
 export default function JobApplicationDetails() {
     const [ jobApplicationDetails, setJobApplicationDetails ] = useState({});
     const [ modalShow, setModalShow ] = useState(false);
     const [ companyDetails, setCompanyDetails ] = useState({});
+    const [ activeTab, setActiveTab ] = useState("job-application");
 
     const { id } = useParams();
 
     const navigate = useNavigate();
+    //? initialize location to get activeTab from state passed from Dashboard
+    const location = useLocation();
+
+    // ? render tab based on activeTab from state
+    useEffect(() => {
+        const tabFromState = location.state?.activeTab ?? "job-application";
+        if (tabFromState) {
+            setActiveTab(tabFromState);
+                }
+    }, [location]);
 
     useEffect (() => {
         async function fetchJobApplicationDetails() {
@@ -75,7 +86,8 @@ export default function JobApplicationDetails() {
         <div className="container-fluid justify-content-center">
             <EditedJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={modalShow === "edit"} onHide={handleCloseModal}/>
             <DeleteJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={modalShow === "delete"} onHide={handleCloseModal} onDelete={handleDeleteJobApplicationConfirmation}/>
-                        <h1>Job Application Details</h1>
+                       <br/>
+                        <h3>Job Application ID: {jobApplicationDetails._id} Details</h3>
                         <br/>
                         <h4>Company Name</h4>
                         <p>{companyDetails ? companyDetails.companyName : "Loading..."}</p>
@@ -86,13 +98,13 @@ export default function JobApplicationDetails() {
                         <br/>
                         <h4>Click on a Tab below to see details.</h4>
                         <Tabs
-                        defaultActiveKey="profile"
+                        activeKey={activeTab}
+                        onSelect={(k) => setActiveTab(k)}
                         id="fill-tab-example"
                         className="mb-3"
                         fill
                         >
                         <Tab eventKey="job-application" title="Job Application">
-                        <h1>Details For Application ID: {jobApplicationDetails._id}</h1>
                             <br/>
                             <h4>Job Type</h4>
                             <p>{jobApplicationDetails.jobType}</p>
