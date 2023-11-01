@@ -2,6 +2,7 @@ import { Table, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { getAllJobApplications, deleteOneJobApplication } from '../../utils/jobs-service';
 import DeleteJobApplicationModal from "../../components/Modal/DeleteJobApplicationModal";
+import { getAllInterviews } from '../../utils/interviews-service';
 import { getUser } from '../../utils/users-service';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -9,6 +10,7 @@ export default function Dashboard() {
     const [ allJobApplications, setAllJobApplications ] = useState([]);
     const [ modalShow, setModalShow ] = useState(false);
     const [ selectedJobApplication, setSelectedJobApplication ] = useState(null);
+    const [ allInterviewsByJob, setAllInterviewsByJob ] = useState({});
 
     const navigate = useNavigate();
     const handleCreateJobApplication = (event) => {
@@ -21,14 +23,20 @@ export default function Dashboard() {
         async function fetchAllJobsApplications() {
             const currentUser = getUser();
             try {
-                const jobApplication = await getAllJobApplications(currentUser._id);
-                setAllJobApplications(jobApplication);
+                const jobApplications = await getAllJobApplications(currentUser._id);
+                setAllJobApplications(jobApplications);
+
+                jobApplications.forEach(async (jobApplication) => {
+                    const interviews = await getAllInterviews(jobApplication._id);
+                    setAllInterviewsByJob(prevState => ({...prevState, [jobApplication._id]: interviews}));
+                });
             } catch (error) {
                 console.log(error);
             }
         }
         fetchAllJobsApplications();
     }, []);
+
 
     //? Close modal without action
     function handleCloseModal() {
@@ -80,8 +88,8 @@ export default function Dashboard() {
                         <th>Minimum Salary</th>
                         <th>Maximum Salary</th>
                         <th>Job Type</th>
-                        <th>Application Date</th>
                         <th>Status</th>
+                        <th>Application Date</th>
                         <th>Interview Date</th>
                         <th>Offer</th>
                         <th>Quick Delete</th>
@@ -89,7 +97,8 @@ export default function Dashboard() {
                 </thead>
                 <tbody>
                 {allJobApplications.map((jobApplication, idx) => {
-                    const { companyName, position, salaryMin, salaryMax, jobType, applicationDate, status, interviewDate, offer } = jobApplication;
+                    const { companyName, position, salaryMin, salaryMax, jobType, applicationDate, status, offer } = jobApplication;
+                    const interviewsForThisJob = allInterviewsByJob[jobApplication._id] || [];
                     return (
                         <tr key={idx}>
                             <td>{idx + 1}</td>
@@ -98,12 +107,16 @@ export default function Dashboard() {
                             <td>${salaryMin}</td>
                             <td>${salaryMax}</td>
                             <td>{jobType}</td>
-                            <td>{applicationDate}</td>
                             <td>{status}</td>
-                            {!interviewDate ? (
+                            <td>{applicationDate}</td>
+                            {!interviewsForThisJob.length ? (
                                 <td><Link to={`/job-application-details/${jobApplication._id}/create-interview`}>No Interview Date - Create New Interview</Link></td>
                             ) : (
-                                <td>{interviewDate}</td>
+                                <td>
+                                    {interviewsForThisJob.map(interview => (
+                                        <div key={interview._id}>{interview.interviewTimeDate}</div>
+                                    ))}
+                                </td>
                             )}
                             <td>{offer}</td>
                             <td><button className="btn btn-danger" onClick={handleDeleteButtonClick} data-id={jobApplication._id}>Delete</button></td>

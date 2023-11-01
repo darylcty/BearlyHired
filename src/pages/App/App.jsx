@@ -30,7 +30,7 @@ export default function App() {
               <>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                <Route path="/company-creation" element={<CompanyCreationForm />} />
+                <Route path="/create-company" element={<CompanyCreationForm />} />
               </>
             ) : (
               <>
