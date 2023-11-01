@@ -111,7 +111,7 @@ export default function Dashboard() {
                         <th>Application Date</th>
                         <th>Interview Date</th>
                         <th>Offer</th>
-                        <th>Quick Delete</th>
+                        {/* <th>Quick Delete</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -130,14 +130,14 @@ export default function Dashboard() {
                             <td>{applicationDate}</td>
                             { renderInterviewsCell(applicationDate, interviewsForThisJob, jobApplication._id) }
                             <td>{offer}</td>
-                            <td><button className="btn btn-danger" onClick={handleDeleteButtonClick} data-id={jobApplication._id}>Delete</button></td>
+                            {/* <td><button className="btn btn-danger" onClick={handleDeleteButtonClick} data-id={jobApplication._id}>Delete</button></td> */}
                         </tr>
                     );
                 })}
                 </tbody>
             </Table>
             )}
-            <Button variant="success" onClick={handleCreateJobApplication} style={{ display: 'block', margin: '0 auto', marginTop: "50px", marginBottom: "50px"}}>Create A New Job Application</Button>
+            <Button variant="outline-success" onClick={handleCreateJobApplication} style={{ display: 'block', margin: '0 auto', marginTop: "50px", marginBottom: "50px", width: "100%"}}>Create A New Job Application</Button>
             </>
     );
 }

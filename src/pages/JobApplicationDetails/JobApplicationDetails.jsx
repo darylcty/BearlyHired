@@ -86,7 +86,7 @@ export default function JobApplicationDetails() {
         <div className="container-fluid justify-content-center">
             <EditedJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={modalShow === "edit"} onHide={handleCloseModal}/>
             <DeleteJobApplicationModal jobApplicationDetails={jobApplicationDetails} show={modalShow === "delete"} onHide={handleCloseModal} onDelete={handleDeleteJobApplicationConfirmation}/>
-                       <br/>
+                        <br/>
                         <h3>Job Application ID: {jobApplicationDetails._id} Details</h3>
                         <br/>
                         <h4>Company Name</h4>
@@ -148,8 +148,8 @@ export default function JobApplicationDetails() {
                             <h4>Notes</h4>
                             <p>{jobApplicationDetails.notes}</p>
                             <br/>
-                            <Button variant="primary" onClick={handleEditApplicationButtonClick}>Edit</Button>
-                            <Button variant="danger" style={{ marginLeft: "20px"}} onClick={handleDeleteApplicationButtonClick}>Delete</Button>
+                            <Button variant="primary" style={{ width: "48%"}} onClick={handleEditApplicationButtonClick}>Edit</Button>
+                            <Button variant="danger" style={{ marginLeft: "20px", width: "48%"}} onClick={handleDeleteApplicationButtonClick}>Delete</Button>
                 </Tab>
                 <Tab eventKey="interview" title="Interviews" disabled={disableInterviewTab}>
                     <InterviewDetails

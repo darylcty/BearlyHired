@@ -4,10 +4,9 @@ const offersCtrl = require("../../controllers/api/offersCtrl");
 const ensureLoggedIn = require("../../config/ensureLoggedIn");
 
 // POST /api/offers
-router.post("/", ensureLoggedIn, offersCtrl.create);
-router.get("/", ensureLoggedIn, offersCtrl.getAll);
-router.get("/:id", ensureLoggedIn, offersCtrl.getOne);
-router.delete("/:id", ensureLoggedIn, offersCtrl.deleteOne);
-router.patch("/:id", ensureLoggedIn, offersCtrl.updateOne);
+router.post("/", ensureLoggedIn, offersCtrl.createOffer);
+router.get("/:jobId", ensureLoggedIn, offersCtrl.getOffer);
+router.delete("/:id", ensureLoggedIn, offersCtrl.deleteOffer);
+router.patch("/:id", ensureLoggedIn, offersCtrl.updateOffer);
 
 module.exports = router;
