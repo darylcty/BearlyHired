@@ -67,7 +67,7 @@ export default function InterviewDetails({ jobId })
             <DeleteInterviewModal show={showModal === "delete-interview"} onHide={handleCloseModal} onDelete={handleDeleteInterviewConfirmation}/>
             <EditInterviewModal show={showModal === "edit-interview"} onHide={handleCloseModal} interviewId={selectedInterview._id} allInterviews={allInterviews} setAllInterviews={setAllInterviews} originalData={selectedInterview}/>
             <h1>Interview Details</h1>
-            <Button variant="success" onClick={handleCreateInterview} style={{ marginBottom: "30px"}}>Create an Interview</Button>
+            <Button variant="outline-success" onClick={handleCreateInterview} style={{ display: "block", margin: "0 auto", width: "100%"}}>Create an Interview</Button>
             <br/>
             <Card>
                 {allInterviews.map((interview,idx) => {
