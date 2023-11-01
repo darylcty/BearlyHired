@@ -1,8 +1,7 @@
 import { Form, Modal, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { updateOneInterview } from '../../utils/interviews-api';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+
 export default function EditInterviewModal({
 	interviewId,
 	show,
@@ -18,25 +17,39 @@ export default function EditInterviewModal({
 	allInterviews,
 	setAllInterviews
 }) {
-	const [ interviewType, setInterviewType ] = useState(originalInterviewType || "");
-	const [ interviewDate, setInterviewDate ] = useState(originalInterviewDate || "");
-    const [ interviewerName, setInterviewerName ] = useState(originalInterviewerName || "");
-    const [ interviewerEmail, setInterviewerEmail ] = useState(originalInterviewerEmail || "");
-    const [ interviewerContactNumber, setInterviewerContactNumber ] = useState(originalInterviewerContactNumber || "");
-    const [ interviewNotes, setInterviewNotes ] = useState(originalInterviewNotes || "");
+
+	const [formData, setFormData] = useState({
+		interviewType: originalInterviewType || "",
+		interviewDate: originalInterviewDate || "",
+		interviewerName: originalInterviewerName || "",
+		interviewerEmail: originalInterviewerEmail || "",
+		interviewerContactNumber: originalInterviewerContactNumber || "",
+		interviewNotes: originalInterviewNotes || ""
+	});
+
 	useEffect(() => {
-		setInterviewDate(originalInterviewDate || "");
-		setInterviewType(originalInterviewType || "");
-        setInterviewerName(originalInterviewerName || "");
-        setInterviewerEmail(originalInterviewerEmail || "");
-        setInterviewerContactNumber(originalInterviewerContactNumber || "");
-        setInterviewNotes(originalInterviewNotes || "");
+		setFormData({
+			interviewType: originalInterviewType || "",
+			interviewDate: originalInterviewDate || "",
+			interviewerName: originalInterviewerName || "",
+			interviewerEmail: originalInterviewerEmail || "",
+			interviewerContactNumber: originalInterviewerContactNumber || "",
+			interviewNotes: originalInterviewNotes || ""
+		});
 	}, [originalInterviewDate, originalInterviewType, originalInterviewerName, originalInterviewerEmail, originalInterviewerContactNumber, originalInterviewNotes]);
 
+	const handleChange = (event) => {
+		const { name, value } = event.target;
+		setFormData(prevState => ({
+			...prevState,
+			[name]: value
+		}));
+	};
 	async function handleSaveChanges() {
 		try {
-			await updateOneInterview(interviewId, { interviewType, interviewDate, interviewerName, interviewerEmail, interviewerContactNumber, interviewNotes });
+			await updateOneInterview(interviewId, formData);
 			onHide();
+			window.location.reload();
 		} catch (error) {
 			console.log("Error updating interview: ", error);
 		}
@@ -63,52 +76,63 @@ export default function EditInterviewModal({
 						<Form.Label>Interview Type</Form.Label>
 						<Form.Control
 							type="text"
+							name="interviewType"
 							rows={1}
-							value={interviewType}
-							onChange={(event) => setInterviewType(event.target.value)}
+							value={formData.interviewType}
+							onChange={handleChange}
 						/>
 					</Form.Group>
 					<Form.Group controlId="interviewDate">
 						<Form.Label>Interview Date</Form.Label>
-						<DatePicker
+						{/* <DatePicker
 							selected={interviewDate ? new Date(interviewDate) : null}
 							onChange={date => setInterviewDate(date)}
+						/> */}
+						<Form.Control
+                        type="date"
+                        name="interviewDate"
+                        value={formData.interviewDate}
+						onChange={handleChange}
 						/>
 					</Form.Group>
 					<Form.Group controlId="interviewerName">
 						<Form.Label>Interview Name</Form.Label>
 						<Form.Control
 							type="text"
+							name="interviewerName"
 							rows={1}
-							value={interviewerName}
-							onChange={date => setInterviewerName(date)}
+							value={formData.interviewerName}
+							onChange={handleChange}
 						/>
 					</Form.Group>
 					<Form.Group controlId="interviewerEmail">
                         <Form.Label>Interview Email</Form.Label>
                         <Form.Control
 							type="text"
+							name="interviewerEmail"
                             rows={1}
-                            value={interviewerEmail}
-                            onChange={(event) => setInterviewerEmail(event.target.value)}
+                            value={formData.interviewerEmail}
+							onChange={handleChange}
                         />
                     </Form.Group>
                     <Form.Group controlId="interviewerContactNumber">
                         <Form.Label>Interview Contact Number</Form.Label>
                         <Form.Control
 							type="text"
+							name="interviewerContactNumber"
                             rows={1}
-                            value={interviewerContactNumber}
-                            onChange={(event) => setInterviewerContactNumber(event.target.value)}
+                            value={formData.interviewerContactNumber}
+                            onChange={handleChange}
                         />
                     </Form.Group>
                     <Form.Group controlId="interviewNotes">
                         <Form.Label>Interview Notes</Form.Label>
                         <Form.Control
 							type="text"
+							name="interviewNotes"
                             rows={1}
-                            value={interviewNotes}
-                            onChange={(event) => setInterviewNotes(event.target.value)}
+                            value={formData.interviewNotes}
+                            onChange={handleChange}
                         />
                     </Form.Group>
 					<br/>

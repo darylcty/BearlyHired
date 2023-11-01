@@ -38,7 +38,7 @@ export default function InterviewDetails({ jobId })
         setShowModal("delete-interview");
     }
 
-    async function handleDeleteInterview() {
+    async function handleDeleteInterview(selectedInterview) {
         if (selectedInterview) {
             await deleteOneInterview(selectedInterview);
             const updatedInterviews = allInterviews.filter(interviews => interviews._id !== selectedInterview);
@@ -52,6 +52,7 @@ export default function InterviewDetails({ jobId })
         if (selectedInterview) {
             await handleDeleteInterview(selectedInterview);
             handleCloseModal();
+            window.location.reload();
         }
     }
 
@@ -64,7 +65,7 @@ export default function InterviewDetails({ jobId })
     return (
         <div style={{ marginTop: "20px", marginBottom: "20px"}}>
             <DeleteInterviewModal show={showModal === "delete-interview"} onHide={handleCloseModal} onDelete={handleDeleteInterviewConfirmation}/>
-            <EditInterviewModal show={showModal === "edit-interview"} onHide={handleCloseModal} interviewId={selectedInterview} allInterviews={allInterviews} setAllInterviews={setAllInterviews} originalData={selectedInterview}/>
+            <EditInterviewModal show={showModal === "edit-interview"} onHide={handleCloseModal} interviewId={selectedInterview._id} allInterviews={allInterviews} setAllInterviews={setAllInterviews} originalData={selectedInterview}/>
             <h1>Interview Details</h1>
             <Button variant="success" onClick={handleCreateInterview} style={{ marginBottom: "30px"}}>Create an Interview</Button>
             <br/>
@@ -72,10 +73,10 @@ export default function InterviewDetails({ jobId })
                 {allInterviews.map((interview,idx) => {
                     return (
                         <Card.Header key={idx}>
-                            <Card.Title>Interview {idx+1}</Card.Title>
+                            <Card.Title>Interview {interview._id}</Card.Title>
                             <Card.Text>
                                 <p>Interview Type: {interview.interviewType}</p>
-                                <p>Interview Date: {interview.interviewTimeDate}</p>
+                                <p>Interview Date: {interview.interviewDate}</p>
                                 <p>Interviewer Name: {interview.interviewerName}</p>
                                 <p>Interviewer Email: {interview.interviewerEmail}</p>
                                 <p>Interviewer Contact Number: {interview.interviewerContactNumber}</p>

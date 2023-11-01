@@ -65,7 +65,8 @@ export default function SignUpPage({ setUser }) {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Email</Form.Label>
+                        <Form.Label style={{ display: "inline" }}>Email</Form.Label>
+                        <p style={{ display: "inline", color: "red", marginLeft: "20px" }} className="error-message">&nbsp;{formData.error}</p>
                         <Form.Control
                         type="email"
                         name="email"
@@ -111,7 +112,6 @@ export default function SignUpPage({ setUser }) {
                     </Button>
                     </Form>
                 </div>
-                <p className="error-message">&nbsp;{formData.error}</p>
                 </Col>
             </Row>
             <Row>
