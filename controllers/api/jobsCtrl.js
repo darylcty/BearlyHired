@@ -48,7 +48,9 @@ async function updateOneJobApplication(req, res) {
             req.params.id,
             req.body,
             {
+                //? returns modified document instead of default original document
                 new: true,
+                //? run mongoose validators on update
                 runValidators: true
             }
         );

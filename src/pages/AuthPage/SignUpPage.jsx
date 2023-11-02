@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { signUp } from "../../utils/users-service";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Button, Form, Container, Row, Col } from "react-bootstrap";
+import { Button, Form, Container, Row, Col, Card } from "react-bootstrap";
 
 export default function SignUpPage({ setUser }) {
 	const [formData, setFormData] = useState({
@@ -48,7 +48,8 @@ export default function SignUpPage({ setUser }) {
 	const disable = formData.password !== formData.confirm;
 
     return (
-            <Container className="signUpPage">
+        <Card style={{ marginTop: "70px", marginBottom: "50px"}}>
+            <Container>
             <h1>Ready to Join Our Sleuth?</h1>
             <Row>
                 <Col md={6}>
@@ -116,11 +117,14 @@ export default function SignUpPage({ setUser }) {
             </Row>
             <Row>
             <Col md={6}>
+            <br/>
             <div className="register-link">
                 Already one of us? Click here to <Link to="/login">login!</Link>
             </div>
+            <br/>
             </Col>
         </Row>
             </Container>
+            </Card>
         );
 }

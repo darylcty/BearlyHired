@@ -21,16 +21,6 @@ async function getAllInterviews(req, res) {
         res.status(400).json({ error: "An error occurred." });
     }
 }
-// async function getOneInterview(req, res) {
-//     try {
-//         const interview = await Interview.findById(req.params.id);
-//         res.json(interview);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(400).json({ error: "An error occurred." });
-//     }
-// }
-
 
 async function deleteOneInterview(req, res) {
     try {
@@ -66,7 +56,6 @@ async function updateOneInterview(req, res) {
 module.exports = {
     createInterview,
     getAllInterviews,
-    // getOneInterview,
     deleteOneInterview,
     updateOneInterview,
 };
