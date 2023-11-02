@@ -50,13 +50,6 @@ export default function Dashboard() {
             handleCloseModal();
         }
     }
-    //? Render Delete Confirmation Modal
-    // async function handleDeleteButtonClick(event) {
-    //     event.preventDefault();
-    //     const jobApplicationId = event.currentTarget.getAttribute("data-id");
-    //     setSelectedJobApplication(jobApplicationId);
-    //     setModalShow("delete");
-    // }
 
     async function handleDeleteJobApplication() {
         if (selectedJobApplication) {
@@ -96,7 +89,7 @@ export default function Dashboard() {
             />
             <h1>Dashboard</h1>
             {allJobApplications.length === 0 ? (
-            <p>Oops, looks like you have yet to track an application! Click <Link to="/job-application">here</Link> to start!</p>
+            <p>Oops, looks like you have yet to track an application. Create your first job application to start tracking!</p>
             ) : (
             <Table striped bordered hover>
                 <thead>
@@ -111,7 +104,6 @@ export default function Dashboard() {
                         <th>Application Date</th>
                         <th>Interview Date</th>
                         <th>Offer</th>
-                        {/* <th>Quick Delete</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -130,7 +122,6 @@ export default function Dashboard() {
                             <td>{applicationDate}</td>
                             { renderInterviewsCell(applicationDate, interviewsForThisJob, jobApplication._id) }
                             <td>{offer}</td>
-                            {/* <td><button className="btn btn-danger" onClick={handleDeleteButtonClick} data-id={jobApplication._id}>Delete</button></td> */}
                         </tr>
                     );
                 })}

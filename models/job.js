@@ -25,8 +25,6 @@ const jobSchema = new Schema(
         applicationDate: { type: Date },
         interviewDate: [{ type: Date }],
         notes: { type: String },
-        // offered: { type: Boolean },
-        // offeredSalary: { type: Number },
 	},
 	{
 		timestamps: true,

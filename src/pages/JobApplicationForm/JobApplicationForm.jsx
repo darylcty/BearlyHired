@@ -27,8 +27,6 @@ export default function JobApplicationForm() {
         applicationDate: "",
         interviewDate: "",
         notes: "",
-        // offered: null,
-        // offerSalary: 0,
     });
 
     //? setup modal
@@ -132,13 +130,6 @@ export default function JobApplicationForm() {
         !jobApplicationData.position ||
         !jobApplicationData.jobType ||
         !jobApplicationData.jobDescription);
-
-    // const clearSelection = () => {
-    //     setJobApplicationData(prev => ({
-    //         ...prev,
-    //         offered: null,
-    //     }));
-    // };
 
     return (
         <>
