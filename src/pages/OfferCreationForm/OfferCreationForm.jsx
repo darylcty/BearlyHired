@@ -22,9 +22,19 @@ export default function OfferCreationForm() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [ selectedJobApplication, setSelectedJobApplication ] = useState({});
-    const [ oneCompany, setOneCompany ] = useState([]);
+    const [ oneCompany, setOneCompany ] = useState({});
 
     const disable = (!offerData.offeredSalary || !offerData.offerDeadline)
+
+    useEffect(() => {
+        fetchJobApplication();
+    }, [id]);
+
+    useEffect(() => {
+        if (offerData.companyName) {
+        fetchCompanyByName(offerData.companyName);
+        }
+    }, [offerData.companyName]);
 
     async function fetchCompanyByName(companyName) {
         const company = await getOneCompanyByName(companyName);
@@ -47,15 +57,10 @@ export default function OfferCreationForm() {
         }));
     }
 
-    useEffect(() => {
-        fetchJobApplication();
-        fetchCompanyByName(offerData.companyName);
-    }, [id, offerData.companyName]);
-
     const handleChange = (event) => {
         let updatedValue = { [event.target.name]: event.target.value };
         if (event.target.name === "companyName") {
-            if (oneCompany) {
+            if (oneCompany !== null) {
                 updatedValue = {
                     ...updatedValue,
                     companyAddress: oneCompany.companyAddress,
@@ -79,7 +84,7 @@ export default function OfferCreationForm() {
             setOfferData(offer);
             setModalShow(true);
         } catch (error) {
-            setOfferData((prevState) => ({...prevState, error: "Creation Failed - Try again" }));
+            console.log("Creation Failed - Try again", error);
         }
     }
 
@@ -139,7 +144,7 @@ export default function OfferCreationForm() {
                         <Form.Control
                         readOnly
                         style={{ backgroundColor: "#f5f5f5", borderColor: "#ccc" }}
-                        type="select"
+                        type="text"
                         name="jobType"
                         value={offerData.position}
                         >
