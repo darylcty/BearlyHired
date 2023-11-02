@@ -12,11 +12,13 @@ export default function OfferDetails({ jobId }) {
     const [offer, setOffer] = useState({});
 
     const navigate = useNavigate();
+    console.log("jobId: ", jobId);
 
     useEffect(() => {
         async function fetchOffer() {
             try {
                 const offers = await getOffer(jobId);
+                console.log("offer: ", offers);
                 if (offers.length > 0) {
                     setOffer(offers[0]);
                 }
