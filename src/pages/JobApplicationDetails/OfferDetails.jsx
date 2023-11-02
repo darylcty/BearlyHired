@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DeleteOfferModal from "../../components/Modal/DeleteOfferModal";
 import EditOfferModal from "../../components/Modal/EditOfferModal";
 import { deleteOffer, getOffer } from "../../utils/offers-service";
@@ -11,6 +11,7 @@ export default function OfferDetails({ jobId }) {
     const [selectedOffer, setSelectedOffer] = useState({});
 
     const navigate = useNavigate();
+    const { id } = useParams();
 
     useEffect(() => {
         async function fetchOffers() {
@@ -52,7 +53,7 @@ export default function OfferDetails({ jobId }) {
         if (selectedOffer) {
             await handleDeleteOffer(selectedOffer);
             handleCloseModal();
-            allOffers();
+            window.location.reload();
         }
     };
 
@@ -66,8 +67,8 @@ export default function OfferDetails({ jobId }) {
 
     return (
         <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-            <DeleteOfferModal show={showModal === "delete-offer"} onHide={handleCloseModal} onDelete={handleDeleteOfferConfirmation} />
-            <EditOfferModal show={showModal === "edit-offer"} onHide={handleCloseModal} offerId={selectedOffer?._id} allOffers={allOffers} setAllOffers={setAllOffers} originalData={selectedOffer} />
+            <DeleteOfferModal show={showModal === "delete-offer"} onHide={handleCloseModal} onDelete={handleDeleteOfferConfirmation} offerID={selectedOffer._id}/>
+            <EditOfferModal show={showModal === "edit-offer"} onHide={handleCloseModal} offerId={selectedOffer?._id} allOffers={allOffers} setAllOffers={setAllOffers} originalData={selectedOffer} jobId={id} />
             <h1>Offer Details</h1>
             {allOffers.length === 0 && (
                 <Button variant="outline-success" onClick={handleCreateOffer} style={{ display: "block", margin: "0 auto", width: "100%" }} disabled={disableCreateOfferButton}>Create an Offer</Button>
@@ -79,7 +80,7 @@ export default function OfferDetails({ jobId }) {
                     <Card.Header key={idx}>
                     <Card.Title>Offer ID: {offer._id}</Card.Title>
                     <Card.Text>
-                        <p>Offered Salary: {offer.offeredSalary}</p>
+                        <p>Offered Salary: ${offer.offeredSalary}</p>
                         <p>Offer Deadline: {offer.offerDeadline}</p>
                         <p>Acceptance: {offer.acceptance}</p>
                     </Card.Text>

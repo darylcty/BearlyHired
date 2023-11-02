@@ -18,7 +18,6 @@ import OfferCreationForm from '../OfferCreationForm/OfferCreationForm';
 
 export default function App() {
   const [ user, setUser ] = useState(getUser());
-  console.log("App User: ", user);
 
   return (
       <main className="App">
