@@ -1,4 +1,5 @@
 # BearlyEmployed - Job Application Tracker
+<img src="https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/0b7577da-d050-4481-b7c6-a03a787e5c33">
 
 ## Project Description
 BearlyEmployed is an intuitive and user-friendly platform designed to streamline your job search process. Tailored for today's competitive job market, our application allows you to efficiently manage and track your job applications, interviews, and statuses—all in one place. Whether you're a first-time job seeker or an experienced professional looking for a career change, BearlyEmployed provides the tools you need to stay organized and focused, making your job hunt less grizzly.
