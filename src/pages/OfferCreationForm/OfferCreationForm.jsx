@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row, InputGroup } from "react-bootstrap";
 import { getOneJobApplication } from "../../utils/jobs-service";
 import { getOneCompanyByName } from "../../utils/companies-service";
-import * as offerService from "../../utils/offers-service";
+import { createOffer } from "../../utils/offers-service";
+import CreateOfferModal from "../../components/Modal/CreateOfferModal";
 
 export default function OfferCreationForm() {
     const [ offerData, setOfferData ] = useState({
@@ -13,15 +14,27 @@ export default function OfferCreationForm() {
         position: "",
         offeredSalary: "",
         offerDeadline: "",
-        acceptance: "",
+        acceptance: null
     });
 
-    // const [ modalShow, setModalShow ] = useState(false);
+    const [ modalShow, setModalShow ] = useState(false);
 
     const { id } = useParams();
     const navigate = useNavigate();
     const [ selectedJobApplication, setSelectedJobApplication ] = useState({});
-    const [ oneCompany, setOneCompany ] = useState([]);
+    const [ oneCompany, setOneCompany ] = useState({});
+
+    const disable = (!offerData.offeredSalary || !offerData.offerDeadline)
+
+    useEffect(() => {
+        fetchJobApplication();
+    }, [id]);
+
+    useEffect(() => {
+        if (offerData.companyName) {
+        fetchCompanyByName(offerData.companyName);
+        }
+    }, [offerData.companyName]);
 
     async function fetchCompanyByName(companyName) {
         const company = await getOneCompanyByName(companyName);
@@ -40,24 +53,14 @@ export default function OfferCreationForm() {
             companyName: jobApplication.companyName,
             companyAddress: jobApplication.companyAddress,
             position: jobApplication.position,
+            offeredSalary: jobApplication.salaryMax,
         }));
-    }
-
-    useEffect(() => {
-        fetchJobApplication();
-        fetchCompanyByName(offerData.companyName);
-    }, [id, offerData.companyName]);
-
-
-    const handleNavigateToJobApplicationDetails = (event) => {
-        event.preventDefault();
-        navigate(`/job-application-details/${id}`);
     }
 
     const handleChange = (event) => {
         let updatedValue = { [event.target.name]: event.target.value };
         if (event.target.name === "companyName") {
-            if (oneCompany) {
+            if (oneCompany !== null) {
                 updatedValue = {
                     ...updatedValue,
                     companyAddress: oneCompany.companyAddress,
@@ -77,15 +80,18 @@ export default function OfferCreationForm() {
             offerDataWithJobId.jobId = id;
         }
         try {
-            const offer = await offerService(offerDataWithJobId);
+            const offer = await createOffer(offerDataWithJobId);
             setOfferData(offer);
-            // setModalShow(true);
+            setModalShow(true);
         } catch (error) {
-            setOfferData((prevState) => ({...prevState, error: "Creation Failed - Try again" }));
+            console.log("Creation Failed - Try again", error);
         }
     }
 
-    const disable = (!offerData.offeredSalary || !offerData.offerDeadline)
+    const handleNavigateToJobApplicationDetails = (event) => {
+        event.preventDefault();
+        navigate(`/job-application-details/${id}`);
+    }
 
     const clearForm = () => {
         setOfferData({
@@ -95,13 +101,14 @@ export default function OfferCreationForm() {
             position: offerData.position,
             offeredSalary: "",
             offerDeadline: "",
-            acceptance: "",
+            acceptance: null,
         });
     }
 
     return (
         <div>
         <h1>Offer Creation Form</h1>
+        <CreateOfferModal show={modalShow} onHide={() => setModalShow(false)} jobId={id} />
         <Container className="offer-form">
             <Row>
                 <Col md={12}>
@@ -137,23 +144,26 @@ export default function OfferCreationForm() {
                         <Form.Control
                         readOnly
                         style={{ backgroundColor: "#f5f5f5", borderColor: "#ccc" }}
-                        type="select"
+                        type="text"
                         name="jobType"
                         value={offerData.position}
                         >
                         </Form.Control>
                     </Form.Group>
                     <br/>
-                    <Form.Group>
-                        <Form.Label>Offered Salary *</Form.Label>
-                        <Form.Control
-                        type="number"
-                        name="offeredSalary"
-                        value={offerData.offeredSalary}
-                        onChange={handleChange}
-                        required
-                        />
-                    </Form.Group>
+                    <Form.Label>Offered Monthly Salary *</Form.Label>
+                            <InputGroup className="mb-3">
+                                <InputGroup.Text>$</InputGroup.Text>
+                                <Form.Control
+                                aria-label="Amount (to the nearest dollar)"
+                                type="number"
+                                name="offeredSalary"
+                                min={0}
+                                step={1}
+                                value={offerData.offeredSalary}
+                                onChange={handleChange}
+                                />
+                            </InputGroup>
                     <br/>
                     <Form.Group>
                         <Form.Label>Offer Deadline *</Form.Label>

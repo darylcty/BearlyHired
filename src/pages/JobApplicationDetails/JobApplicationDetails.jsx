@@ -157,7 +157,7 @@ export default function JobApplicationDetails() {
                     jobId={id}
                     handleCloseModal={handleCloseModal}/>
                 </Tab>
-                <Tab eventKey="offers" title="Offer">
+                <Tab eventKey="offer" title="Offer">
                     <OfferDetails jobId={id}
                     handleCloseModal={handleCloseModal}/>
                 </Tab>

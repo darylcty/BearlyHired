@@ -51,12 +51,12 @@ export default function Dashboard() {
         }
     }
     //? Render Delete Confirmation Modal
-    async function handleDeleteButtonClick(event) {
-        event.preventDefault();
-        const jobApplicationId = event.currentTarget.getAttribute("data-id");
-        setSelectedJobApplication(jobApplicationId);
-        setModalShow("delete");
-    }
+    // async function handleDeleteButtonClick(event) {
+    //     event.preventDefault();
+    //     const jobApplicationId = event.currentTarget.getAttribute("data-id");
+    //     setSelectedJobApplication(jobApplicationId);
+    //     setModalShow("delete");
+    // }
 
     async function handleDeleteJobApplication() {
         if (selectedJobApplication) {
@@ -104,8 +104,8 @@ export default function Dashboard() {
                         <th>#</th>
                         <th>Company Name</th>
                         <th>Position</th>
-                        <th>Minimum Salary</th>
-                        <th>Maximum Salary</th>
+                        <th>Minimum Monthly Salary</th>
+                        <th>Maximum Monthly Salary</th>
                         <th>Job Type</th>
                         <th>Status</th>
                         <th>Application Date</th>

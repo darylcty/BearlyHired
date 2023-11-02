@@ -9,23 +9,19 @@ export default function OfferDetails({ jobId }) {
     const [allOffers, setAllOffers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedOffer, setSelectedOffer] = useState({});
-    const [offer, setOffer] = useState({});
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function fetchOffer() {
+        async function fetchOffers() {
             try {
                 const offers = await getOffer(jobId);
-                if (offers.length > 0) {
-                    setOffer(offers[0]);
-                }
                 setAllOffers(offers);
             } catch (error) {
                 console.log(error);
             }
         }
-        fetchOffer();
+        fetchOffers();
     }, [jobId]);
 
     const handleCloseModal = () => setShowModal(false);
@@ -56,24 +52,31 @@ export default function OfferDetails({ jobId }) {
         if (selectedOffer) {
             await handleDeleteOffer(selectedOffer);
             handleCloseModal();
+            allOffers();
         }
     };
 
     const handleEditOfferButtonClick = (offerId) => {
-        const selectedOfferData = allOffers.find(o => o._id === offerId);
+        const selectedOfferData = allOffers.find(offer => offer._id === offerId);
         setSelectedOffer(selectedOfferData);
         setShowModal("edit-offer");
     };
+
+    const disableCreateOfferButton = (allOffers.length > 1);
 
     return (
         <div style={{ marginTop: "20px", marginBottom: "20px" }}>
             <DeleteOfferModal show={showModal === "delete-offer"} onHide={handleCloseModal} onDelete={handleDeleteOfferConfirmation} />
             <EditOfferModal show={showModal === "edit-offer"} onHide={handleCloseModal} offerId={selectedOffer?._id} allOffers={allOffers} setAllOffers={setAllOffers} originalData={selectedOffer} />
             <h1>Offer Details</h1>
-            <Button variant="outline-success" onClick={handleCreateOffer} style={{ display: "block", margin: "0 auto", width: "100%" }}>Create an Offer</Button>
+            {allOffers.length === 0 && (
+                <Button variant="outline-success" onClick={handleCreateOffer} style={{ display: "block", margin: "0 auto", width: "100%" }} disabled={disableCreateOfferButton}>Create an Offer</Button>
+            )}
             <br />
             <Card>
-                <Card.Header>
+                {allOffers.map((offer, idx) => {
+                    return (
+                    <Card.Header key={idx}>
                     <Card.Title>Offer ID: {offer._id}</Card.Title>
                     <Card.Text>
                         <p>Offered Salary: {offer.offeredSalary}</p>
@@ -83,6 +86,8 @@ export default function OfferDetails({ jobId }) {
                     <Button variant="primary" onClick={() => handleEditOfferButtonClick(offer._id)} style={{ marginRight: "20px" }}>Edit Offer</Button>
                     <Button variant="danger" onClick={() => handleDeleteOfferButtonClick(offer._id)}>Delete Offer</Button>
                 </Card.Header>
+                    )
+                })}
             </Card>
         </div>
     );

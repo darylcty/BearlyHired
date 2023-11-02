@@ -13,7 +13,8 @@ async function createOffer(req, res) {
 
 async function getOffer(req, res) {
     try {
-        const offer = await Offer.findById(req.params.jobId);
+        const jobId = req.params.jobId;
+        const offer = await Offer.find({ jobId: jobId });
         res.json(offer);
     } catch (error) {
         console.error(error);
