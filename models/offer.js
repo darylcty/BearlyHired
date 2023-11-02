@@ -9,7 +9,7 @@ const offerSchema = new Schema(
         position: { type: String, required: true },
         offeredSalary: { type: Number, required: true },
         offerDeadline: { type: Date, required: true },
-        acceptance: { type: Boolean }
+        acceptance: { type: String }
 	},
 	{
 		timestamps: true,

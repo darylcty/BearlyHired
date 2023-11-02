@@ -14,7 +14,7 @@ export default function OfferCreationForm() {
         position: "",
         offeredSalary: "",
         offerDeadline: "",
-        acceptance: null
+        acceptance: ""
     });
 
     const [ modalShow, setModalShow ] = useState(false);
@@ -101,7 +101,7 @@ export default function OfferCreationForm() {
             position: offerData.position,
             offeredSalary: "",
             offerDeadline: "",
-            acceptance: null,
+            acceptance: "",
         });
     }
 
