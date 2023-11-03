@@ -18,6 +18,9 @@ BearlyEmployed is an intuitive and user-friendly platform designed to streamline
 - More exciting features on the way!
 
 ## Planning
+### User Journey
+<img width="766" alt="Screenshot 2023-11-03 at 10 14 32 AM" src="https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/83742a37-ec9a-4b4d-829a-62fc6c51d1ba">
+
 ### Trello Board
 <img width="1433" alt="Screenshot 2023-11-02 at 9 00 13 PM" src="https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/cc857108-d160-4913-b5e9-3620254330a5">
 
@@ -27,7 +30,6 @@ BearlyEmployed is an intuitive and user-friendly platform designed to streamline
 
 ### ERD - LucidChart
 <img width="1433" alt="Screenshot 2023-10-20 at 5 58 07 PM" src="https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/dc62e6ca-ed60-4bac-b922-ad639f60c37d">
-
 
 ## Deployment
 BearlyHired is current deployed on <a href="https://bearlyhired.cyclic.app">Cyclic!</a>
