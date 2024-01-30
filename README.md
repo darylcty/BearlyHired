@@ -33,6 +33,7 @@ BearlyEmployed is an intuitive and user-friendly platform designed to streamline
 
 ## Deployment
 BearlyHired is current deployed on <a href="https://bearlyhired.cyclic.app">Cyclic!</a>
+> Tip: If you get an error when loading the page, try refreshing!
 
 ## Usage
 1. Create an account or log back in if you already have an account.  ![Screenshot 2024-01-30 at 8 39 32 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/b1e14a9f-b08d-42bc-8eec-cc18f6790eee)
