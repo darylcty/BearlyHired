@@ -35,23 +35,34 @@ BearlyEmployed is an intuitive and user-friendly platform designed to streamline
 BearlyHired is current deployed on <a href="https://bearlyhired.cyclic.app">Cyclic!</a>
 
 ## Usage
-1. Create an account.  
-2. Navigate to "Your Dashboard" through the Navbar.  
+1. Create an account or log back in if you already have an account.  ![Screenshot 2024-01-30 at 8 39 32 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/b1e14a9f-b08d-42bc-8eec-cc18f6790eee)
+2. Navigate to "Your Dashboard" through the Navbar to view your application summary.![Screenshot 2024-01-30 at 8 45 43 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/e69807d8-7ec8-4bb8-8c65-a9faa2671e6b)
 3. On the dashboard page, you will see all your job applications, if any.  
-4. Start tracking a job application by creating a new one!  
-5. Follow along the form and fill up any information you have on hand. Don't worry if you don't have everything, you'll be able to make edits later!  
-  > Note: Company Name, Position, Job Type and Job Description are required fields.  
-6. Upon Submission, you may return to the dashboard to see what you've created or created another job application.  
-7. To view a job application in detail, click on the company name in the dashboard.  
-8. On the Job Application Detail Page, you can edit or delete your job application in the "Job Application" tab.  
-9. To create an interview for that specific job application, click on the "Interviews" tab and create an interview.  
-10. Similar to how you created the job application, go through the form and fill in whatever information you have at the moment  
+4. Start tracking a job application by creating a new one!  ![Screenshot 2024-01-30 at 8 47 18 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/c6da5235-7bb7-44c5-af02-a681c1c9cb1e)
+5. Follow along the form and fill up any information you have on hand. You can make edits later.
+![Screenshot 2024-01-30 at 8 48 47 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/a2cfa165-a3de-43e5-a8a5-d6e67b22deb4)
+  > Note: Company Name, Position, Job Type and Job Description are required fields.
+  
+6. Upon Submission, you may return to the dashboard to see what you've created or created another job application.  ![Screenshot 2024-01-30 at 8 57 32 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/6cb7f03b-5c9f-49fb-b143-39ec943d6b5e)
+
+7. To view a job application in detail, click on the company name in the dashboard.  ![Screenshot 2024-01-30 at 8 58 54 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/a1677824-1bd7-4fdb-b0f4-06d1e1a51057)
+
+8. On the Job Application Detail Page, you can edit or delete your job application in the "Job Application" tab.  ![Screenshot 2024-01-30 at 9 00 50 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/6c17e78a-33af-41f8-b363-f23d51ebdebe)
+
+9. To create an interview for that specific job application, click on the "Interviews" tab and create an interview.  ![Screenshot 2024-01-30 at 9 03 32 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/8b1d83b9-6236-4ba3-b4d0-64d2bc8c4f39)
+
+10. Similar to how you've created the job application, go through the form and fill in whatever information you have at the moment  
   > Note: Interview Type and Interview Date are required fields.  
-11. You may return to the Job Application Details page to view all your created interviews or create another interview.  
-12. Your dashboard will reflect the new interview dates  
-13. Finally, to create an offer, go to the Job Application Details page and click on the "Offer" tab.  
-14. Create an offer using the form.  
-  > Note: Offered Monthly Salary and Offer Deadline are required fields.  
+11. You may return to the Job Application Details page to view all your created interviews or create another interview.  ![Screenshot 2024-01-30 at 9 03 32 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/ab4249f0-8f0e-4a64-9b65-6b5cba3c6801)
+
+12. Your dashboard will reflect the new interview date.  ![Screenshot 2024-01-30 at 9 10 18 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/947cb03d-d41c-4efd-ba9c-9f0288fa3a5a)
+
+13. Finally, to create an offer, go to the Job Application Details page and click on the "Offer" tab.  ![Screenshot 2024-01-30 at 9 12 47 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/d8036c96-cd15-437c-9d34-fde2b2b5b77d)
+
+14. Create an offer using the form as you did previously for the job application and interview creation.    ![Screenshot 2024-01-30 at 9 15 21 AM](https://github.com/darylcty/BearlyHired-Job-Application-Tracker/assets/124702698/5d479201-7e79-47bb-91d3-4d13454e924d)
+
+  > Note: Offered Monthly Salary and Offer Deadline are required fields.
+
 15. You can only have 1 active offer at a time, if you would like to change any details in the offer, you can either edit the existing offer or delete the unwanted one and make a new offer.  
 
 
